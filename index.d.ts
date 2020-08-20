@@ -112,6 +112,11 @@ interface ScriptsLib {
   get_date(): Date;
   get_date_time(): number;
 
+  /**
+   * A list of characters that show up as corruption in-game.
+   */
+  corruption_chars: string[];
+
   security_level_names: [
     "NULLSEC",
     "LOWSEC",
