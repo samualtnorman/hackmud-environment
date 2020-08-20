@@ -1,0 +1,6 @@
+.eslintrc.js
+minify.js
+tsc-silent.config.js
+tools/
+build/
+dist/

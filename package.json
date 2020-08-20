@@ -1,0 +1,22 @@
+{
+  "name": "hackmud",
+  "version": "1.0.0",
+  "repository": "git@github.com:Snazzah/hackmud.git",
+  "license": "MIT",
+  "scripts": {
+    "build": "node ./tools/cli.js build",
+    "push": "node ./tools/cli.js push",
+    "clearfiles": "node ./tools/cli.js clear",
+    "fastpush": "node ./tools/cli.js build && node ./tools/cli.js push",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "javascript-minifier": "^1.1.0",
+    "ts-node": "^8.10.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.7.0",
+    "eslint-plugin-hackmud2": "^0.3.1",
+    "typescript": "^4.0.2"
+  }
+}
