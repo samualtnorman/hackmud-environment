@@ -1,5 +1,5 @@
 # hackmud_env
-A workspace to build and minify your scripts.
+A workspace to build and minify your scripts, fit with typings for hackmud.
 
 ### How to use
 First, run `yarn` to install dependencies and install TypeScript (`npm install -g typescript`)
