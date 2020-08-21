@@ -11,7 +11,7 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "javascript-minifier": "^1.1.0",
+    "terser": "^5.2.1",
     "ts-node": "^8.10.2"
   },
   "devDependencies": {
