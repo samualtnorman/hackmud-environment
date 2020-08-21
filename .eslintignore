@@ -4,3 +4,4 @@ tsc-silent.config.js
 tools/
 build/
 dist/
+src/**.ts
