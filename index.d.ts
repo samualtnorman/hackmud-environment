@@ -134,12 +134,30 @@ interface JadeVitaEscrowResult {
   msg: string
 }
 
+interface SymlinkGUI {
+  cxt: SymlinkGUIContext
+}
+
+interface SymlinkGUIContext {
+  draw(obj: any): void
+  render(): string
+}
+
 type Subscripts = SubscriptsBase & {
   scripts: ScriptsBase & {
     lib(): ScriptsLib;  
   };
   jade: ScriptsBase & {
-    vita(vita_charge: string, dep_acct: string, msg: string): JadeVitaEscrowResult;  
+    /**
+     * Draw money from a user's jade.vita account via Vitality.
+     * @param params.vita_charge GC string or numerical value to charge.
+     * @param params.dep_acct Username of jade.vita account to deposit GC into.
+     * @param params.msg 40 characters or less with no newlines, displayed as information on view_vita_auths.
+     */
+    vita({ vita_charge: string, dep_acct: string, msg: string }): JadeVitaEscrowResult;  
+  };
+  symlink: ScriptsBase & {
+    gui(): JadeVitaEscrowResult;  
   };
 }
 

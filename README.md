@@ -27,7 +27,7 @@ To do both of these in one go, run `yarn fastpush`
 
 ### Useful links
 - [hackmud docs](https://docs.google.com/document/d/1cNms-T_KSFy0F5j1xHXrUZEGd7AM49QEork3KlpGqkc/edit#)
-- [colors](https://hackmud.fandom.com/wiki/Colors)
+- [colors](https://cdn.discordapp.com/attachments/240033069203980290/240183438789967873/bl-0.png)
 - [eslint-plugin-hackmud2](https://www.npmjs.com/package/eslint-plugin-hackmud2)
 
 ### Cool Macros
