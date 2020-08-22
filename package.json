@@ -8,11 +8,13 @@
     "push": "node ./tools/cli.js push",
     "clearfiles": "node ./tools/cli.js clear",
     "fastpush": "node ./tools/cli.js build && node ./tools/cli.js push",
+    "watch": "node ./tools/cli.js watch",
     "lint": "eslint src"
   },
   "dependencies": {
     "terser": "^5.2.1",
-    "ts-node": "^8.10.2"
+    "ts-node": "^8.10.2",
+    "watch": "^1.0.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.9.1",

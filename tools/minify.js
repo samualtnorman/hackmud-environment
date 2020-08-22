@@ -33,11 +33,14 @@ function addAutocomplete(file, code) {
 	return code.replace(/function\s*\([^\)]*\){/, `$& // ${autocomplete}\n`);
 }
 
-const files = fs.readdirSync('./dist')
-
-files.map(async file => {
+async function buildFile (file) {
 	const code = fs.readFileSync(`./dist/${file}`, { encoding: 'utf8' });
 	const minCode = await hackmudMinify(code);
 	fs.writeFileSync(`./dist/${file}`, addAutocomplete(file, minCode));
 	console.log(`- ${file} [${minCode.length} chars]`)
-})
+}
+
+if (process.argv[2])
+	buildFile(process.argv[2]);
+else
+	fs.readdirSync('./dist').map(buildFile);
