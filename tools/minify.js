@@ -7,7 +7,18 @@ async function hackmudMinify(code) {
 		.replace(/function(?: \w+| )?\(/, `function script_${anon_code}(`)
 		.replace(/#(?:(?:f|h|m|l|n|[0-4])?s|db|G|FMCL)/g, a => {
 			return a.replace("#", `_hash_${anon_code}_`);
-		})
+		}),
+		{
+			compress: {
+				arrows: false, // hackmud does not like this
+				keep_fargs: false,
+				negate_iife: false,
+				booleans_as_integers: true,
+				unsafe_undefined: true,
+				unsafe_comps: true,
+				passes: 2
+			}
+		}
 	)).code
 		.replace(`script_${anon_code}`, "")
 		.replace(new RegExp(`_hash_${anon_code}_`, 'g'), a => {
