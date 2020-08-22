@@ -16,7 +16,9 @@ async function hackmudMinify(code) {
 				booleans_as_integers: true,
 				unsafe_undefined: true,
 				unsafe_comps: true,
-				passes: 2
+				unsafe_proto: true,
+				passes: 2,
+				ecma: 6
 			}
 		}
 	)).code
