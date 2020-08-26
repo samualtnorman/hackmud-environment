@@ -1,5 +1,11 @@
 {
-  "javascript.validate.enable": false,
-  "typescript.validate.enable": false,
-  "eslint.enable": true
+	"javascript.validate.enable": false,
+	"typescript.validate.enable": false,
+	"eslint.enable": true,
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"files.exclude": {
+		"**/.*": true,
+		"**/*.d.ts": true,
+		"**/*.js": { "when": "$(basename).ts" }
+	}
 }
