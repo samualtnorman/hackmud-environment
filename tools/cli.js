@@ -1,7 +1,7 @@
 const action = process.argv[2];
 const { exec } = require('child_process');
 const fs = require('fs');
-const watch  = require('watch');
+const { watch } = require('chokidar')
 let config, user, files, pushedFiles, monitor;
 
 try {
@@ -41,32 +41,29 @@ switch (action) {
     if (!config.path)
       return console.error('!!! You need to set a path before pushing');
     user = process.argv[3] || config.default_user;
-    watch.createMonitor('./src', function (monitor) {
-      console.log('watching for changes in src/')
-      monitor.on("changed", function (f, curr, prev) {
-        function rebuild (file) {
-          console.log(`-- rebuilding ${file}`);
-          const distFile = (file.split('.').slice(0, -1).join('.') + '.js').split('/').pop();
-          exec(`tsc --outFile dist/${distFile} ${file}`, () => {
-            console.log(`--- built to ${file}`);
-            exec(`node ./tools/minify.js ${distFile}`, (_, out) => {
-              console.log('--' + out.trim());
-              fs.writeFileSync(`${config.path}/${user}/scripts/${distFile}`, fs.readFileSync(`./dist/${distFile}`));
-              console.log(`--- pushed to ${user}`)
-            });
+    console.log('watching for changes in src/')
+    // chokidar triggers add events for each file on startup
+    let ignore = fs.readdirSync('./src').length
+    watch('', { depth: 0, cwd: './src', awaitWriteFinish: { stabilityThreshold: 100 } }).on("change", path => {
+      function rebuild (file) {
+        console.log(`-- rebuilding ${file}`);
+        const distFile = (file.split('.').slice(0, -1).join('.') + '.js').split('/').pop();
+        exec(`tsc --outFile dist/${distFile} ${file}`, () => {
+          console.log(`--- built to ${file}`);
+          exec(`node ./tools/minify.js ${distFile}`, (_, out) => {
+            console.log('--' + out.trim());
+            fs.writeFileSync(`${config.path}/${user}/scripts/${distFile}`, fs.readFileSync(`./dist/${distFile}`));
+            console.log(`--- pushed to ${user}`)
           });
-        }
-        console.log(`- ${f} changed`);
-        if (Array.isArray(f))
-          f.map(rebuild);
-        else rebuild(f);
-      })
-      monitor.on("created", f => console.log(`- ${f} created (trigger a file change to auto-build)`));
-      monitor.on("removed", f => console.log(`- ${f} removed`));
-      process.once('SIGINT', async () => {
-        monitor.stop();
-        process.exit(0);
-      });
+        });
+      }
+      console.log(`- ${path} changed`);
+      rebuild(path);
+    }).on("add", path => {
+      if (!ignore--)
+        console.log(`- ${path} created (trigger a file change to auto-build)`);
+    }).on("unlink", path => {
+      console.log(`- ${path} removed`)
     });
     break;
   default:
