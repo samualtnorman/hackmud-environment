@@ -1,15 +1,13 @@
 {
-  "name": "hackmud",
-  "version": "1.0.0",
+  "name": "hackmud_env",
   "repository": "git@github.com:Snazzah/hackmud.git",
   "license": "MIT",
   "scripts": {
     "build": "tsc || hsm build dist dist",
-    "push": "hsm push",
-    "clearfiles": "hsm clear",
-    "fastpush": "hsm build && node hsm push",
-    "watch": "hsm watch",
-    "sync": "tsc || hsm sync dist",
+    "push": "tsc || hsm push dist",
+    "clear": "hsm clear",
+    "tsc-watch": "tsc --watch",
+    "hsm-watch": "hsm watch dist",
     "lint": "eslint dist"
   },
   "dependencies": {},
@@ -18,7 +16,7 @@
     "@typescript-eslint/parser": "^3.9.1",
     "eslint": "^7.7.0",
     "eslint-plugin-hackmud2": "^0.3.1",
-    "hackmud-script-manager": "0.0.2",
+    "hackmud-script-manager": "^0.1.1",
     "typescript": "^4.0.2"
   }
 }

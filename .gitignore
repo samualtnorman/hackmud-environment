@@ -1,6 +1,4 @@
 node_modules
-build/
-dist/
-src/**.js
-src/**.ts
+build
+dist
 hackmud.json
