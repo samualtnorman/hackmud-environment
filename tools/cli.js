@@ -48,9 +48,9 @@ switch (action) {
       function rebuild (file) {
         console.log(`-- rebuilding ${file}`);
         const distFile = (file.split('.').slice(0, -1).join('.') + '.js').split('/').pop();
-        exec(`tsc --outFile dist/${distFile} ${file}`, () => {
+        exec('tsc', () => {
           console.log(`--- built to ${file}`);
-          exec(`node ./tools/minify.js ${distFile}`, (_, out) => {
+          exec('node ./tools/minify.js', (_, out) => {
             console.log('--' + out.trim());
             fs.writeFileSync(`${config.path}/${user}/scripts/${distFile}`, fs.readFileSync(`./dist/${distFile}`));
             console.log(`--- pushed to ${user}`)
