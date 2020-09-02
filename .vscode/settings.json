@@ -5,7 +5,7 @@
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"files.exclude": {
 		"**/.*": true,
-		"**/*.d.ts": true,
-		"**/*.js": { "when": "$(basename).ts" }
+		"node_modules": true,
+		"package-lock.json": true
 	}
 }

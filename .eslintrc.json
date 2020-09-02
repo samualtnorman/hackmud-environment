@@ -1,0 +1,13 @@
+{
+	"root": true,
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:@samual/hackmud2/recommended"
+	],
+	"parser": "@typescript-eslint/parser",
+	"plugins": [
+		"@samual/hackmud2",
+		"@typescript-eslint"
+	]
+}

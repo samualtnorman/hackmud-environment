@@ -1,44 +1,37 @@
-# hackmud_env
-A workspace to build and minify your scripts, fit with typings for hackmud.
+# hackmud-environment
+A workspace to build, minify, and push your scripts to specific or multiple users at once, fit with typings for hackmud, and support for Typescript files.
 
 ### How to use
-First, run `yarn` to install dependencies and install TypeScript (`npm install -g typescript`)
+First, run `npm install` to install dependencies.
+Then run `npx hsm config set hackmudPath <hackmud directory>`.
 
 #### Making scripts
-You can make scripts in `src/` in either TypeScript or JavaScript and make scripts as you reqularly would without the worry of variable name length.
+Write your scripts in the `src` directory in TypeScript and JavaScript, these scripts by default will be pushed to all your users.
 
-#### Autocomplete
+If you want a script to only be pushed to a specific user, create a folder in `src` with the name of user.
+Scripts you write in that folder will only be pushed to that user.
+
+If you are using TypeScript, you can give the `context` arg the type `HackmudContext`.
+
+<!-- #### Autocomplete
 You can set the autocomplete string either by a comment after the function header:
-```js
-function (context, args) { // example:true
-```
-Or by adding an `@autocomplete` comment above the function call.
-```js
-// @autocomplete example:true
-function (context, args) {
+```ts
+function (context: HackmudContext, args) { // example:true
 ```
 
-#### hackmud.json
-When doing any CLI commands, a hackmud.json file will be created. In order for pushing to work, you must set the `path` key to the hackmud folder (not a scripts folder) and set the `default_user` to the user you want the scripts for.
+Or by adding an `@autocomplete` comment above the function call:
+```ts
+// @autocomplete example:true
+function (context: HackmudContext, args) {
+``` -->
 
 #### Compiling and pushing
-To compile, you can run `yarn build` to build `src/` files to `dist/`. To push, you can run `yarn push`.  \
-To do both of these in one go, run `yarn fastpush`
+There are a few scripts available in the `package.json`, but my suggestion is to use `npm run tsc-watch` and `npm run hsm-watch` simultaneously to automatically compile, build, and push changes you make to your users in the hackmud folder.
 
 ### Useful links
-- [hackmud docs](https://docs.google.com/document/d/1cNms-T_KSFy0F5j1xHXrUZEGd7AM49QEork3KlpGqkc/edit#)
+- [Scripting Tutorial](https://docs.google.com/document/d/1cNms-T_KSFy0F5j1xHXrUZEGd7AM49QEork3KlpGqkc/edit#)
 - [colors](https://cdn.discordapp.com/attachments/240033069203980290/240183438789967873/bl-0.png)
 - [eslint-plugin-hackmud2](https://www.npmjs.com/package/eslint-plugin-hackmud2)
 
-### Cool Macros
-
-```
-/hl = kernel.hardline
-/dc = kernel.hardline {dc:true}
-/c = chats.send {{ channel:"{0}", msg:{1} }}
-/t = chats.tell {{ to:"{0}", msg:{1} }}
-```
-
 ### Contributing
-
-Contributing to the repo is appreciated, especially if you have an API and want to make a definition in the typings.
+Contributing is apreciated, but if you have an API to add to the typeings, you should probably pull request that into the original repo.
