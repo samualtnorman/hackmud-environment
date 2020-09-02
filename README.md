@@ -30,7 +30,8 @@ There are a few scripts available in the `package.json`, but my suggestion is to
 
 ### Useful links
 - [Scripting Tutorial](https://docs.google.com/document/d/1cNms-T_KSFy0F5j1xHXrUZEGd7AM49QEork3KlpGqkc/edit#)
-- [colors](https://cdn.discordapp.com/attachments/240033069203980290/240183438789967873/bl-0.png)
+- [New Player Guides / Reference](https://hackmud.com/forums/new_players/new_player_guides___reference)
+- [Advanced Reference / Guides](https://hackmud.com/forums/general_discussion/reference___guides)
 - [eslint-plugin-hackmud2](https://www.npmjs.com/package/eslint-plugin-hackmud2)
 
 ### Contributing

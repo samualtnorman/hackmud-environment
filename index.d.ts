@@ -1,56 +1,56 @@
 interface MongoDBDatabase {
-  /**
-   * Inserts a document or documents into a collection.
-   * @param documents A document or array of documents to insert into the collection.
-   */
-  i(documents: object|Array<object>): void
+	/**
+	 * Inserts a document or documents into a collection.
+	 * @param documents A document or array of documents to insert into the collection.
+	 */
+	i(documents: object|Array<object>): void
 
-  /**
-   * Removes documents from a collection.
-   * @param query Specifies deletion criteria using query operators.
-   */
-  r(query: object): void
+	/**
+	 * Removes documents from a collection.
+	 * @param query Specifies deletion criteria using query operators.
+	 */
+	r(query: object): void
 
-  /**
-   * Selects documents in a collection or view and returns a cursor to the selected documents.
-   * @param query Specifies deletion criteria using query operators.
-   * @param projection Specifies the fields to return in the documents that match the query filter.
-   */
-  f(query?: object, projection?: object): MongoDBPointer
+	/**
+	 * Selects documents in a collection or view and returns a cursor to the selected documents.
+	 * @param query Specifies deletion criteria using query operators.
+	 * @param projection Specifies the fields to return in the documents that match the query filter.
+	 */
+	f(query?: object, projection?: object): MongoDBPointer
 
-  /**
-   * Modifies an existing document or documents in a collection.
-   * @param query Specifies deletion criteria using query operators.
-   * @param update The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
-   */
-  u(documents: object|Array<object>, update: object): void
+	/**
+	 * Modifies an existing document or documents in a collection.
+	 * @param query Specifies deletion criteria using query operators.
+	 * @param update The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
+	 */
+	u(documents: object|Array<object>, update: object): void
 
-  /**
-   * Updates a single document within the collection based on the filter.
-   * @param query Specifies deletion criteria using query operators.
-   * @param update The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
-   */
-  u1(documents: object|Array<object>, update: object): void
+	/**
+	 * Updates a single document within the collection based on the filter.
+	 * @param query Specifies deletion criteria using query operators.
+	 * @param update The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
+	 */
+	u1(documents: object|Array<object>, update: object): void
 
-  /**
-   * Same as {#u}, but if no documents match the query, one document will be inserted based on the properties in both the query and the command. 
-   * The `$setOnInsert` operator is useful to set defaults.
-   * @param query Specifies deletion criteria using query operators.
-   * @param update The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
-   */
-  us(documents: object|Array<object>, update: object): void
+	/**
+	 * Same as {#u}, but if no documents match the query, one document will be inserted based on the properties in both the query and the command.
+	 * The `$setOnInsert` operator is useful to set defaults.
+	 * @param query Specifies deletion criteria using query operators.
+	 * @param update The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
+	 */
+	us(documents: object|Array<object>, update: object): void
 }
 
 interface MongoDBPointer {
-  /**
-   * Returns the first object of the query.
-   */
-  first(): object
+	/**
+	 * Returns the first object of the query.
+	 */
+	first(): object
 
-  /**
-   * Returns all objects of the query in an array.
-   */
-  array(): Array<object>
+	/**
+	 * Returns all objects of the query in an array.
+	 */
+	array(): Array<object>
 }
 
 /**
@@ -59,106 +59,106 @@ interface MongoDBPointer {
 declare const #db: MongoDBDatabase;
 
 interface SubscriptsBase {
-  [user: string]: {
-    [script: string]: ScriptsBase;  
-  }
+	[user: string]: {
+		[script: string]: ScriptsBase;
+	}
 }
 
 interface ScriptsBase {
-  (args?: object): object;
+	(args?: object): object;
 }
 
 interface ScriptsLib {
-  ok(): {ok: true};
-  not_impl(): {ok: false, msg: "not implemented"};
-  log(message: string): void;
-  get_log(): Array<string>;
-  rand_int(min: number, max: number, rand: number): number;
-  are_ids_eq(id1: string, id2: string): boolean;
-  is_obj(what: any): boolean;
-  is_str(what: any): boolean;
-  is_num(what: any): boolean;
-  is_int(what: any): boolean;
-  is_neg(what: any): boolean;
-  is_arr(what: any): boolean;
-  is_func(what: any): boolean;
-  is_def(what: any): boolean;
-  is_valid_name(what: any): boolean;
-  dump(obj: object): string;
-  clone(obj: object): object;
-  merge(obj1: object, obj2: object): object;
-  get_values(obj: object): Array<any>;
-  hash_code(string: string): string;
-  to_gc_str(num: number): string;
-  to_gc_num(str: string): number;
-  to_game_timestr(str: Date): string;
-  cap_str_len(string: string, length: number): string;
-  each(array: Array<any>, fn: { (key: any, value: any): void }): void;
-  select(array: Array<any>, fn: { (key: any, value: any): boolean }): Array<any>;
-  count(array: Array<any>, fn: { (key: any, value: any): boolean }): number;
-  select_one(array: Array<any>, fn: { (key: any, value: any): boolean }): any;
-  map(array: Array<any>, fn: { (key: any, value: any): any }): Array<any>;
-  shuffle(array: Array<any>): Array<any>;
-  num_sort_asc(num1: number, num2: number): -1 | 1 | 0;
-  num_sort_desc(num1: number, num2: number): -1 | 1 | 0;
-  max_val_index(array: Array<any>): number;
-  add_time(date: Date, add_ms: number): number;
-  create_rand_string(length: number): string;
-  get_user_from_script(script_name: string): string;
-  u_sort_num_arr_desc(array: Array<any>): Array<any>;
-  can_continue_execution(time_left: number): boolean;
-  can_continue_execution_error(): string;
-  date(): Date;
-  get_date(): Date;
-  get_date_time(): number;
+	ok(): {ok: true};
+	not_impl(): {ok: false, msg: "not implemented"};
+	log(message: string): void;
+	get_log(): Array<string>;
+	rand_int(min: number, max: number, rand: number): number;
+	are_ids_eq(id1: string, id2: string): boolean;
+	is_obj(what: any): boolean;
+	is_str(what: any): boolean;
+	is_num(what: any): boolean;
+	is_int(what: any): boolean;
+	is_neg(what: any): boolean;
+	is_arr(what: any): boolean;
+	is_func(what: any): boolean;
+	is_def(what: any): boolean;
+	is_valid_name(what: any): boolean;
+	dump(obj: object): string;
+	clone(obj: object): object;
+	merge(obj1: object, obj2: object): object;
+	get_values(obj: object): Array<any>;
+	hash_code(string: string): string;
+	to_gc_str(num: number): string;
+	to_gc_num(str: string): number;
+	to_game_timestr(str: Date): string;
+	cap_str_len(string: string, length: number): string;
+	each(array: Array<any>, fn: { (key: any, value: any): void }): void;
+	select(array: Array<any>, fn: { (key: any, value: any): boolean }): Array<any>;
+	count(array: Array<any>, fn: { (key: any, value: any): boolean }): number;
+	select_one(array: Array<any>, fn: { (key: any, value: any): boolean }): any;
+	map(array: Array<any>, fn: { (key: any, value: any): any }): Array<any>;
+	shuffle(array: Array<any>): Array<any>;
+	num_sort_asc(num1: number, num2: number): -1 | 1 | 0;
+	num_sort_desc(num1: number, num2: number): -1 | 1 | 0;
+	max_val_index(array: Array<any>): number;
+	add_time(date: Date, add_ms: number): number;
+	create_rand_string(length: number): string;
+	get_user_from_script(script_name: string): string;
+	u_sort_num_arr_desc(array: Array<any>): Array<any>;
+	can_continue_execution(time_left: number): boolean;
+	can_continue_execution_error(): string;
+	date(): Date;
+	get_date(): Date;
+	get_date_time(): number;
 
-  /**
-   * A list of characters that show up as corruption in-game.
-   */
-  corruption_chars: string[];
+	/**
+	 * A list of characters that show up as corruption in-game.
+	 */
+	corruption_chars: string[];
 
-  security_level_names: [
-    "NULLSEC",
-    "LOWSEC",
-    "MIDSEC",
-    "HIGHSEC",
-    "FULLSEC"
-  ];
-  get_security_level_name(security_level: number): string;
+	security_level_names: [
+		"NULLSEC",
+		"LOWSEC",
+		"MIDSEC",
+		"HIGHSEC",
+		"FULLSEC"
+	];
+	get_security_level_name(security_level: number): string;
 }
 
 interface JadeVitaEscrowResult {
-  ok: boolean,
-  charged: boolean,
-  time: number,
-  msg: string
+	ok: boolean,
+	charged: boolean,
+	time: number,
+	msg: string
 }
 
 interface SymlinkGUI {
-  cxt: SymlinkGUIContext
+	cxt: SymlinkGUIContext
 }
 
 interface SymlinkGUIContext {
-  draw(obj: any): void
-  render(): string
+	draw(obj: any): void
+	render(): string
 }
 
 type Subscripts = SubscriptsBase & {
-  scripts: ScriptsBase & {
-    lib(): ScriptsLib;  
-  };
-  jade: ScriptsBase & {
-    /**
-     * Draw money from a user's jade.vita account via Vitality.
-     * @param params.vita_charge GC string or numerical value to charge.
-     * @param params.dep_acct Username of jade.vita account to deposit GC into.
-     * @param params.msg 40 characters or less with no newlines, displayed as information on view_vita_auths.
-     */
-    vita({ vita_charge: string, dep_acct: string, msg: string }): JadeVitaEscrowResult;  
-  };
-  symlink: ScriptsBase & {
-    gui(): JadeVitaEscrowResult;  
-  };
+	scripts: ScriptsBase & {
+		lib(): ScriptsLib;
+	};
+	jade: ScriptsBase & {
+		/**
+		 * Draw money from a user's jade.vita account via Vitality.
+		 * @param params.vita_charge GC string or numerical value to charge.
+		 * @param params.dep_acct Username of jade.vita account to deposit GC into.
+		 * @param params.msg 40 characters or less with no newlines, displayed as information on view_vita_auths.
+		 */
+		vita({ vita_charge: string, dep_acct: string, msg: string }): JadeVitaEscrowResult;
+	};
+	symlink: ScriptsBase & {
+		gui(): JadeVitaEscrowResult;
+	};
 }
 
 /**
@@ -233,10 +233,10 @@ declare const _TIMEOUT: number;
 declare const _TO: number;
 
 interface HackmudContext {
-  caller: string;
-  this_script: string;
-  calling_script: string | null;
-  is_brain: boolean;
-  cols: number;
-  rows: number
+	caller: string;
+	this_script: string;
+	calling_script: string | null;
+	is_brain: boolean;
+	cols: number;
+	rows: number
 }

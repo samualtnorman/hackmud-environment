@@ -13,5 +13,5 @@
 		"noImplicitAny": false,
 		"skipLibCheck": true
 	},
-	"exclude": [ "node_modules", "dist", ".yarn", "tools" ]
+	"exclude": [ "node_modules", "dist", "build" ]
 }
