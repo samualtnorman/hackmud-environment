@@ -2,16 +2,15 @@
 A workspace to build, minify, and push your scripts to specific or multiple users at once, fit with typings for hackmud, and support for Typescript files.
 
 ### How to use
-First, run `npm install` to install dependencies.
-Then run `npx hsm config set hackmudPath <hackmud directory>`.
+First, run `npm install`, then `npx hsm config set hackmudPath <hackmud directory>`.
 
 #### Making scripts
-Write your scripts in the `src` directory in TypeScript and JavaScript, these scripts by default will be pushed to all your users.
+Write your scripts in the `src` directory, these scripts by default will be pushed to all your users.
 
-If you want a script to only be pushed to a specific user, create a folder in `src` with the name of user.
-Scripts you write in that folder will only be pushed to that user.
+If you want a script to only be pushed to a specific user, create a folder in `src` with the name of that user.
+Scripts in that folder will only be pushed to that user.
 
-If you are using TypeScript, you can give the `context` arg the type `HackmudContext`.
+If you are using TypeScript, you can give the `context` arg the `HackmudContext` type.
 
 <!-- #### Autocomplete
 You can set the autocomplete string either by a comment after the function header:
@@ -35,4 +34,4 @@ There are a few scripts available in the `package.json`, but my suggestion is to
 - [eslint-plugin-hackmud2](https://www.npmjs.com/package/eslint-plugin-hackmud2)
 
 ### Contributing
-Contributing is apreciated, but if you have an API to add to the typeings, you should probably pull request that into the original repo.
+Contributing is apreciated, but if you have an API to add to the typings, you should probably pull request that into the original repo.
