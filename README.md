@@ -31,7 +31,7 @@ function (context: HackmudContext, args) {
 There are a few scripts available in the `package.json`, but my suggestion is to use `npm run tsc-watch` and `npm run hsm-watch` simultaneously to automatically compile, build, and push changes you make to your users in the hackmud folder.
 
 ### Useful links
-- [Scripting Tutorial](https://docs.google.com/document/d/1cNms-T_KSFy0F5j1xHXrUZEGd7AM49QEork3KlpGqkc/edit#)
+- [Scripting Reference](https://hackmud.com/forums/general_discussion/scripting_reference)
 - [New Player Guides / Reference](https://hackmud.com/forums/new_players/new_player_guides___reference)
 - [Advanced Reference / Guides](https://hackmud.com/forums/general_discussion/reference___guides)
 - [eslint-plugin-hackmud2](https://www.npmjs.com/package/eslint-plugin-hackmud2)
