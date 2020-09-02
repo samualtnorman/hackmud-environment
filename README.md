@@ -4,6 +4,9 @@ A workspace to build, minify, and push your scripts to specific or multiple user
 ### How to use
 First, run `npm install`, then `npx hsm config set hackmudPath <hackmud directory>`.
 
+If you are using an editor like VS Code, I suggest using the workspace's version of typescript to get more accurate typings.
+To enable this, open a typescript file, hit `f1`, type `typescript select`, press `enter`, and select `Use Workspace Version`.
+
 #### Making scripts
 Write your scripts in the `src` directory, these scripts by default will be pushed to all your users.
 
