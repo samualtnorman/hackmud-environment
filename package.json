@@ -8,7 +8,7 @@
 		"clear": "hsm clear",
 		"tsc-watch": "tsc --watch",
 		"hsm-watch": "hsm watch dist",
-		"lint": "eslint dist"
+		"lint": "eslint src"
 	},
 	"devDependencies": {
 		"@samual/eslint-plugin-hackmud2": "^0.3.2",
