@@ -32,8 +32,8 @@ There are a few scripts available in the `package.json`, but my suggestion is to
 
 ### Useful links
 - [Scripting Reference](https://hackmud.com/forums/general_discussion/scripting_reference)
-- [New Player Guides / Reference](https://hackmud.com/forums/new_players/new_player_guides___reference)
-- [Advanced Reference / Guides](https://hackmud.com/forums/general_discussion/reference___guides)
+- [The Trust Scripts](https://hackmud.com/forums/new_players/the_trust_scripts___documentation_for__scripts_trust__scripts)
+- [Color Reference](https://hackmud.com/forums/general_discussion/color_reference)
 - [eslint-plugin-hackmud2](https://www.npmjs.com/package/eslint-plugin-hackmud2)
 
 ### Contributing
