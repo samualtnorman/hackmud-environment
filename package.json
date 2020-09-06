@@ -3,19 +3,16 @@
 	"license": "MIT",
 	"scripts": {
 		"postinstall": "patch-package",
-		"build": "tsc || hsm build dist dist",
-		"push": "tsc || hsm push dist",
-		"clear": "hsm clear",
-		"tsc-watch": "tsc --watch",
-		"hsm-watch": "hsm watch dist",
+		"push": "hsm push src",
+		"watch": "hsm watch src",
 		"lint": "eslint src"
 	},
 	"devDependencies": {
 		"@samual/eslint-plugin-hackmud2": "^0.3.2",
-		"@typescript-eslint/eslint-plugin": "^4.0.0",
+		"@typescript-eslint/eslint-plugin": "^4.0.1",
 		"@typescript-eslint/parser": "^3.9.1",
 		"eslint": "^7.8.1",
-		"hackmud-script-manager": "^0.1.2",
+		"hackmud-script-manager": "^0.2.0",
 		"patch-package": "^6.2.2",
 		"typescript": "^4.0.2"
 	}

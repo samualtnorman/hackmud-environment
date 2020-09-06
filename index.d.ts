@@ -16,18 +16,10 @@ type Fullsec = Subscripts & {
 		/**
 		 * **FULLSEC**
 		 */
-		xfer_gc_to_caller(): {
-			ok: false
-			msg: string
-		}
-
 		xfer_gc_to_caller(args: {
 			amount: number | string
 			memo?: string
-		}): {
-			ok: false
-			msg: string
-		}
+		}): ScriptError
 	}
 
 	chats: Scripts & {
@@ -269,19 +261,30 @@ type Highsec = Subscripts & {
 		/**
 		 * **HIGHSEC**
 		 *
-		 * Shows your GC balance
+		 * @summary Shows your GC balance
+		 *
+		 * @description Shows how much GC you have (and, if called on the CLI, updates the top-right box).
 		 */
 		balance(args?: {
 			/**
 			 * If true, output is a number, otherwise a GC string
 			 */
 			is_script?: boolean
-		})
+		}): number | string
+
+		balance(args: { is_script: true }): number
+		balance(args: { is_script: false }): string
 
 		/**
 		 * **HIGHSEC**
 		 */
-		transactions()
+		transactions(args?: {
+			count?: number | "all"
+			to?: string
+			from?: string
+			script?: string
+			is_script?: boolean
+		})
 	}
 
 	scripts: Scripts & {
@@ -655,11 +658,42 @@ declare const #db: {
 	us(query: object | object[], command: object): void
 }
 
+/**
+ * The context the script is run from, i.e. if a user called noob ran your script, then any command executed from context will be treated as executed by the noob user, just like he/she would write them in their command line.
+ */
 interface Context {
+	/**
+	 * The name of the user who is calling the script (i.e. n00b)
+	 */
 	caller: string
+
+	/**
+	 * The name of this script
+	 */
 	this_script: string
+
+	/**
+	 * The name of the script that directly called this script, or null if called on the command line or as a scriptor
+	 */
 	calling_script: string | null
+
+	/**
+	 * true if the script is being run as a scriptor, otherwise falsey (not present currently, but I wouldn’t rely on that)
+	 */
+	is_scriptor: true | undefined
+
+	/**
+	 * true if the script is being run via a bot brain
+	 */
 	is_brain: boolean
+
+	/**
+	 * the number of columns in the caller’s terminal, if reported by the client
+	 */
 	cols: number
+
+	/**
+	 * the number of rows in the caller’s terminal, if reported by the client
+	 */
 	rows: number
 }
