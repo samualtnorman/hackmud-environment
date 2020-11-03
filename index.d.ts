@@ -1,16 +1,16 @@
 type Subscripts = Record<string, Record<string, (args?: any) => any>>
 type ErrorScripts = Record<string, () => ScriptFailure>
 
-type ScriptSuccess = {
+type ScriptSuccess<T = {}> = {
 	ok: true
-}
+} & T
 
 type ScriptFailure = {
 	ok: false
 	msg: string
 }
 
-type ScriptResponse = ScriptSuccess | ScriptFailure
+type ScriptResponse<T = {}> = ScriptSuccess<T> | ScriptFailure
 
 type CorpsTop = [
 	CorpsTopItem<1>,
@@ -617,7 +617,7 @@ type Fullsec = {
 			count: number
 			description: string
 			upgrade: Upgrade & {
-				loaded: boolean
+				loaded: false
 				sn: string
 			}
 			no_notify: boolean
@@ -630,7 +630,7 @@ type Fullsec = {
 			count: number
 			description: string
 			upgrade: Upgrade & {
-				loaded: boolean
+				loaded: false
 				sn: string
 			}
 			no_notify: boolean
@@ -1048,7 +1048,10 @@ type Highsec = {
 		/**
 		 * **HIGHSEC**
 		 */
-		inspect(args: { name: string, is_script?: true }): {
+		inspect(args: {
+			name: string
+			is_script?: true
+		}): {
 			username: string
 			avatar: string
 			pronouns: string
@@ -1060,7 +1063,10 @@ type Highsec = {
 			badges?: string[]
 		} | ScriptFailure
 
-		inspect(args: { name: string, is_script: false }): string | ScriptFailure
+		inspect(args: {
+			name: string
+			is_script: false
+		}): string | ScriptFailure
 	}
 }
 
@@ -1124,26 +1130,46 @@ type Midsec = {
 		/**
 		 * **MIDSEC**
 		 */
-		buy(args?: any): any
+		buy(args: {
+			i: string
+			count: number
+			confirm: true
+		}): ScriptResponse
 
 		/**
 		 * **MIDSEC**
 		 */
-		stats(args?: any): any
+		stats(): ScriptFailure | {
+			total: string
+			outstanding: string
+			listed: number
+			sold: number
+		}
 	}
 
 	scripts: ErrorScripts & {
 		/**
 		 * **MIDSEC**
 		 */
-		user(args?: any): any
+		user(): string[]
 	}
 
 	sys: ErrorScripts & {
 		/**
 		 * **MIDSEC**
 		 */
-		manage(args?: any): any
+		manage(args: {
+			unload?: number | number[]
+			load?: number | number[]
+		}): ScriptResponse
+
+		manage(args: { reorder?: ([ number, number ] | {
+			from: number
+			to: number
+		})[] | {
+			from: number
+			to: number
+		} }): string[] | ScriptFailure
 	}
 }
 
@@ -1152,36 +1178,60 @@ type Lowsec = {
 		/**
 		 * **LOWSEC**
 		 */
-		hardline(args?: any): any
+		hardline(): ScriptResponse
 	}
 
 	market: ErrorScripts & {
 		/**
 		 * **LOWSEC**
 		 */
-		sell(args?: any): any
+		sell(args: {
+			i: number
+			cost: number | string
+			description?: string
+			count?: number
+			no_notify?: boolean
+			confirm: true
+		}): ScriptResponse<{ token: string }>
 	}
 
 	sys: ErrorScripts & {
 		/**
 		 * **LOWSEC**
 		 */
-		access_log(args?: any): any
+		access_log(args?: { is_script?: true }): {
+			t: Date
+			u?: string
+			r?: string
+			msg: string
+		}[]
+
+		access_log(args: { is_script: false }): string[]
 
 		/**
 		 * **LOWSEC**
 		 */
-		cull(args?: any): any
+		cull(args: { i: number | number[], confirm: true }): ScriptResponse
 
 		/**
 		 * **LOWSEC**
 		 */
-		loc(args?: any): any
+		loc(): string
 
 		/**
 		 * **LOWSEC**
 		 */
-		xfer_upgrade_to(args?: any): any
+		xfer_upgrade_to(args: {
+			i: number | number[]
+			to: string
+			memo?: string
+		}): ScriptResponse
+
+		xfer_upgrade_to(args: {
+			sn: string | string[]
+			to: string
+			memo?: string
+		}): ScriptResponse
 	}
 }
 
@@ -1190,12 +1240,15 @@ type Nullsec = {
 		/**
 		 * **NULLSEC**
 		 */
-		create(args?: any): any
+		create(args: {
+			name: string
+			confirm: true
+		}): ScriptResponse
 
 		/**
 		 * **NULLSEC**
 		 */
-		hire(args?: any): any
+		hire(args: { name: string }): ScriptResponse
 
 		/**
 		 * **NULLSEC**
@@ -1204,12 +1257,29 @@ type Nullsec = {
 			name: string
 			is_admin: boolean
 		}[] | ScriptFailure
-		manage(args: { command: "demote" | "promote", name: string } | { command: "fire", name: string, confirm: true }): ScriptResponse
+
+		manage(args: {
+			command: "demote" | "promote"
+			name: string
+		} | {
+			command: "fire"
+			name: string
+			confirm: true
+		}): ScriptResponse
 
 		/**
 		 * **NULLSEC**
 		 */
-		offers(args?: any): any
+		offers(): {
+			offers: string[]
+			msg: string
+		} | {
+			ok: true
+			msg: string
+			current_corp: string | null
+		}
+
+		offers(args: { accept: string }): ScriptResponse
 
 		/**
 		 * **NULLSEC**
@@ -1232,21 +1302,69 @@ type Nullsec = {
 		/**
 		 * **NULLSEC**
 		 */
-		breach(args?: any): any
+		breach(args: { confirm: true }): ScriptResponse
 	}
 
 	trust: ErrorScripts & {
 		/**
 		 * **NULLSEC**
 		 */
-		me(args?: any): any
+		me(): string
 	}
 
 	users: ErrorScripts & {
 		/**
 		 * **NULLSEC**
 		 */
-		config(args?: any): any
+		config(args: {
+			list: false
+			is_script?: true | null
+			avatar?: string | null
+			user_age?: boolean | null
+			account_age?: boolean | null
+			bio?: string | null
+			title?: string | null
+			pronouns?: string | null
+			corp?: boolean | null
+			alt_of?: string | null
+			badges?: string[] | null
+		}): ScriptResponse
+
+		config(args: {
+			list: true
+			is_script?: true
+			avatar?: string | null
+			user_age?: boolean | null
+			account_age?: boolean | null
+			bio?: string | null
+			title?: string | null
+			pronouns?: string | null
+			corp?: boolean | null
+			alt_of?: string | null
+			badges?: string[] | null
+		}): {
+			avatar: string | null
+			user_age?: boolean
+			account_age?: boolean
+			bio: string | null
+			title: string | null
+			pronouns: string
+			corp?: boolean
+			alt_of: string | null
+			badges: string[]
+		}
+
+		config(args: {
+			list: true
+			is_script: false
+			account_age?: boolean
+			bio: string | null
+			title: string | null
+			pronouns: string
+			corp?: boolean
+			alt_of: string | null
+			badges: string[]
+		}): string
 	}
 }
 
