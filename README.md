@@ -14,6 +14,9 @@ To enable this, open a typescript file, hit `F1`, type `typescript select`, pres
 
 My last suggestion for VS Code is my extension [Hackmud Color](https://marketplace.visualstudio.com/items?itemName=Samual.hackmud-color) which colours strings to how they appear in game.
 
+## Differences
+Scripting is slightly different in this environment due to trying to comply with VS Code's Typescript checker. You will need to replace `#`s with `$`s, and scripts will need to start with `export function script(...` (as seen in the [example](src/example.ts)).
+
 ## Writings scripts
 Write your scripts in the `src` directory, these scripts by default will be pushed to all your users.
 
