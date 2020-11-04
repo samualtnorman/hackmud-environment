@@ -1273,11 +1273,10 @@ type Nullsec = {
 		offers(): {
 			offers: string[]
 			msg: string
-		} | {
-			ok: true
+		} | ScriptSuccess<{
 			msg: string
 			current_corp: string | null
-		}
+		}>
 
 		offers(args: { accept: string }): ScriptResponse
 
@@ -1446,7 +1445,7 @@ declare const _START: number
  * @example
  * Date.now() - _ST // How much time remains
  */
-declare let _ST: typeof _START
+declare const _ST: typeof _START
 
 /**
  * This contains a JS timestamp for the end of your script run -- effectively just `_ST+_TO`
@@ -1568,6 +1567,10 @@ type Cursor = {
 	 * Makes cursor unusable.
 	 */
 	close(): null
+
+	NumberLong(number: number): number
+
+	ObjectId(): any
 }
 
 declare const $db: {
@@ -1636,7 +1639,7 @@ declare const $db: {
 /**
  * The context the script is run from, i.e. if a user called noob ran your script, then any command executed from context will be treated as executed by the noob user, just like he/she would write them in their command line.
  */
-interface Context {
+type Context = {
 	/**
 	 * The name of the user who is calling the script (i.e. n00b)
 	 */
