@@ -1,4 +1,5 @@
 # hackmud-environment
+![Test](https://github.com/samualtnorman/hackmud-environment/workflows/Test/badge.svg)
 A workspace to build, minify, and push your scripts to specific or multiple users at once, with typings for hackmud, and support for Typescript files.
 
 ## Typings
