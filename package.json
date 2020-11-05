@@ -9,7 +9,7 @@
 		"test": "hsm test src"
 	},
 	"devDependencies": {
-		"hackmud-script-manager": "^0.6.0",
+		"hackmud-script-manager": "^0.7.0",
 		"patch-package": "^6.2.2",
 		"typescript": "^4.0.5"
 	}
