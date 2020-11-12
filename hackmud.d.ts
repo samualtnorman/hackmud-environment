@@ -1,16 +1,682 @@
-type Subscripts = Record<string, Record<string, (args?: any) => any>>
-type ErrorScripts = Record<string, () => ScriptFailure>
+import {
+	PlayerFullsec,
+	PlayerHighsec,
+	PlayerLowsec,
+	PlayerMidsec,
+	PlayerNullsec
+} from "player"
 
-type ScriptSuccess<T = {}> = {
-	ok: true
-} & T
+declare global {
+	type Upgrade = {
+		i: number
+		loaded: boolean
+		sn: string
+		description: string
+	} & ({
+		name: "CON_SPEC"
+		type: "lock"
+		up_class: -1
+		tier: 2
+		rarity: 1 | 2 | 3
+		p1_len: number
+		p2_len: number
+	} | {
+		name: "CON_TELL"
+		type: "lock"
+		up_class: -1
+		tier: 1
+		rarity: 1
+	} | {
+		name: "c001"
+		type: "lock"
+		up_class: -1
+		tier: 1
+		rarity: 0
+	} | {
+		name: "c002"
+		type: "lock"
+		up_class: -1
+		tier: 1
+		rarity: 1
+	} | {
+		name: "c003"
+		type: "lock"
+		up_class: -1
+		tier: 1
+		rarity: 1
+	} | {
+		name: "acct_nt"
+		type: "lock"
+		up_class: -1
+		tier: 2
+		rarity: 1 | 2 | 3
+		acct_nt_min: number
+	} | {
+		name: "sn_w_glock"
+		type: "lock"
+		up_class: -1
+		tier: 2
+		rarity: 1 | 2 | 3
+		max_glock_amnt: number
+		expire_secs: number
+	} | {
+		name: "sn_w_usac"
+		type: "lock"
+		up_class: -1
+		tier: 3
+		rarity: 2 | 3 | 4
+		salt_digits: number
+	} | {
+		name: "magnara"
+		type: "lock"
+		up_class: -1
+		tier: 2
+		rarity: 1 | 2 | 3
+		magnara_len: number
+	} | {
+		name: "shfflr"
+		type: "lock"
+		up_class: -1
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		up_count_min: number
+		up_count_max: number
+		name_count: number
+		rarity_count: number
+		digits: number
+	} | {
+		name: "l0g_wr1t3r"
+		type: "lock"
+		up_class: -1
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		loc_count: number
+	} | {
+		name: "char_count_v1"
+		type: "script_space"
+		up_class: 0
+		tier: 1
+		rarity: 0 | 1 | 2
+		chars: number
+	} | {
+		name: "char_count_v2"
+		type: "script_space"
+		up_class: 0
+		tier: 2
+		rarity: 0 | 1 | 2 | 3
+		chars: number
+	} | {
+		name: "char_count_v3"
+		type: "script_space"
+		up_class: 0
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		chars: number
+	} | {
+		name: "public_script_v1"
+		type: "script_space"
+		up_class: 0
+		tier: 1
+		rarity: 0 | 1 | 2
+		slots: number
+	} | {
+		name: "public_script_v2"
+		type: "script_space"
+		up_class: 0
+		tier: 2
+		rarity: 0 | 1 | 2 | 3
+		slots: number
+	} | {
+		name: "public_script_v3"
+		type: "script_space"
+		up_class: 0
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		slots: number
+	} | {
+		name: "script_slot_v1"
+		type: "script_space"
+		up_class: 0
+		tier: 1
+		rarity: 0 | 1 | 2
+		slots: number
+	} | {
+		name: "script_slot_v2"
+		type: "script_space"
+		up_class: 0
+		tier: 2
+		rarity: 0 | 1 | 2 | 3
+		slots: number
+	} | {
+		name: "script_slot_v3"
+		type: "script_space"
+		up_class: 0
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		slots: number
+	} | {
+		name: "channel_count_v1"
+		type: "chat"
+		up_class: 3
+		tier: 1
+		rarity: 0 | 1 | 2
+		count: number
+	} | {
+		name: "channel_count_v2"
+		type: "chat"
+		up_class: 3
+		tier: 2
+		rarity: 0 | 1 | 2 | 3
+		count: number
+	} | {
+		name: "channel_count_v3"
+		type: "chat"
+		up_class: 3
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		count: number
+	} | {
+		name: "balance_v1"
+		type: "script"
+		up_class: 1
+		tier: 2
+		rarity: 1 | 2 | 3
+		cooldown: number
+	} | {
+		name: "balance_v2"
+		type: "script"
+		up_class: 1
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		cooldown: number
+	} | {
+		name: "expose_access_log_v1"
+		type: "script"
+		up_class: 1
+		tier: 1
+		rarity: 0 | 1 | 2
+		cooldown: number
+		count: number
+	} | {
+		name: "expose_access_log_v2"
+		type: "script"
+		up_class: 1
+		tier: 2
+		rarity: 1 | 2 | 3
+		cooldown: number
+		count: number
+	} | {
+		name: "expose_upgrade_log_v1"
+		type: "script"
+		up_class: 1
+		tier: 2
+		rarity: 1 | 2 | 3
+		cooldown: number
+		count: number
+	} | {
+		name: "expose_upgrade_log_v2"
+		type: "script"
+		up_class: 1
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		cooldown: number
+		count: number
+	} | {
+		name: "expose_upgrades_v1"
+		type: "script"
+		up_class: 1
+		tier: 2
+		rarity: 1 | 2 | 3
+		cooldown: number
+	} | {
+		name: "expose_upgrades_v2"
+		type: "script"
+		up_class: 1
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		cooldown: number
+	} | {
+		name: "ez_21"
+		type: "script"
+		up_class: -1
+		tier: 1
+		rarity: 0
+	} | {
+		name: "ez_35"
+		type: "script"
+		up_class: -1
+		tier: 1
+		rarity: 0
+	} | {
+		name: "ez_40"
+		type: "script"
+		up_class: -1
+		tier: 1
+		rarity: 1
+	} | {
+		name: "key_v1"
+		type: "tool"
+		up_class: 1
+		tier: 1
+		rarity: 0
+		k3y: string
+	} | {
+		name: "key_v2"
+		type: "tool"
+		up_class: 1
+		tier: 2
+		rarity: 0
+		k3y: string
+	} | {
+		name: "log_writer_v1"
+		type: "script"
+		up_class: 1
+		tier: 1
+		rarity: 0 | 1 | 2
+		cooldown: number
+	} | {
+		name: "log_writer_v2"
+		type: "script"
+		up_class: 1
+		tier: 2
+		rarity: 1 | 2 | 3
+		cooldown: number
+	} | {
+		name: "log_writer_v3"
+		type: "script"
+		up_class: 1
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		cooldown: number
+	} | {
+		name: "transactions_v1"
+		type: "script"
+		up_class: 1
+		tier: 2
+		rarity: 1 | 2 | 3
+		cooldown: number
+		count: number
+	} | {
+		name: "transfer_upgrade_v1"
+		type: "script"
+		up_class: 2
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		cooldown: number
+		count: number
+	} | {
+		name: "transfer_v1"
+		type: "script"
+		up_class: 2
+		tier: 2
+		rarity: 1 | 2 | 3
+		cooldown: number
+		amount: number
+	} | {
+		name: "transfer_v2"
+		type: "script"
+		up_class: 2
+		tier: 3
+		rarity: 2 | 3 | 4
+		amount: number
+		cooldown: number
+	} | {
+		name: "w4rn_er"
+		type: "lock"
+		up_class: -1
+		tier: 1
+		rarity: 1
+	} | {
+		name: "w4rn_message"
+		type: "script"
+		up_class: -1
+		tier: 1
+		rarity: 0 | 1 | 2
+		cooldown: number
+	} | {
+		name: "w4rn"
+		type: "lock"
+		up_class: -1
+		tier: 1
+		rarity: 1
+		cooldown: number
+	} | {
+		name: "DATA_CHECK_V1"
+		type: "lock"
+		up_class: -1
+		tier: 1
+		rarity: 0 | 1 | 2
+		acc_mod: number
+	} | {
+		name: "DATA_CHECK_V2"
+		type: "lock"
+		up_class: -1
+		tier: 2
+		rarity: 1 | 2 | 3
+		acc_mod: number
+	} | {
+		name: "DATA_CHECK_V3"
+		type: "lock"
+		up_class: -1
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		acc_mod: number
+	} | {
+		name: "DATA_CHECK_V4"
+		type: "lock"
+		up_class: -1
+		tier: 4
+		rarity: 1 | 2 | 3 | 4
+		acc_mod: number
+	} | {
+		name: "l0cket"
+		type: "lock"
+		up_class: -1
+		tier: 1
+		rarity: 0 | 1 | 2
+		count: number
+	} | {
+		name: "l0ckbox"
+		type: "lock"
+		up_class: -1
+		tier: 2
+		rarity: 1 | 2 | 3
+		count: number
+	} | {
+		name: "l0ckjaw"
+		type: "lock"
+		up_class: -1
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		count: number
+		expire_secs: number
+	} | {
+		name: "cron_bot_v1"
+		type: "bot_brain"
+		up_class: 0
+		tier: 1
+		rarity: 0 | 1 | 2
+		cooldown: number
+		cost: number
+		retries: number
+	} | {
+		name: "cron_bot_v2"
+		type: "bot_brain"
+		up_class: 0
+		tier: 2
+		rarity: 0 | 1 | 2 | 3
+		cooldown: number
+		cost: number
+		retries: number
+	} | {
+		name: "cron_bot_v3"
+		type: "bot_brain"
+		up_class: 0
+		tier: 3
+		rarity: 1 | 2 | 3 | 4
+		cooldown: number
+		cost: number
+		retries: number
+	} | {
+		name: "cron_bot_v4"
+		type: "bot_brain"
+		up_class: 0
+		tier: 4
+		rarity: 1 | 2 | 3 | 4 | 5
+		cooldown: number
+		retries: number
+		cost: number
+	} | {
+		name: "man_in_grey_suit_v1"
+		type: "glam"
+		tier: 1
+		rarity: 1
+		event: "surf.board"
+	})
 
-type ScriptFailure = {
-	ok: false
-	msg: string
+	/**
+	 * Subscript space that can call FULLSEC scripts.
+	 */
+	const $fs: Subscripts & Fullsec & PlayerFullsec
+
+	/**
+	 * Subscript space that can call HIGHSEC and above scripts.
+	 * Makes your script HIGHSEC.
+	 */
+	const $hs: typeof $fs & Highsec & PlayerHighsec
+
+	/**
+	 * Subscript space that can call MIDSEC and above scripts.
+	 * Makes your script MIDSEC (overrides higher security levels).
+	 */
+	const $ms: typeof $hs & Midsec & PlayerMidsec
+
+	/**
+	 * Subscript space that can call LOWSEC and above scripts.
+	 * Makes your script LOWSEC (overrides higher security levels).
+	 */
+	const $ls: typeof $ms & Lowsec & PlayerLowsec
+
+	/**
+	 * Subscript space that can call NULLSEC and above scripts.
+	 * Makes your script NULLSEC (overrides higher security levels).
+	 */
+	const $ns: typeof $ls & Nullsec & PlayerNullsec
+
+	/**
+	 * Debug Log
+	 *
+	 * If #D is called in a script you own, the return value of the top level script is suppressed and instead an array of every #D’d entry is printed.
+	 * This lets you use #D kind of like console.log.
+	 * #D in scripts not owned by you are not shown.
+	 * #D returns its argument unchanged, so you can do things like return #D(ob) to return the object when the caller isn’t you, and debug-log it when it is you (allowing you to “keep” your returns with other debug logs).
+	 * #D’d items are returned even if the script times out or errors.
+	 */
+	function $D<T = undefined>(args?: T): T
+
+	/**
+	 * Function Multi-Call Lock
+	 *
+	 * This is used by escrow to ensure that it is used called once in script execution.
+	 * The first time (in each script) that `#FMCL `is encountered, it returns falsey, and every time thereafter it returns truthy
+	 *
+	 * @example
+	 * if (#FMCL)
+	 * 	return "error"
+	 */
+	const $FMCL: boolean
+
+	/**
+	 * Global
+	 *
+	 * A mutable, per-script global object.
+	 * #G persists between script calls until the end of a main script run, making it useful for caching db entries when your script is a subscript.
+	 *
+	 * @example
+	 * if (!#G.dbCache)
+	 * 	#G.dbCache = #db.f({ whatever: true }).first()
+	 */
+	const $G: Record<string, unknown>
+
+	/**
+	 * This contains a JS timestamp (not Date) set immediately before your code begins running.
+	 *
+	 * @example
+	 * Date.now() - _START // How much time remains
+	 */
+	const _START: number
+
+	/**
+	 * This contains a JS timestamp (not Date) set immediately before your code begins running.
+	 *
+	 * @example
+	 * Date.now() - _ST // How much time remains
+	 */
+	const _ST: typeof _START
+
+	/**
+	 * This contains a JS timestamp for the end of your script run -- effectively just `_ST+_TO`
+	 */
+	const _END: number
+
+	/**
+	 * This contains the number of milliseconds a script is allowed to run for.
+	 * Effectively always just 5000, except when a trust script is called on the command line and its value is, presumably, 6000.
+	 */
+	const _TIMEOUT: number
+
+	/**
+	 * This contains the number of milliseconds a script is allowed to run for.
+	 * Effectively always just 5000, except when a trust script is called on the command line and its value is, presumably, 6000.
+	 */
+	const _TO: typeof _TIMEOUT
+
+	const $db: {
+		/**
+		 * Insert
+		 *
+		 * Inserts a document or documents into a collection.
+		 * @param documents A document or array of documents to insert into the collection.
+		 */
+		i(documents: object | object[]): {
+			ok: 1,
+			n: number,
+			opTime: {
+				ts: "Undefined Conversion",
+				t: number
+			},
+			electionId: "Undefined Conversion"
+		}
+
+		/**
+		 * Remove
+		 *
+		 * Removes documents from a collection.
+		 * @param query Specifies deletion criteria using query operators.
+		 */
+		r(query: Query): void
+
+		/**
+		 * Find
+		 *
+		 * Selects documents in a collection or view and returns a cursor to the selected documents.
+		 * @param query Specifies deletion criteria using query operators.
+		 * @param projection Specifies the fields to return in the documents that match the query filter.
+		 */
+		f(query?: Query, projection?: Projection): Cursor
+
+		/**
+		 * Update
+		 *
+		 * Modifies an existing document or documents in a collection.
+		 * @param query Specifies deletion criteria using query operators.
+		 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
+		 */
+		u(query: Query | Query[], command: object): void
+
+		/**
+		 * Update 1
+		 *
+		 * Updates a single document within the collection based on the filter.
+		 * @param query Specifies deletion criteria using query operators.
+		 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
+		 */
+		u1(query: Query | Query[], command: object): void
+
+		/**
+		 * Upsert
+		 *
+		 * Same as Update, but if no documents match the query, one document will be inserted based on the properties in both the query and the command.
+		 * The `$setOnInsert` operator is useful to set defaults.
+		 * @param query Specifies deletion criteria using query operators.
+		 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
+		 */
+		us(query: Query | Query[], command: object): void
+	}
+
+	type ContextBase = {
+		/**
+		 * The name of the user who is calling the script (i.e. n00b)
+		 */
+		caller: string
+
+		/**
+		 * The name of this script
+		 */
+		this_script: string
+
+		/**
+		 * the number of columns in the caller’s terminal, if reported by the client
+		 */
+		cols: number
+
+		/**
+		 * the number of rows in the caller’s terminal, if reported by the client
+		 */
+		rows: number
+	}
+
+	type CLIContext = ContextBase & {
+		/**
+		 * The name of the script that directly called this script, or null if called on the command line or as a scriptor
+		 */
+		calling_script: null
+	}
+
+	type SubscriptContext = ContextBase & {
+		/**
+		 * The name of the script that directly called this script, or null if called on the command line or as a scriptor
+		 */
+		calling_script: string
+	}
+
+	type ScriptorContext = ContextBase & {
+		/**
+		 * true if the script is being run as a scriptor, otherwise falsey (not present currently, but I wouldn’t rely on that)
+		 */
+		is_scriptor: true
+	}
+
+	type BrainContext = ContextBase & {
+		/**
+		 * true if the script is being run via a bot brain
+		 */
+		is_brain: true
+	}
+
+	type Context = CLIContext | SubscriptContext | ScriptorContext | BrainContext
+
+	type ScriptSuccess<T = {}> = {
+		ok: true
+	} & T
+
+	type ScriptFailure = {
+		ok: false
+		msg: string
+	}
+
+	type ScriptResponse<T = {}> = ScriptSuccess<T> | ScriptFailure
+
+	const context: Context
 }
 
-type ScriptResponse<T = {}> = ScriptSuccess<T> | ScriptFailure
+type Subscripts = Record<string, Record<string, (args?: any) => any>> & {
+	accts: ErrorScripts
+	autos: ErrorScripts
+	bbs: ErrorScripts
+	chats: ErrorScripts
+	corps: ErrorScripts
+	escrow: ErrorScripts
+	gui: ErrorScripts
+	kernel: ErrorScripts
+	market: ErrorScripts
+	scripts: ErrorScripts
+	sys: ErrorScripts
+	trust: ErrorScripts
+	users: ErrorScripts
+}
+
+type ErrorScripts = Record<string, () => ScriptFailure>
 
 type CorpsTop = [
 	CorpsTopItem<1>,
@@ -31,422 +697,6 @@ type CorpsTopItem<T> = {
 	worth: string
 }
 
-type Upgrade = {
-	name: "CON_SPEC"
-	type: "lock"
-	up_class: -1
-	tier: 2
-	rarity: 1 | 2 | 3
-	p1_len: number
-	p2_len: number
-} | {
-	name: "CON_TELL"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 1
-} | {
-	name: "c001"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 0
-} | {
-	name: "c002"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 1
-} | {
-	name: "c003"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 1
-} | {
-	name: "acct_nt"
-	type: "lock"
-	up_class: -1
-	tier: 2
-	rarity: 1 | 2 | 3
-	acct_nt_min: number
-} | {
-	name: "sn_w_glock"
-	type: "lock"
-	up_class: -1
-	tier: 2
-	rarity: 1 | 2 | 3
-	max_glock_amnt: number
-	expire_secs: number
-} | {
-	name: "sn_w_usac"
-	type: "lock"
-	up_class: -1
-	tier: 3
-	rarity: 2 | 3 | 4
-	salt_digits: number
-} | {
-	name: "magnara"
-	type: "lock"
-	up_class: -1
-	tier: 2
-	rarity: 1 | 2 | 3
-	magnara_len: number
-} | {
-	name: "shfflr"
-	type: "lock"
-	up_class: -1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	up_count_min: number
-	up_count_max: number
-	name_count: number
-	rarity_count: number
-	digits: number
-} | {
-	name: "l0g_wr1t3r"
-	type: "lock"
-	up_class: -1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	loc_count: number
-} | {
-	name: "char_count_v1"
-	type: "script_space"
-	up_class: 0
-	tier: 1
-	rarity: 0 | 1 | 2
-	chars: number
-} | {
-	name: "char_count_v2"
-	type: "script_space"
-	up_class: 0
-	tier: 2
-	rarity: 0 | 1 | 2 | 3
-	chars: number
-} | {
-	name: "char_count_v3"
-	type: "script_space"
-	up_class: 0
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	chars: number
-} | {
-	name: "public_script_v1"
-	type: "script_space"
-	up_class: 0
-	tier: 1
-	rarity: 0 | 1 | 2
-	slots: number
-} | {
-	name: "public_script_v2"
-	type: "script_space"
-	up_class: 0
-	tier: 2
-	rarity: 0 | 1 | 2 | 3
-	slots: number
-} | {
-	name: "public_script_v3"
-	type: "script_space"
-	up_class: 0
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	slots: number
-} | {
-	name: "script_slot_v1"
-	type: "script_space"
-	up_class: 0
-	tier: 1
-	rarity: 0 | 1 | 2
-	slots: number
-} | {
-	name: "script_slot_v2"
-	type: "script_space"
-	up_class: 0
-	tier: 2
-	rarity: 0 | 1 | 2 | 3
-	slots: number
-} | {
-	name: "script_slot_v3"
-	type: "script_space"
-	up_class: 0
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	slots: number
-} | {
-	name: "channel_count_v1"
-	type: "chat"
-	up_class: 3
-	tier: 1
-	rarity: 0 | 1 | 2
-	count: number
-} | {
-	name: "channel_count_v2"
-	type: "chat"
-	up_class: 3
-	tier: 2
-	rarity: 0 | 1 | 2 | 3
-	count: number
-} | {
-	name: "channel_count_v3"
-	type: "chat"
-	up_class: 3
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	count: number
-} | {
-	name: "balance_v1"
-	type: "script"
-	up_class: 1
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-} | {
-	name: "balance_v2"
-	type: "script"
-	up_class: 1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	cooldown: number
-} | {
-	name: "expose_access_log_v1"
-	type: "script"
-	up_class: 1
-	tier: 1
-	rarity: 0 | 1 | 2
-	cooldown: number
-	count: number
-} | {
-	name: "expose_access_log_v2"
-	type: "script"
-	up_class: 1
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-	count: number
-} | {
-	name: "expose_upgrade_log_v1"
-	type: "script"
-	up_class: 1
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-	count: number
-} | {
-	name: "expose_upgrade_log_v2"
-	type: "script"
-	up_class: 1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	cooldown: number
-	count: number
-} | {
-	name: "expose_upgrades_v1"
-	type: "script"
-	up_class: 1
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-} | {
-	name: "expose_upgrades_v2"
-	type: "script"
-	up_class: 1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	cooldown: number
-} | {
-	name: "ez_21"
-	type: "script"
-	up_class: -1
-	tier: 1
-	rarity: 0
-} | {
-	name: "ez_35"
-	type: "script"
-	up_class: -1
-	tier: 1
-	rarity: 0
-} | {
-	name: "ez_40"
-	type: "script"
-	up_class: -1
-	tier: 1
-	rarity: 1
-} | {
-	name: "key_v1"
-	type: "tool"
-	up_class: 1
-	tier: 1
-	rarity: 0
-	k3y: string
-} | {
-	name: "key_v2"
-	type: "tool"
-	up_class: 1
-	tier: 2
-	rarity: 0
-	k3y: string
-} | {
-	name: "log_writer_v1"
-	type: "script"
-	up_class: 1
-	tier: 1
-	rarity: 0 | 1 | 2
-	cooldown: number
-} | {
-	name: "log_writer_v2"
-	type: "script"
-	up_class: 1
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-} | {
-	name: "log_writer_v3"
-	type: "script"
-	up_class: 1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	cooldown: number
-} | {
-	name: "transactions_v1"
-	type: "script"
-	up_class: 1
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-	count: number
-} | {
-	name: "transfer_upgrade_v1"
-	type: "script"
-	up_class: 2
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	cooldown: number
-	count: number
-} | {
-	name: "transfer_v1"
-	type: "script"
-	up_class: 2
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-	amount: number
-} | {
-	name: "transfer_v2"
-	type: "script"
-	up_class: 2
-	tier: 3
-	rarity: 2 | 3 | 4
-	amount: number
-	cooldown: number
-} | {
-	name: "w4rn_er"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 1
-} | {
-	name: "w4rn_message"
-	type: "script"
-	up_class: -1
-	tier: 1
-	rarity: 0 | 1 | 2
-	cooldown: number
-} | {
-	name: "w4rn"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 1
-	cooldown: number
-} | {
-	name: "DATA_CHECK_V1"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 0 | 1 | 2
-	acc_mod: number
-} | {
-	name: "DATA_CHECK_V2"
-	type: "lock"
-	up_class: -1
-	tier: 2
-	rarity: 1 | 2 | 3
-	acc_mod: number
-} | {
-	name: "DATA_CHECK_V3"
-	type: "lock"
-	up_class: -1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	acc_mod: number
-} | {
-	name: "DATA_CHECK_V4"
-	type: "lock"
-	up_class: -1
-	tier: 4
-	rarity: 1 | 2 | 3 | 4
-	acc_mod: number
-} | {
-	name: "l0cket"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 0 | 1 | 2
-	count: number
-} | {
-	name: "l0ckbox"
-	type: "lock"
-	up_class: -1
-	tier: 2
-	rarity: 1 | 2 | 3
-	count: number
-} | {
-	name: "l0ckjaw"
-	type: "lock"
-	up_class: -1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	count: number
-	expire_secs: number
-} | {
-	name: "cron_bot_v1"
-	type: "bot_brain"
-	up_class: 0
-	tier: 1
-	rarity: 0 | 1 | 2
-	cooldown: number
-	cost: number
-	retries: number
-} | {
-	name: "cron_bot_v2"
-	type: "bot_brain"
-	up_class: 0
-	tier: 2
-	rarity: 0 | 1 | 2 | 3
-	cooldown: number
-	cost: number
-	retries: number
-} | {
-	name: "cron_bot_v3"
-	type: "bot_brain"
-	up_class: 0
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	cooldown: number
-	cost: number
-	retries: number
-} | {
-	name: "cron_bot_v4"
-	type: "bot_brain"
-	up_class: 0
-	tier: 4
-	rarity: 1 | 2 | 3 | 4 | 5
-	cooldown: number
-	retries: number
-	cost: number
-}
-
 type UsersTopItem<Rank> = {
 	rank: Rank
 	name: string
@@ -455,7 +705,7 @@ type UsersTopItem<Rank> = {
 }
 
 type Fullsec = {
-	accts: ErrorScripts & {
+	accts: {
 		/**
 		 * **FULLSEC**
 		 *
@@ -472,7 +722,7 @@ type Fullsec = {
 		}): ScriptResponse
 	}
 
-	bbs: ErrorScripts & {
+	bbs: {
 		read(): {
 			boards: {
 				title: string
@@ -498,7 +748,7 @@ type Fullsec = {
 		r: typeof $fs.bbs.read
 	}
 
-	chats: ErrorScripts & {
+	chats: {
 		/**
 		 * **FULLSEC**
 		 *
@@ -574,7 +824,7 @@ type Fullsec = {
 		}): ScriptResponse
 	}
 
-	escrow: ErrorScripts & {
+	escrow: {
 		/**
 		 * **FULLSEC**
 		 */
@@ -586,7 +836,7 @@ type Fullsec = {
 		confirm: never
 	}
 
-	gui: ErrorScripts & {
+	gui: {
 		chats: never
 		quiet: never
 		size: never
@@ -594,7 +844,7 @@ type Fullsec = {
 		vol: never
 	}
 
-	market: ErrorScripts & {
+	market: {
 		/**
 		 * **FULLSEC**
 		 */
@@ -616,10 +866,7 @@ type Fullsec = {
 			cost: number
 			count: number
 			description: string
-			upgrade: Upgrade & {
-				loaded: false
-				sn: string
-			}
+			upgrade: Upgrade
 			no_notify: boolean
 		} | ScriptFailure
 
@@ -629,15 +876,12 @@ type Fullsec = {
 			cost: number
 			count: number
 			description: string
-			upgrade: Upgrade & {
-				loaded: false
-				sn: string
-			}
+			upgrade: Upgrade
 			no_notify: boolean
 		}[] | ScriptFailure
 	}
 
-	scripts: ErrorScripts & {
+	scripts: {
 		/**
 		 * **FULLSEC**
 		 */
@@ -823,7 +1067,7 @@ type Fullsec = {
 
 			rjust(...args: any): any
 
-			columnize(...args: any): any
+			columnize(str: string[]): string
 
 			side_by_side(...args: any): any
 
@@ -866,19 +1110,31 @@ type Fullsec = {
 		quine(): string
 	}
 
-	sys: ErrorScripts & {
+	sys: {
 		init: never
 
 		/**
 		 * **FULLSEC**
 		 */
-		upgrades_of_owner(): (DistributivePick<Upgrade, "tier" | "rarity" | "name" | "type"> & {
-			i: number
-			loaded: boolean
-		})[]
+		upgrades_of_owner<I extends number>(args: { i: I }): Omit<Upgrade, "i"> & { i: I }
+		upgrades_of_owner(args?: { full?: false, filter: Partial<DistributiveOmit<Upgrade, "i" | "sn" | "description">> }): DistributivePick<Upgrade, "tier" | "rarity" | "name" | "type" | "i" | "loaded">[] | ScriptFailure
+		upgrades_of_owner(args: { full: true, filter: Partial<DistributiveOmit<Upgrade, "i" | "sn" | "description">> }): Upgrade[] | ScriptFailure
+
+		/**
+		 * **FULLSEC**
+		 */
+		xfer_upgrade_to_caller(args: {
+			i: number | number[]
+			memo?: string
+		}): ScriptResponse
+
+		xfer_upgrade_to_caller(args: {
+			sn: string | string[]
+			memo?: string
+		}): ScriptResponse
 	}
 
-	users: ErrorScripts & {
+	users: {
 		/**
 		 * **FULLSEC**
 		 */
@@ -911,7 +1167,7 @@ type Fullsec = {
 }
 
 type Highsec = {
-	accts: ErrorScripts & {
+	accts: {
 		/**
 		 * **HIGHSEC**
 		 *
@@ -958,18 +1214,18 @@ type Highsec = {
 		}
 	}
 
-	scripts: ErrorScripts & {
+	scripts: {
 		/**
 		 * **HIGHSEC**
 		 */
 		sys(): string | string[]
 	}
 
-	sys: ErrorScripts & {
+	sys: {
 		/**
 		 * **HIGHSEC**
 		 */
-		specs(): string
+		specs(): string | ScriptFailure
 
 		/**
 		 * **HIGHSEC**
@@ -988,66 +1244,57 @@ type Highsec = {
 			u: string
 			r: string
 			msg: string
-		}[]
+		}[] | ScriptFailure
 
-		upgrade_log(args: { is_script: false }): string[]
+		upgrade_log(args: { is_script: false }): string[] | ScriptFailure
 
 		/**
 		 * **HIGHSEC**
 		 */
+		upgrades(args: { i: number }): Upgrade
+
 		upgrades(args?: {
-			filter?: {
-				loaded?: boolean
-			}
+			filter?: Partial<Upgrade>
 			is_script?: true
 			full?: false
-		}): (DistributivePick<Upgrade, "tier" | "rarity" | "name" | "type"> & {
-			i: number
-			loaded: boolean
-		})[]
+		}): DistributivePick<Upgrade, "tier" | "rarity" | "name" | "type" | "i" | "loaded">[] | ScriptFailure
 
 		upgrades(args?: {
-			filter?: {
-				loaded?: boolean
-			}
+			filter?: Partial<Upgrade>
 			is_script?: true
 			full: true
-		}): (Upgrade & {
-			loaded: boolean
-			sn: string
-			description: string
-			i: number
-		})[]
+		}): Upgrade[] | ScriptFailure
 
 		upgrades(args?: {
-			filter?: {
-				loaded?: boolean
-			}
+			filter?: Partial<Upgrade>
 			is_script: false
 			full?: false
 		}): {
 			msg: string
 			upgrades: string[]
-		}
+		} | ScriptFailure
 
 		upgrades(args?: {
-			filter?: {
-				loaded?: boolean
-			}
+			filter?: Partial<Upgrade>
 			is_script: false
 			full: true
-		}): ((ReplaceRarity<Upgrade>) & {
-			loaded: boolean
-			sn: string
-			description: string
-			i: number
-		})[]
+		}): ReplaceRarity<Upgrade>[] | ScriptFailure
 	}
 
-	users: ErrorScripts & {
+	users: {
 		/**
 		 * **HIGHSEC**
 		 */
+		inspect(args: {
+			name: "trust"
+			is_script?: boolean
+		}): number
+
+		inspect(args: {
+			name: "risk"
+			is_script?: boolean
+		}): string
+
 		inspect(args: {
 			name: string
 			is_script?: true
@@ -1071,7 +1318,7 @@ type Highsec = {
 }
 
 type Midsec = {
-	accts: ErrorScripts & {
+	accts: {
 		/**
 		 * **MIDSEC**
 		 */
@@ -1082,14 +1329,14 @@ type Midsec = {
 		}): ScriptResponse
 	}
 
-	autos: ErrorScripts & {
+	autos: {
 		/**
 		 * **MIDSEC**
 		 */
 		reset(): ScriptSuccess
 	}
 
-	chats: ErrorScripts & {
+	chats: {
 		/**
 		 * **MIDSEC**
 		 */
@@ -1114,7 +1361,7 @@ type Midsec = {
 		users(args: { channel: string }): string[] | ScriptFailure
 	}
 
-	escrow: ErrorScripts & {
+	escrow: {
 		/**
 		 * **MIDSEC**
 		 */
@@ -1126,7 +1373,7 @@ type Midsec = {
 		} | ScriptFailure
 	}
 
-	market: ErrorScripts & {
+	market: {
 		/**
 		 * **MIDSEC**
 		 */
@@ -1147,14 +1394,14 @@ type Midsec = {
 		}
 	}
 
-	scripts: ErrorScripts & {
+	scripts: {
 		/**
 		 * **MIDSEC**
 		 */
 		user(): string[]
 	}
 
-	sys: ErrorScripts & {
+	sys: {
 		/**
 		 * **MIDSEC**
 		 */
@@ -1174,14 +1421,14 @@ type Midsec = {
 }
 
 type Lowsec = {
-	kernel: ErrorScripts & {
+	kernel: {
 		/**
 		 * **LOWSEC**
 		 */
 		hardline(): ScriptResponse
 	}
 
-	market: ErrorScripts & {
+	market: {
 		/**
 		 * **LOWSEC**
 		 */
@@ -1195,7 +1442,7 @@ type Lowsec = {
 		}): ScriptResponse<{ token: string }>
 	}
 
-	sys: ErrorScripts & {
+	sys: {
 		/**
 		 * **LOWSEC**
 		 */
@@ -1204,7 +1451,7 @@ type Lowsec = {
 			u?: string
 			r?: string
 			msg: string
-		}[]
+		}[] | ScriptFailure
 
 		access_log(args: { is_script: false }): string[]
 
@@ -1216,7 +1463,7 @@ type Lowsec = {
 		/**
 		 * **LOWSEC**
 		 */
-		loc(): string
+		loc(): string | ScriptFailure
 
 		/**
 		 * **LOWSEC**
@@ -1236,7 +1483,7 @@ type Lowsec = {
 }
 
 type Nullsec = {
-	corps: ErrorScripts & {
+	corps: {
 		/**
 		 * **NULLSEC**
 		 */
@@ -1297,21 +1544,21 @@ type Nullsec = {
 		}
 	}
 
-	sys: ErrorScripts & {
+	sys: {
 		/**
 		 * **NULLSEC**
 		 */
 		breach(args: { confirm: true }): ScriptResponse
 	}
 
-	trust: ErrorScripts & {
+	trust: {
 		/**
 		 * **NULLSEC**
 		 */
 		me(): string
 	}
 
-	users: ErrorScripts & {
+	users: {
 		/**
 		 * **NULLSEC**
 		 */
@@ -1356,132 +1603,37 @@ type Nullsec = {
 		config(args: {
 			list: true
 			is_script: false
-			account_age?: boolean
-			bio: string | null
-			title: string | null
-			pronouns: string
-			corp?: boolean
-			alt_of: string | null
-			badges: string[]
+			avatar?: string | null
+			user_age?: boolean | null
+			account_age?: boolean | null
+			bio?: string | null
+			title?: string | null
+			pronouns?: string | null
+			corp?: boolean | null
+			alt_of?: string | null
+			badges?: string[] | null
 		}): string
 	}
 }
 
-/**
- * Subscript space that can call FULLSEC scripts.
- */
-declare const $fs: Subscripts & Fullsec
-
-/**
- * Subscript space that can call HIGHSEC and above scripts.
- * Makes your script HIGHSEC.
- */
-declare const $hs: typeof $fs & Highsec
-
-/**
- * Subscript space that can call MIDSEC and above scripts.
- * Makes your script MIDSEC (overrides higher security levels).
- */
-declare const $ms: typeof $hs & Midsec
-
-/**
- * Subscript space that can call LOWSEC and above scripts.
- * Makes your script LOWSEC (overrides higher security levels).
- */
-declare const $ls: typeof $ms & Lowsec
-
-/**
- * Subscript space that can call NULLSEC and above scripts.
- * Makes your script NULLSEC (overrides higher security levels).
- */
-declare const $ns: typeof $ls & Nullsec
-
-/**
- * Debug Log
- *
- * If #D is called in a script you own, the return value of the top level script is suppressed and instead an array of every #D’d entry is printed.
- * This lets you use #D kind of like console.log.
- * #D in scripts not owned by you are not shown.
- * #D returns its argument unchanged, so you can do things like return #D(ob) to return the object when the caller isn’t you, and debug-log it when it is you (allowing you to “keep” your returns with other debug logs).
- * #D’d items are returned even if the script times out or errors.
- */
-declare function $D<T = undefined>(args?: T): T
-
-/**
- * Function Multi-Call Lock
- *
- * This is used by escrow to ensure that it is used called once in script execution.
- * The first time (in each script) that `#FMCL `is encountered, it returns falsey, and every time thereafter it returns truthy
- *
- * @example
- * if (#FMCL)
- * 	return "error"
- */
-declare const $FMCL: boolean
-
-/**
- * Global
- *
- * A mutable, per-script global object.
- * #G persists between script calls until the end of a main script run, making it useful for caching db entries when your script is a subscript.
- *
- * @example
- * if (!#G.dbCache)
- * 	#G.dbCache = #db.f({ whatever: true }).first()
- */
-declare const $G: {}
-
-/**
- * This contains a JS timestamp (not Date) set immediately before your code begins running.
- *
- * @example
- * Date.now() - _START // How much time remains
- */
-declare const _START: number
-
-/**
- * This contains a JS timestamp (not Date) set immediately before your code begins running.
- *
- * @example
- * Date.now() - _ST // How much time remains
- */
-declare const _ST: typeof _START
-
-/**
- * This contains a JS timestamp for the end of your script run -- effectively just `_ST+_TO`
- */
-declare const _END: number
-
-/**
- * This contains the number of milliseconds a script is allowed to run for.
- * Effectively always just 5000, except when a trust script is called on the command line and its value is, presumably, 6000.
- */
-declare const _TIMEOUT: number
-
-/**
- * This contains the number of milliseconds a script is allowed to run for.
- * Effectively always just 5000, except when a trust script is called on the command line and its value is, presumably, 6000.
- */
-declare const _TO: typeof _TIMEOUT
-
-type JSONValue = string | number | boolean | null | JSONValue[] | {
-	[key: string]: JSONValue
-}
+type MongoValue = string | number | boolean | null | MongoValue[] | {
+	[key: string]: MongoValue
+} | Date
 
 type Id = string | number | boolean | {
-	[key: string]: JSONValue
+	[key: string]: MongoValue
 }
 
 type MongoDocument = {
 	_id: Id
-	[key: string]: JSONValue
+	[key: string]: MongoValue
 }
 
 type Query = {
-	[key: string]: JSONValue | Query
+	[key: string]: MongoValue | Query
 } & {
 	_id?: Id
-	"$in"?: JSONValue[]
+	"$in"?: MongoValue[]
 }
 
 type Projection = {
@@ -1560,7 +1712,7 @@ type Cursor = {
 	/**
 	 * @param key they key of the documents
 	 */
-	distinct(key: string): JSONValue[]
+	distinct(key: string): MongoValue[]
 	distinct(key: "_id"): Id[]
 
 	/**
@@ -1571,109 +1723,6 @@ type Cursor = {
 	NumberLong(number: number): number
 
 	ObjectId(): any
-}
-
-declare const $db: {
-	/**
-	 * Insert
-	 *
-	 * Inserts a document or documents into a collection.
-	 * @param documents A document or array of documents to insert into the collection.
-	 */
-	i(documents: object | object[]): {
-		ok: 1,
-		n: number,
-		opTime: {
-			ts: "Undefined Conversion",
-			t: number
-		},
-		electionId: "Undefined Conversion"
-	}
-
-	/**
-	 * Remove
-	 *
-	 * Removes documents from a collection.
-	 * @param query Specifies deletion criteria using query operators.
-	 */
-	r(query: Query): void
-
-	/**
-	 * Find
-	 *
-	 * Selects documents in a collection or view and returns a cursor to the selected documents.
-	 * @param query Specifies deletion criteria using query operators.
-	 * @param projection Specifies the fields to return in the documents that match the query filter.
-	 */
-	f(query?: Query, projection?: Projection): Cursor
-
-	/**
-	 * Update
-	 *
-	 * Modifies an existing document or documents in a collection.
-	 * @param query Specifies deletion criteria using query operators.
-	 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
-	 */
-	u(query: Query | Query[], command: object): void
-
-	/**
-	 * Update 1
-	 *
-	 * Updates a single document within the collection based on the filter.
-	 * @param query Specifies deletion criteria using query operators.
-	 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
-	 */
-	u1(query: Query | Query[], command: object): void
-
-	/**
-	 * Upsert
-	 *
-	 * Same as Update, but if no documents match the query, one document will be inserted based on the properties in both the query and the command.
-	 * The `$setOnInsert` operator is useful to set defaults.
-	 * @param query Specifies deletion criteria using query operators.
-	 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
-	 */
-	us(query: Query | Query[], command: object): void
-}
-
-/**
- * The context the script is run from, i.e. if a user called noob ran your script, then any command executed from context will be treated as executed by the noob user, just like he/she would write them in their command line.
- */
-type Context = {
-	/**
-	 * The name of the user who is calling the script (i.e. n00b)
-	 */
-	caller: string
-
-	/**
-	 * The name of this script
-	 */
-	this_script: string
-
-	/**
-	 * The name of the script that directly called this script, or null if called on the command line or as a scriptor
-	 */
-	calling_script: string | null
-
-	/**
-	 * true if the script is being run as a scriptor, otherwise falsey (not present currently, but I wouldn’t rely on that)
-	 */
-	is_scriptor?: true
-
-	/**
-	 * true if the script is being run via a bot brain
-	 */
-	is_brain?: true
-
-	/**
-	 * the number of columns in the caller’s terminal, if reported by the client
-	 */
-	cols: number
-
-	/**
-	 * the number of rows in the caller’s terminal, if reported by the client
-	 */
-	rows: number
 }
 
 type DistributiveOmit<T, K extends keyof T> = T extends unknown
