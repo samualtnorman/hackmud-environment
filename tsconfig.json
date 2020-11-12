@@ -1,17 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "ES2017",
-		"module": "ES2015",
-		"outDir": "dist",
-		"moduleResolution": "node",
-		"declaration": false,
-		"sourceMap": false,
-		"removeComments": false,
-		"isolatedModules": false,
-		"allowJs": true,
-		"strict": false,
-		"noImplicitAny": false,
-		"skipLibCheck": true
-	},
-	"exclude": [ "node_modules", "dist", "build" ]
+		"target": "ESNext",
+		"strict": true
+	}
 }
