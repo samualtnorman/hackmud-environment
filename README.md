@@ -3,7 +3,7 @@
 
 ## Features
 ### Minification
-This is the main feature of this project and works with JavaScript or TypeScript, by simply running an npm script, every time you save a file, it is automatically minified and written into the hackmud scripts directory. This means you can focus less on getting your character count down, and more on writing understandable scripts.
+This is the main feature of this project and works with JavaScript or TypeScript. All scripts are automatically minified before being written into the hackmud folder. This means you can focus less on getting your character count down, and more on writing understandable scripts.
 
 ### Autocompletes
 As a side effect of having written up the type defintions for every trust script, your editor should be able to autocomplete as you write, even in JavaScript files.
@@ -19,33 +19,28 @@ Before you are able to push scripts into the hackmud directory, you need to inst
 
 Open a terminal in the environment and run `npm install`.
 
-Next you'll need to tell the script manager where you're hackmud directory is.
-Run `npx hsm config set hackmudPath <hackmud directory>`, but replace `<hackmud directory>` with the path to the hackmud directory.
+Next you'll need to tell the script manager where your hackmud directory is.
+Run `npx hsm config set hackmudPath <hackmud directory>` (replace `<hackmud directory>` with the path to the hackmud directory).
 
-You can find you're hackmud directory by running `#dir` in hackmud and going up two directories.
+You can find your hackmud directory by running `#dir` in hackmud and going up two directories.
 
 ## Guide
 ### Writings scripts
-Write your scripts in the `src` directory, these scripts by default will be pushed to all your users.
-
-If you want a script to only be pushed to a specific user, create a folder in `src` with the name of that user.
-Scripts in that folder will only be pushed to that user.
-
-If you are using TypeScript, you can give the `context` arg the `Context` type.
+Create files in the `src` directory, these scripts by default will be pushed to all your users.
+If you want a script to only be pushed to a specific user, create a folder in the `src` folder with the name of that user. Then create files in this new folder.
 
 ### Pushing Your Scripts
 Use `npm run push` to push all your scripts to all your users.
-
 To automatically push scripts as you edit them, leave `npm run watch` running.
 
 ## Optional Features
-If you are just using JavaScript, you don't need to worry about this stuff.
+This is only for if you're using TypeScript.
 
 ## Alternative Subscript Format
 To take advantage of the type defintions written for subscripts, you'll need to replace the `#`s with `$`s. For example instead of writing `#fs.scripts.trust()`, you'll need to write `$fs.scripts.trust()`. A big change, I know.
 
 ### Type Checking For Your Scripts
-To gain type checking for your other scripts in the environment, instead of starting your scripts with `function (...`, you'll need to start them with `export function script(...`.
+To gain type checking for your other scripts you've written in the environment, instead of starting your scripts with `function (...`, you'll need to start them with `export function script(...`.
 
 ## Useful links
 - [Scripting Reference](https://hackmud.com/forums/general_discussion/scripting_reference)
