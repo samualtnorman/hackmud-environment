@@ -1,12 +1,16 @@
 {
-	"javascript.validate.enable": false,
-	"typescript.validate.enable": false,
-	"eslint.enable": true,
+	"javascript.validate.enable": true,
+	"typescript.validate.enable": true,
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"files.exclude": {
 		"**/.*": true,
 		"node_modules": true,
 		"package-lock.json": true,
-		"patches": true
+		"patches": true,
+		"tsconfig.json": true,
+		"package.json": true,
+		"README.md": true,
+		"hackmud.d.ts": true,
+		"player.d.ts": true
 	}
 }
