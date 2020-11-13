@@ -1,25 +1,31 @@
 # hackmud-environment
 ![Test](https://github.com/samualtnorman/hackmud-environment/workflows/Test/badge.svg)
 
-A workspace to build, minify, and push your scripts to specific or multiple users at once, with typings for hackmud, and support for Typescript files.
+## Features
+### Minification
+This is the main feature of this project and works with JavaScript or TypeScript, by simply running an npm script, every time you save a file, it is automatically minified and written into the hackmud scripts directory. This means you can focus less on getting your character count down, and more on writing understandable scripts.
 
-## Typings
-The typings mean that if you are using a smart editor like VS Code, you will have autocompletes built in for all hackmud trust scripts (including `scripts.lib`).
+### Autocompletes
+As a side effect of having written up the type defintions for every trust script, your editor should be able to autocomplete as you write, even in JavaScript files.
 
-This is currently work in progress, although all trust scripts have been added to the typings, not all args and returns have been typed.
+### Intellisense
+This is similar to the autocompletes feature, but as you're writing the name of a hackmud script, drop down menus of potential matches should appear. Hovering over a script should also tell you its security level.
 
-## Setup
-First, run `npm install`, then `npx hsm config set hackmudPath <hackmud directory>`.
+### TypeScript Support
+Using TypeScript in this environment is completely optional in this environment, but does give you benefits you're used to if you already use TypeScript.
 
-If you are using an editor like VS Code, I suggest using the workspace's version of typescript to get more accurate typings.
-To enable this, open a typescript file, hit `F1`, type `typescript select`, press `enter`, and select `Use Workspace Version`.
+## First Time Setup
+Before you are able to push scripts into the hackmud directory, you need to install the script manager.
 
-My last suggestion for VS Code is my extension [Hackmud Color](https://marketplace.visualstudio.com/items?itemName=Samual.hackmud-color) which colours strings to how they appear in game.
+Open a terminal in the environment and run `npm install`.
 
-## Differences
-Scripting is slightly different in this environment due to trying to comply with VS Code's Typescript checker. You will need to replace `#`s with `$`s, and scripts will need to start with `export function script(...` (as seen in the [example](src/example.ts)).
+Next you'll need to tell the script manager where you're hackmud directory is.
+Run `npx hsm config set hackmudPath <hackmud directory>`, but replace `<hackmud directory>` with the path to the hackmud directory.
 
-## Writings scripts
+You can find you're hackmud directory by running `#dir` in hackmud and going up two directories.
+
+## Guide
+### Writings scripts
 Write your scripts in the `src` directory, these scripts by default will be pushed to all your users.
 
 If you want a script to only be pushed to a specific user, create a folder in `src` with the name of that user.
@@ -27,12 +33,19 @@ Scripts in that folder will only be pushed to that user.
 
 If you are using TypeScript, you can give the `context` arg the `Context` type.
 
-## Pushing Your Scripts
+### Pushing Your Scripts
 Use `npm run push` to push all your scripts to all your users.
 
 To automatically push scripts as you edit them, leave `npm run watch` running.
 
-For pullings scripts, or pushing specific script to specific users, see [hackmud-script-manager](https://github.com/samualtnorman/hackmud-script-manager).
+## Optional Features
+If you are just using JavaScript, you don't need to worry about this stuff.
+
+## Alternative Subscript Format
+To take advantage of the type defintions written for subscripts, you'll need to replace the `#`s with `$`s. For example instead of writing `#fs.scripts.trust()`, you'll need to write `$fs.scripts.trust()`. A big change, I know.
+
+### Type Checking For Your Scripts
+To gain type checking for your other scripts in the environment, instead of starting your scripts with `function (...`, you'll need to start them with `export function script(...`.
 
 ## Useful links
 - [Scripting Reference](https://hackmud.com/forums/general_discussion/scripting_reference)
@@ -40,7 +53,10 @@ For pullings scripts, or pushing specific script to specific users, see [hackmud
 - [Color Reference](https://hackmud.com/forums/general_discussion/color_reference)
 
 ## Contributing
-Contributing is apreciated, especially if you have an API to add to the [typings](index.d.ts).
+Contributing is apreciated, especially if you have an API to add to the [type definition](hackmud.d.ts).
 
 ## Credit
-This project and Hackmud Script Manager, were actually originally forks of [Snazzah](https://github.com/Snazzah)'s [hackmud_env](https://github.com/Snazzah/hackmud_env)
+This project and Hackmud Script Manager, were originally forks of [Snazzah](https://github.com/Snazzah)'s [hackmud_env](https://github.com/Snazzah/hackmud_env)
+
+## Other Projects
+If you want to see your strings coloured to how they'd appear in game, you should checkout [Hackmud Color](https://marketplace.visualstudio.com/items?itemName=Samual.hackmud-color), my VS Code extension.
