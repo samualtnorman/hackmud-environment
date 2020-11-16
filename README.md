@@ -13,7 +13,7 @@ Using TypeScript in this environment is completely optional, but using it means 
 
 ## First Time Setup
 1. Install [NodeJS](https://nodejs.org/).
-2. Install the script manager by running `npm install` in a terminal in the environment.
+2. Install the script manager by running `npm install` in a terminal in the environment folder.
 3. Tell the script manager where the hackmud directory is with `npx hsm config set hackmudPath <hackmud directory>`
   - Replace `<hackmud directory>` with the path to the hackmud directory.
   - You can find your hackmud directory by running `#dir` in hackmud and going up two directories.
