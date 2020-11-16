@@ -466,22 +466,22 @@ declare global {
 	/**
 	 * Debug Log
 	 *
-	 * If #D is called in a script you own, the return value of the top level script is suppressed and instead an array of every #D’d entry is printed.
-	 * This lets you use #D kind of like console.log.
-	 * #D in scripts not owned by you are not shown.
-	 * #D returns its argument unchanged, so you can do things like return #D(ob) to return the object when the caller isn’t you, and debug-log it when it is you (allowing you to “keep” your returns with other debug logs).
-	 * #D’d items are returned even if the script times out or errors.
+	 * If $D is called in a script you own, the return value of the top level script is suppressed and instead an array of every $D’d entry is printed.
+	 * This lets you use $D kind of like console.log.
+	 * $D in scripts not owned by you are not shown.
+	 * $D returns its argument unchanged, so you can do things like return $D(ob) to return the object when the caller isn’t you, and debug-log it when it is you (allowing you to “keep” your returns with other debug logs).
+	 * $D’d items are returned even if the script times out or errors.
 	 */
-	function $D<T = undefined>(args?: T): T
+	function $D<T>(args: T): T
 
 	/**
 	 * Function Multi-Call Lock
 	 *
 	 * This is used by escrow to ensure that it is used called once in script execution.
-	 * The first time (in each script) that `#FMCL `is encountered, it returns falsey, and every time thereafter it returns truthy
+	 * The first time (in each script) that `$FMCL `is encountered, it returns falsey, and every time thereafter it returns truthy
 	 *
 	 * @example
-	 * if (#FMCL)
+	 * if ($FMCL)
 	 * 	return "error"
 	 */
 	const $FMCL: boolean
@@ -490,11 +490,11 @@ declare global {
 	 * Global
 	 *
 	 * A mutable, per-script global object.
-	 * #G persists between script calls until the end of a main script run, making it useful for caching db entries when your script is a subscript.
+	 * $G persists between script calls until the end of a main script run, making it useful for caching db entries when your script is a subscript.
 	 *
 	 * @example
-	 * if (!#G.dbCache)
-	 * 	#G.dbCache = #db.f({ whatever: true }).first()
+	 * if (!$G.dbCache)
+	 * 	$G.dbCache = $db.f({ whatever: true }).first()
 	 */
 	const $G: Record<string, unknown>
 
@@ -530,6 +530,12 @@ declare global {
 	 * Effectively always just 5000, except when a trust script is called on the command line and its value is, presumably, 6000.
 	 */
 	const _TO: typeof _TIMEOUT
+
+	type MongoCommand = MongoValue & Partial<{
+		$set: object
+		$push: object
+		$unset: Record<string, "">
+	}>
 
 	const $db: {
 		/**
@@ -572,7 +578,7 @@ declare global {
 		 * @param query Specifies deletion criteria using query operators.
 		 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
 		 */
-		u(query: Query | Query[], command: object): void
+		u(query: Query | Query[], command: MongoCommand): void
 
 		/**
 		 * Update 1
@@ -581,7 +587,7 @@ declare global {
 		 * @param query Specifies deletion criteria using query operators.
 		 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
 		 */
-		u1(query: Query | Query[], command: object): void
+		u1(query: Query | Query[], command: MongoCommand): void
 
 		/**
 		 * Upsert
@@ -591,7 +597,7 @@ declare global {
 		 * @param query Specifies deletion criteria using query operators.
 		 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
 		 */
-		us(query: Query | Query[], command: object): void
+		us(query: Query | Query[], command: MongoCommand): void
 	}
 
 	type ContextBase = {
@@ -614,16 +620,14 @@ declare global {
 		 * the number of rows in the caller’s terminal, if reported by the client
 		 */
 		rows: number
-	}
 
-	type CLIContext = ContextBase & {
 		/**
 		 * The name of the script that directly called this script, or null if called on the command line or as a scriptor
 		 */
 		calling_script: null
 	}
 
-	type SubscriptContext = ContextBase & {
+	type SubscriptContext = Omit<ContextBase, "calling_script"> & {
 		/**
 		 * The name of the script that directly called this script, or null if called on the command line or as a scriptor
 		 */
@@ -644,7 +648,7 @@ declare global {
 		is_brain: true
 	}
 
-	type Context = CLIContext | SubscriptContext | ScriptorContext | BrainContext
+	type Context = SubscriptContext | ScriptorContext | BrainContext
 
 	type ScriptSuccess<T = {}> = {
 		ok: true
@@ -652,7 +656,7 @@ declare global {
 
 	type ScriptFailure = {
 		ok: false
-		msg: string
+		msg?: string
 	}
 
 	type ScriptResponse<T = {}> = ScriptSuccess<T> | ScriptFailure
@@ -1117,7 +1121,7 @@ type Fullsec = {
 		 * **FULLSEC**
 		 */
 		upgrades_of_owner<I extends number>(args: { i: I }): Omit<Upgrade, "i"> & { i: I }
-		upgrades_of_owner(args?: { full?: false, filter: Partial<DistributiveOmit<Upgrade, "i" | "sn" | "description">> }): DistributivePick<Upgrade, "tier" | "rarity" | "name" | "type" | "i" | "loaded">[] | ScriptFailure
+		upgrades_of_owner(args?: { full?: false, filter?: Partial<DistributiveOmit<Upgrade, "i" | "sn" | "description">> }): DistributivePick<Upgrade, "tier" | "rarity" | "name" | "type" | "i" | "loaded">[] | ScriptFailure
 		upgrades_of_owner(args: { full: true, filter: Partial<DistributiveOmit<Upgrade, "i" | "sn" | "description">> }): Upgrade[] | ScriptFailure
 
 		/**
@@ -1616,11 +1620,11 @@ type Nullsec = {
 	}
 }
 
-type MongoValue = string | number | boolean | null | MongoValue[] | {
+type MongoValue = string | number | boolean | Date | MongoValue[] | {
 	[key: string]: MongoValue
-} | Date
+} | null
 
-type Id = string | number | boolean | {
+type Id = string | number | boolean | Date | {
 	[key: string]: MongoValue
 }
 
