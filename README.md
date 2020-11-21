@@ -46,7 +46,7 @@ To gain type checking for your other scripts you've written in the environment, 
 Contributing is apreciated, especially if you have an API to add to the [type definitions](hackmud.d.ts).
 
 ## Credit
-This project and Hackmud Script Manager, were originally forks of [Snazzah](https://github.com/Snazzah)'s [hackmud_env](https://github.com/Snazzah/hackmud_env)
+This project was originally a fork of [Snazzah](https://github.com/Snazzah)'s [hackmud_env](https://github.com/Snazzah/hackmud_env).
 
 ## Related Projects
 ### Hackmud Color
