@@ -36,10 +36,10 @@ Scripts directly in the `src` folder are pushed to all your users while scripts 
 ## Optional Features
 This is only for if you're using TypeScript.
 
-## Alternative Preprocessor Format
+### Alternative Preprocessor Format
 To take advantage of the type defintions written for subscripts and preprocessor functions, you'll need to replace the `#` characters with `$` characters. For example instead of writing `#fs.scripts.trust()`, you'll need to write `$fs.scripts.trust()`. A big change, I know.
 
-### Inter-script Type Checking
+#### Inter-script Type Checking
 To gain type checking for your other scripts you've written in the environment, instead of starting your scripts with `function (...`, start them with `export function script(...`.
 
 ## Contributing
