@@ -8,7 +8,6 @@
 		"package-lock.json": true,
 		"patches": true,
 		"tsconfig.json": true,
-		"package.json": true,
 		"README.md": true,
 		"hackmud.d.ts": true,
 		"player.d.ts": true

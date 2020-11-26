@@ -1,7 +1,16 @@
 diff --git a/node_modules/typescript/lib/lib.es5.d.ts b/node_modules/typescript/lib/lib.es5.d.ts
-index a7c35db..e1ccf4a 100644
+index e72f3e4..d9cd14d 100644
 --- a/node_modules/typescript/lib/lib.es5.d.ts
 +++ b/node_modules/typescript/lib/lib.es5.d.ts
+@@ -313,7 +313,7 @@ interface FunctionConstructor {
+     readonly prototype: Function;
+ }
+ 
+-declare var Function: FunctionConstructor;
++declare const Function: string;
+ 
+ /**
+  * Extracts the type of the 'this' parameter of a function type, or 'unknown' if the function type has no 'this' parameter.
 @@ -1051,26 +1051,59 @@ declare var URIError: URIErrorConstructor;
  
  interface JSON {
