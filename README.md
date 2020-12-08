@@ -6,7 +6,7 @@
 This is the main feature of this project and works with JavaScript or [TypeScript](https://www.typescriptlang.org/). All scripts are automatically minified before being written into the hackmud folder. This means you can focus less on getting your character count down, and more on writing understandable scripts.
 
 ### Autocompletes/Intellisense
-As you're typing the names of subscripts or filling the args of subscripts, drop down menus of relevant autocompletes will appear. Hovering over a script also tells you info like security its security level.
+In modern editors like [Visual Studio Code](https://code.visualstudio.com/), as you're typing the names of subscripts or filling the args of subscripts, drop down menus of relevant autocompletes will appear. Hovering over a script also tells you info like its security level.
 
 ### TypeScript Support
 Using TypeScript in this environment is completely optional, but using it means warnings when you use the wrong type in a subscript's args, or using an unsupported type in a db query.
