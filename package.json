@@ -10,7 +10,7 @@
 		"gen-types": "hsm gen-types src"
 	},
 	"devDependencies": {
-		"hackmud-script-manager": "0.9.x",
+		"hackmud-script-manager": "^0.9.2",
 		"patch-package": "6.x",
 		"typescript": "4.4.0-beta"
 	}
