@@ -1,4 +1,4 @@
-export function script(context: Context, args?: null | Record<string, unknown>) {
+export function script(context: Context, args?: unknown) {
 	let { caller } = context
 	const l = $fs.scripts.lib()
 	return { ok: false }

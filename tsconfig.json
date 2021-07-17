@@ -1,6 +1,10 @@
 {
 	"compilerOptions": {
-		"target": "ESNext",
-		"strict": true
+		"target": "ES2015",
+		"module": "commonjs",
+		"lib": [ "ESNext" ],
+		"strict": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true
 	}
 }

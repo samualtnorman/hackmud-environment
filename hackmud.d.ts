@@ -14,7 +14,7 @@ type Replace<T, R> =
 		Extract<keyof R, keyof T>
 	> & R
 
-type SpecialExtract<T, F> =
+type Extract<T, F> =
 	T extends unknown
 		? keyof F extends keyof T
 			? F extends Pick<T, keyof F>
@@ -36,7 +36,7 @@ type ErrorScripts = Record<string, () => ScriptFailure>
 type Subscripts =
 	Record<
 		string,
-		Record<string, (args?: any) => any>
+		Record<string, (...args: any) => any>
 	> & {
 		accts: ErrorScripts
 		autos: ErrorScripts
@@ -675,16 +675,12 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		/**
 		 * **FULLSEC**
 		 */
-		browse(
-			args: Partial<
-				{
-					seller: string
-					listed_before: number
-					listed_after: number
-					cost: number | string
-				} & CLIUpgrade
-			>
-		): {
+		browse(args: {
+			seller: string
+			listed_before: number
+			listed_after: number
+			cost: number | string
+		} & CLIUpgrade): {
 			i: string
 			name: string
 			rarity: Upgrade["rarity"]
@@ -731,7 +727,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		/**
 		 * **FULLSEC**
 		 */
-		get_level(args: { name: string }): number | ScriptFailure
+		get_level(args: { name: string }): 0 | 1 | 2 | 3 | 4 | ScriptFailure
 
 		/**
 		 * **FULLSEC**
@@ -805,12 +801,12 @@ type Fullsec = Subscripts & PlayerFullsec & {
 			JSF(...args: any): any
 			LCG(...args: any): any
 			to_gc_str(num: number): string
-			to_gc_num(str: string): number
+			to_gc_num(str: string): number | ScriptFailure
 			to_game_timestr(date: Date): string
 			corruption_chars: "¡¢Á¤Ã¦§¨©ª"
 			colors: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 			corruptions: [ 0, 1, 1.5, 2.5, 5 ]
-			corrupt(text: string, amount: 0 | 1 | 2 | 3 | 4): string
+			corrupt(text: string | string[], amount: 0 | 1 | 2 | 3 | 4): string
 			cap_str_len(string: string, length: number): string
 			each<T>(array: T[], fn: (key: string, value: T) => void): void
 			select<T>(array: T[], fn: (key: string, value: T) => boolean): T[]
@@ -871,9 +867,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		 * **FULLSEC**
 		 */
 		upgrades_of_owner<
-			F extends Partial<
-				DistributiveOmit<Upgrade, "i" | "sn" | "description">
-			>,
+			F extends Partial<Upgrade & { loaded: boolean }>,
 			I extends number,
 			U extends boolean = false
 		>(args?: {
@@ -888,12 +882,12 @@ type Fullsec = Subscripts & PlayerFullsec & {
 				? (
 					U extends true
 						? Replace<
-							SpecialExtract<Upgrade, F>,
+							Extract<Upgrade, F>,
 							F
 						>
 						: Replace<
 							DistributivePick<
-								SpecialExtract<Upgrade, F>,
+								Extract<Upgrade, F>,
 								"tier" | "rarity" | "name" | "type" | "i" | "loaded"
 							>,
 							Pick<
@@ -978,8 +972,10 @@ type Highsec = Fullsec & PlayerHighsec & {
 		}): {
 			time: Date
 			amount: number
+			sender: string
 			recipient: string
 			script: string | null
+			memo?: string
 		}[]
 
 		transactions(args: {
@@ -993,9 +989,11 @@ type Highsec = Fullsec & PlayerHighsec & {
 			transactions: {
 				time: string
 				amount: string
+				sender: string
 				recipient: string
 				script: string | null
-			}
+				memo?: string
+			}[]
 		}
 	}
 
@@ -1024,14 +1022,26 @@ type Highsec = Fullsec & PlayerHighsec & {
 		/**
 		 * **HIGHSEC**
 		 */
-		upgrade_log(args?: { is_script?: true }): {
+		upgrade_log(args?: {
+			is_script?: true
+			user?: string
+			run_id?: string
+			count?: number
+			start?: number
+		}): {
 			t: Date
 			u: string
 			r: string
 			msg: string
 		}[] | ScriptFailure
 
-		upgrade_log(args: { is_script: false }): string[] | ScriptFailure
+		upgrade_log(args: {
+			is_script: false
+			user?: string
+			run_id?: string
+			count?: number
+			start?: number
+		}): string[] | ScriptFailure
 
 		/**
 		 * **HIGHSEC**
@@ -1231,14 +1241,26 @@ type Lowsec = Midsec & PlayerLowsec & {
 		/**
 		 * **LOWSEC**
 		 */
-		access_log(args?: { is_script?: true }): {
+		access_log(args?: {
+			user?: string
+			run_id?: string
+			is_script?: true
+			count?: number
+			start?: number
+		}): {
 			t: Date
-			u?: string
-			r?: string
+			u: string | undefined
+			r: string | undefined
 			msg: string
 		}[] | ScriptFailure
 
-		access_log(args: { is_script: false }): string[]
+		access_log(args: {
+			user?: string
+			run_id?: string
+			is_script: false
+			count?: number
+			start?: number
+		}): string[]
 
 		/**
 		 * **LOWSEC**
@@ -1627,6 +1649,19 @@ declare const $1s: typeof $ls
  */
 declare const $0s: typeof $ns
 
+/**
+ * Subscript space that can call any script.
+ * Uses seclevel provided in comment before script (defaults to NULLSEC)
+ *
+ * ```js
+ * // @seclevel MIDSEC
+ * export function script() {
+ * 	$s.foo.bar() // will be converted to #ms.foo.bar()
+ * }
+ * ```
+ */
+declare const $s: Nullsec
+
 declare const $db: {
 	/**
 	 * Insert
@@ -1668,7 +1703,16 @@ declare const $db: {
 	 * @param query Specifies deletion criteria using query operators.
 	 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
 	 */
-	u(query: Query | Query[], command: MongoCommand): void
+	u(query: Query | Query[], command: MongoCommand): {
+		ok: 0 | 1
+		nModified: number
+		n: number
+		opTime: {
+			ts: "Undefined Conversion"
+			t: number
+		}
+		electionId: "Undefined Conversion"
+	}
 
 	/**
 	 * Update 1
@@ -1693,43 +1737,49 @@ declare const $db: {
 /**
  * Debug Log
  *
- * If $D is called in a script you own, the return value of the top level script is suppressed and instead an array of every $D’d entry is printed.
- * This lets you use $D kind of like console.log.
- * $D in scripts not owned by you are not shown.
- * $D returns its argument unchanged, so you can do things like return $D(ob) to return the object when the caller isn’t you, and debug-log it when it is you (allowing you to “keep” your returns with other debug logs).
- * $D’d items are returned even if the script times out or errors.
+ * If `$D()` is called in a script you own, the `return` value of the top level script is suppressed and instead an array of every `$D()`’d entry is printed.
+ * This lets you use `$D()` like `console.log()`.
+ *
+ * `$D()` in scripts not owned by you are not shown but the `return` value always is.
+ *
+ * `$D()` returns the first argument so `$D("Hello, World!") evaluates to `"Hello, World!"` as if the `$D` text wasn't there.
+ *
+ * `$D()`’d items are returned even if the script times out or errors.
  */
 declare function $D<T>(args: T): T
 
 /**
  * Function Multi-Call Lock
  *
- * This is used by escrow to ensure that it is used called once in script execution.
- * The first time (in each script) that `$FMCL `is encountered, it returns falsey, and every time thereafter it returns truthy
+ * This is used by escrow to ensure that it is only used once in script execution.
+ *
+ * The first time (per-script) `$FMCL` is encountered, it returns `undefined`, every other time it `return`s `true`.
  *
  * @example
  * if ($FMCL)
- * 	return "error"
+ * 	return { ok: false, msg: "this script can only be used once per script execution" }
+ *
+ * // all code here will only run once
  */
-declare const $FMCL: boolean
+declare const $FMCL: undefined | true
 
 /**
  * Global
  *
  * A mutable, per-script global object.
- * $G persists between script calls until the end of a main script run, making it useful for caching db entries when your script is a subscript.
+ * $G persists between script calls until the end of the main script run making it useful for caching db entries when your script is a subscript.
  *
  * @example
  * if (!$G.dbCache)
  * 	$G.dbCache = $db.f({ whatever: true }).first()
  */
-declare const $G: Record<string, unknown>
+declare const $G: any
 
 /**
  * This contains a JS timestamp (not Date) set immediately before your code begins running.
  *
  * @example
- * Date.now() - _START // How much time remains
+ * Date.now() - _START // milliseconds left of run time
  */
 declare const _START: number
 
@@ -1737,23 +1787,23 @@ declare const _START: number
  * This contains a JS timestamp (not Date) set immediately before your code begins running.
  *
  * @example
- * Date.now() - _ST // How much time remains
+ * Date.now() - _ST // milliseconds left of run time
  */
 declare const _ST: typeof _START
 
 /**
- * This contains a JS timestamp for the end of your script run -- effectively just `_ST+_TO`
+ * JavaScript timestamp for the end of the script run (`_START + _TIMEOUT`).
  */
 declare const _END: number
 
 /**
- * This contains the number of milliseconds a script is allowed to run for.
- * Effectively always just 5000, except when a trust script is called on the command line and its value is, presumably, 6000.
+ * The number of milliseconds a script can run for.
+ * Normally `5000` though it has been known to change.
  */
 declare const _TIMEOUT: number
 
 /**
- * This contains the number of milliseconds a script is allowed to run for.
- * Effectively always just 5000, except when a trust script is called on the command line and its value is, presumably, 6000.
+ * The number of milliseconds a script can run for.
+ * Normally `5000` though it has been known to change.
  */
 declare const _TO: typeof _TIMEOUT
