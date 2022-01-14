@@ -1,6 +1,4 @@
-# hackmud-environment
-![Test](https://github.com/samualtnorman/hackmud-environment/workflows/Test/badge.svg)
-
+# Hackmud Scripting Environnment
 ## Features
 ### Minification
 This is the main feature of this project and works with JavaScript or [TypeScript](https://www.typescriptlang.org/). All scripts are automatically minified before being written into the hackmud folder. This means you can focus less on getting your character count down, and more on writing understandable scripts.
