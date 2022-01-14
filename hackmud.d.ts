@@ -1,27 +1,8 @@
-type DistributiveOmit<T, K extends keyof T> =
-	T extends unknown
-		? Omit<T, K>
-		: never
-
-type DistributivePick<T, K extends keyof T> =
-	T extends unknown
-		? Pick<T, K>
-		: never
-
 type Replace<T, R> =
-	DistributiveOmit<
+	Omit<
 		T,
 		Extract<keyof R, keyof T>
 	> & R
-
-type Extract<T, F> =
-	T extends unknown
-		? keyof F extends keyof T
-			? F extends Pick<T, keyof F>
-				? T
-				: never
-			: never
-		: never
 
 type ScriptSuccess<T = {}> = { ok: true } & T
 
@@ -60,450 +41,21 @@ interface PlayerLowsec {}
 interface PlayerNullsec {}
 
 type Upgrade = {
+	name: string
+	type: "lock" | "script_space" | "chat" | "script" | "tool" | "bot_brain" | "glam"
+	up_class?: -1 | 0 | 1 | 2 | 3
+	tier: 1 | 2 | 3 | 4
+	rarity: 0 | 1 | 2 | 3 | 4 | 5
 	i: number
 	loaded: boolean
 	sn: string
 	description: string
-} & ({
-	name: "CON_SPEC"
-	type: "lock"
-	up_class: -1
-	tier: 2
-	rarity: 1 | 2 | 3
-	p1_len: number
-	p2_len: number
-} | {
-	name: "CON_TELL"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 1
-} | {
-	name: "c001"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 0
-} | {
-	name: "c002"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 1
-} | {
-	name: "c003"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 1
-} | {
-	name: "acct_nt"
-	type: "lock"
-	up_class: -1
-	tier: 2
-	rarity: 1 | 2 | 3
-	acct_nt_min: number
-} | {
-	name: "sn_w_glock"
-	type: "lock"
-	up_class: -1
-	tier: 2
-	rarity: 1 | 2 | 3
-	max_glock_amnt: number
-	expire_secs: number
-} | {
-	name: "sn_w_usac"
-	type: "lock"
-	up_class: -1
-	tier: 3
-	rarity: 2 | 3 | 4
-	salt_digits: number
-} | {
-	name: "magnara"
-	type: "lock"
-	up_class: -1
-	tier: 2
-	rarity: 1 | 2 | 3
-	magnara_len: number
-} | {
-	name: "shfflr"
-	type: "lock"
-	up_class: -1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	up_count_min: number
-	up_count_max: number
-	name_count: number
-	rarity_count: number
-	digits: number
-} | {
-	name: "l0g_wr1t3r"
-	type: "lock"
-	up_class: -1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	loc_count: number
-} | {
-	name: "char_count_v1"
-	type: "script_space"
-	up_class: 0
-	tier: 1
-	rarity: 0 | 1 | 2
-	chars: number
-} | {
-	name: "char_count_v2"
-	type: "script_space"
-	up_class: 0
-	tier: 2
-	rarity: 0 | 1 | 2 | 3
-	chars: number
-} | {
-	name: "char_count_v3"
-	type: "script_space"
-	up_class: 0
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	chars: number
-} | {
-	name: "public_script_v1"
-	type: "script_space"
-	up_class: 0
-	tier: 1
-	rarity: 0 | 1 | 2
-	slots: number
-} | {
-	name: "public_script_v2"
-	type: "script_space"
-	up_class: 0
-	tier: 2
-	rarity: 0 | 1 | 2 | 3
-	slots: number
-} | {
-	name: "public_script_v3"
-	type: "script_space"
-	up_class: 0
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	slots: number
-} | {
-	name: "script_slot_v1"
-	type: "script_space"
-	up_class: 0
-	tier: 1
-	rarity: 0 | 1 | 2
-	slots: number
-} | {
-	name: "script_slot_v2"
-	type: "script_space"
-	up_class: 0
-	tier: 2
-	rarity: 0 | 1 | 2 | 3
-	slots: number
-} | {
-	name: "script_slot_v3"
-	type: "script_space"
-	up_class: 0
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	slots: number
-} | {
-	name: "channel_count_v1"
-	type: "chat"
-	up_class: 3
-	tier: 1
-	rarity: 0 | 1 | 2
-	count: number
-} | {
-	name: "channel_count_v2"
-	type: "chat"
-	up_class: 3
-	tier: 2
-	rarity: 0 | 1 | 2 | 3
-	count: number
-} | {
-	name: "channel_count_v3"
-	type: "chat"
-	up_class: 3
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	count: number
-} | {
-	name: "balance_v1"
-	type: "script"
-	up_class: 1
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-} | {
-	name: "balance_v2"
-	type: "script"
-	up_class: 1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	cooldown: number
-} | {
-	name: "expose_access_log_v1"
-	type: "script"
-	up_class: 1
-	tier: 1
-	rarity: 0 | 1 | 2
-	cooldown: number
-	count: number
-} | {
-	name: "expose_access_log_v2"
-	type: "script"
-	up_class: 1
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-	count: number
-} | {
-	name: "expose_upgrade_log_v1"
-	type: "script"
-	up_class: 1
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-	count: number
-} | {
-	name: "expose_upgrade_log_v2"
-	type: "script"
-	up_class: 1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	cooldown: number
-	count: number
-} | {
-	name: "expose_upgrades_v1"
-	type: "script"
-	up_class: 1
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-} | {
-	name: "expose_upgrades_v2"
-	type: "script"
-	up_class: 1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	cooldown: number
-} | {
-	name: "ez_21"
-	type: "script"
-	up_class: -1
-	tier: 1
-	rarity: 0
-} | {
-	name: "ez_35"
-	type: "script"
-	up_class: -1
-	tier: 1
-	rarity: 0
-} | {
-	name: "ez_40"
-	type: "script"
-	up_class: -1
-	tier: 1
-	rarity: 1
-} | {
-	name: "key_v1"
-	type: "tool"
-	up_class: 1
-	tier: 1
-	rarity: 0
-	k3y: string
-} | {
-	name: "key_v2"
-	type: "tool"
-	up_class: 1
-	tier: 2
-	rarity: 0
-	k3y: string
-} | {
-	name: "log_writer_v1"
-	type: "script"
-	up_class: 1
-	tier: 1
-	rarity: 0 | 1 | 2
-	cooldown: number
-} | {
-	name: "log_writer_v2"
-	type: "script"
-	up_class: 1
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-} | {
-	name: "log_writer_v3"
-	type: "script"
-	up_class: 1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	cooldown: number
-} | {
-	name: "transactions_v1"
-	type: "script"
-	up_class: 1
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-	count: number
-} | {
-	name: "transfer_upgrade_v1"
-	type: "script"
-	up_class: 2
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	cooldown: number
-	count: number
-} | {
-	name: "transfer_v1"
-	type: "script"
-	up_class: 2
-	tier: 2
-	rarity: 1 | 2 | 3
-	cooldown: number
-	amount: number
-} | {
-	name: "transfer_v2"
-	type: "script"
-	up_class: 2
-	tier: 3
-	rarity: 2 | 3 | 4
-	amount: number
-	cooldown: number
-} | {
-	name: "w4rn_er"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 1
-} | {
-	name: "w4rn_message"
-	type: "script"
-	up_class: -1
-	tier: 1
-	rarity: 0 | 1 | 2
-	cooldown: number
-} | {
-	name: "w4rn"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 1
-	cooldown: number
-} | {
-	name: "DATA_CHECK_V1"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 0 | 1 | 2
-	acc_mod: number
-} | {
-	name: "DATA_CHECK_V2"
-	type: "lock"
-	up_class: -1
-	tier: 2
-	rarity: 1 | 2 | 3
-	acc_mod: number
-} | {
-	name: "DATA_CHECK_V3"
-	type: "lock"
-	up_class: -1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	acc_mod: number
-} | {
-	name: "DATA_CHECK_V4"
-	type: "lock"
-	up_class: -1
-	tier: 4
-	rarity: 1 | 2 | 3 | 4
-	acc_mod: number
-} | {
-	name: "l0cket"
-	type: "lock"
-	up_class: -1
-	tier: 1
-	rarity: 0 | 1 | 2
-	count: number
-} | {
-	name: "l0ckbox"
-	type: "lock"
-	up_class: -1
-	tier: 2
-	rarity: 1 | 2 | 3
-	count: number
-} | {
-	name: "l0ckjaw"
-	type: "lock"
-	up_class: -1
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	count: number
-	expire_secs: number
-} | {
-	name: "cron_bot_v1"
-	type: "bot_brain"
-	up_class: 0
-	tier: 1
-	rarity: 0 | 1 | 2
-	cooldown: number
-	cost: number
-	retries: number
-} | {
-	name: "cron_bot_v2"
-	type: "bot_brain"
-	up_class: 0
-	tier: 2
-	rarity: 0 | 1 | 2 | 3
-	cooldown: number
-	cost: number
-	retries: number
-} | {
-	name: "cron_bot_v3"
-	type: "bot_brain"
-	up_class: 0
-	tier: 3
-	rarity: 1 | 2 | 3 | 4
-	cooldown: number
-	cost: number
-	retries: number
-} | {
-	name: "cron_bot_v4"
-	type: "bot_brain"
-	up_class: 0
-	tier: 4
-	rarity: 1 | 2 | 3 | 4 | 5
-	cooldown: number
-	retries: number
-	cost: number
-} | {
-	name: "man_in_grey_suit_v1"
-	type: "glam"
-	tier: 1
-	rarity: 1
-	event: "surf.board"
-})
+	[x: string]: boolean | number | string | null
+}
 
-type CLIUpgrade =
-	Upgrade extends { rarity: infer Rarity }
-		? Rarity extends number
-			? Replace<
-				Upgrade,
-				{
-					rarity: [
-						"`0noob`",
-						"`1kiddie`",
-						"`2h4x0r`",
-						"`3h4rdc0r3`",
-						"`4|_|b3|2`",
-						"`531337`"
-					][Rarity]
-				}
-			>
-			: never
-		: never
+type CLIUpgrade = Omit<Upgrade, `rarity`> & {
+	rarity: "`0noob`" | "`1kiddie`" | "`2h4x0r`" | "`3h4rdc0r3`" | "`4|_|b3|2`" | "`531337`"
+}
 
 type UsersTopItem<R> = {
 	rank: R
@@ -882,12 +434,12 @@ type Fullsec = Subscripts & PlayerFullsec & {
 				? (
 					U extends true
 						? Replace<
-							Extract<Upgrade, F>,
+							Upgrade,
 							F
 						>
 						: Replace<
-							DistributivePick<
-								Extract<Upgrade, F>,
+							Pick<
+								Upgrade,
 								"tier" | "rarity" | "name" | "type" | "i" | "loaded"
 							>,
 							Pick<
@@ -1052,7 +604,7 @@ type Highsec = Fullsec & PlayerHighsec & {
 			filter?: Partial<Upgrade>
 			is_script?: true
 			full?: false
-		}): DistributivePick<Upgrade, "tier" | "rarity" | "name" | "type" | "i" | "loaded">[] | ScriptFailure
+		}): Pick<Upgrade, "tier" | "rarity" | "name" | "type" | "i" | "loaded">[] | ScriptFailure
 
 		upgrades(args?: {
 			filter?: Partial<Upgrade>

@@ -1,10 +1,12 @@
 {
 	"compilerOptions": {
-		"target": "ES2015",
-		"module": "commonjs",
-		"lib": [ "ESNext" ],
-		"strict": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true
+		"moduleResolution": "Node",
+		"resolveJsonModule": true,
+		"noEmit": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"target": "ESNext",
+		"skipLibCheck": false
 	}
 }
