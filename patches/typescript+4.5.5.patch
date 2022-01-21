@@ -1,5 +1,5 @@
 diff --git a/node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts b/node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts
-index 0f69609..8b14d83 100644
+index 0f69609..772bd80 100644
 --- a/node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts
 +++ b/node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts
 @@ -133,5 +133,3 @@ interface Atomics {
@@ -9,7 +9,7 @@ index 0f69609..8b14d83 100644
 -
 -declare var Atomics: Atomics;
 diff --git a/node_modules/typescript/lib/lib.es2018.intl.d.ts b/node_modules/typescript/lib/lib.es2018.intl.d.ts
-index dc4fd22..026befb 100644
+index dc4fd22..b72ccbf 100644
 --- a/node_modules/typescript/lib/lib.es2018.intl.d.ts
 +++ b/node_modules/typescript/lib/lib.es2018.intl.d.ts
 @@ -50,13 +50,6 @@ declare namespace Intl {
@@ -27,7 +27,7 @@ index dc4fd22..026befb 100644
      type ES2018NumberFormatPartType = "literal" | "nan" | "infinity" | "percent" | "integer" | "group" | "decimal" | "fraction" | "plusSign" | "minusSign" | "percentSign" | "currency" | "code" | "symbol" | "name";
      type ES2020NumberFormatPartType = "compact" | "exponentInteger" | "exponentMinusSign" | "exponentSeparator" | "unit" | "unknown";
 diff --git a/node_modules/typescript/lib/lib.es2020.intl.d.ts b/node_modules/typescript/lib/lib.es2020.intl.d.ts
-index fc274b2..e8844c0 100644
+index fc274b2..305a0b4 100644
 --- a/node_modules/typescript/lib/lib.es2020.intl.d.ts
 +++ b/node_modules/typescript/lib/lib.es2020.intl.d.ts
 @@ -167,56 +167,6 @@ declare namespace Intl {
@@ -150,7 +150,7 @@ index fc274b2..e8844c0 100644
 -
  }
 diff --git a/node_modules/typescript/lib/lib.es5.d.ts b/node_modules/typescript/lib/lib.es5.d.ts
-index 550f5b1..d7e1aed 100644
+index 550f5b1..c62a24a 100644
 --- a/node_modules/typescript/lib/lib.es5.d.ts
 +++ b/node_modules/typescript/lib/lib.es5.d.ts
 @@ -22,9 +22,6 @@ and limitations under the License.
