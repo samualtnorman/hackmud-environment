@@ -24,7 +24,8 @@ You can create scripts in the `src` directory directly, and you can create a fol
 Use `npm run push` to push all your scripts to all your users.
 To automatically push scripts as you edit them, leave `npm run watch` running.
 
-Scripts directly in the `src` folder are pushed to all your users while scripts in folders are pushed to just the associated user.
+Scripts directly in the `src` folder are pushed to all your users.
+To have a script be pushed to only a specific user, create a folder in the `src` folder and create your scripts in that new folder.
 
 ## Useful links
 - [Scripting Reference](https://hackmud.com/forums/general_discussion/scripting_reference)
