@@ -40,7 +40,7 @@ interface PlayerMidsec {}
 interface PlayerLowsec {}
 interface PlayerNullsec {}
 
-type Upgrade = {
+type UpgradeCore = {
 	name: string
 	type: "lock" | "script_space" | "chat" | "script" | "tool" | "bot_brain" | "glam"
 	up_class?: -1 | 0 | 1 | 2 | 3
@@ -50,10 +50,12 @@ type Upgrade = {
 	loaded: boolean
 	sn: string
 	description: string
-	[x: string]: boolean | number | string | null
 }
 
-type CLIUpgrade = Omit<Upgrade, `rarity`> & {
+type Upgrade = UpgradeCore & { [x: string]: null | boolean | number | string }
+
+type CLIUpgrade = Omit<UpgradeCore, `rarity`> & {
+	[x: string]: null | boolean | number | string
 	rarity: "`0noob`" | "`1kiddie`" | "`2h4x0r`" | "`3h4rdc0r3`" | "`4|_|b3|2`" | "`531337`"
 }
 
@@ -97,7 +99,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		 */
 		xfer_gc_to_caller(args: {
 			amount: number | string
-			memo?: string
+			memo?: string | undefined
 		}): ScriptResponse
 	}
 
@@ -419,36 +421,22 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		 * **FULLSEC**
 		 */
 		upgrades_of_owner<
-			F extends Partial<Upgrade & { loaded: boolean }>,
-			I extends number,
-			U extends boolean = false
-		>(args?: {
-			filter?: F,
-			full?: U
-		} | {
-			i: I
-			full?: undefined
-			filter?: undefined
-		}): (
-			number extends I
-				? (
-					U extends true
-						? Replace<
-							Upgrade,
-							F
-						>
-						: Replace<
-							Pick<
-								Upgrade,
-								"tier" | "rarity" | "name" | "type" | "i" | "loaded"
-							>,
-							Pick<
-								F,
-								Extract<keyof F, "tier" | "rarity" | "name" | "type" | "i" | "loaded">
-							>
-						>
-				)[]
-				: Replace<Upgrade, { i: I }>
+			F extends Partial<Upgrade & { loaded: boolean }> = {}
+		>(args?: { filter?: F, full?: false }): (
+			Omit<
+				Pick<UpgradeCore, "tier" | "rarity" | "name" | "type" | "i" | "loaded">,
+				keyof F
+			> & Pick<F, "tier" | "rarity" | "name" | "type" | "i" | "loaded">
+		)[] | ScriptFailure
+
+		upgrades_of_owner<
+			F extends Partial<Upgrade & { loaded: boolean }> = {}
+		>(args: { filter?: F, full: true }): (
+			Omit<UpgradeCore, keyof F> & F & { [x: string]: null | boolean | number | string }
+		)[] | ScriptFailure
+
+		upgrades_of_owner<I extends number>(args: { i: I }): (
+			Omit<UpgradeCore, "i"> & { [x: string]: null | boolean | number | string, i: I }
 		) | ScriptFailure
 
 		/**
@@ -598,22 +586,35 @@ type Highsec = Fullsec & PlayerHighsec & {
 		/**
 		 * **HIGHSEC**
 		 */
-		upgrades(args: { i: number }): Upgrade
+		upgrades<I extends number>(args: { i: I }): (
+			Omit<UpgradeCore, "i"> & { [x: string]: null | boolean | number | string, i: I }
+		) | ScriptFailure
 
-		upgrades(args?: {
-			filter?: Partial<Upgrade>
+		upgrades<
+			F extends Partial<Upgrade & { loaded: boolean }> = {}
+		>(args?: {
+			filter?: F
 			is_script?: true
 			full?: false
-		}): Pick<Upgrade, "tier" | "rarity" | "name" | "type" | "i" | "loaded">[] | ScriptFailure
+		}): (
+			Omit<
+				Pick<UpgradeCore, "tier" | "rarity" | "name" | "type" | "i" | "loaded">,
+				keyof F
+			> & F & { [x: string]: null | boolean | number | string }
+		)[] | ScriptFailure
 
-		upgrades(args?: {
-			filter?: Partial<Upgrade>
+		upgrades<
+			F extends Partial<Upgrade & { loaded: boolean }> = {}
+		>(args?: {
+			filter?: F
 			is_script?: true
 			full: true
-		}): Upgrade[] | ScriptFailure
+		}): (
+			Omit<UpgradeCore, keyof F> & F & { [x: string]: null | boolean | number | string }
+		)[] | ScriptFailure
 
 		upgrades(args?: {
-			filter?: Partial<Upgrade>
+			filter?: Partial<Upgrade & { loaded: boolean }>
 			is_script: false
 			full?: false
 		}): {
@@ -621,11 +622,18 @@ type Highsec = Fullsec & PlayerHighsec & {
 			upgrades: string[]
 		} | ScriptFailure
 
-		upgrades(args?: {
-			filter?: Partial<Upgrade>
+		upgrades<
+			F extends Partial<Upgrade & { loaded: boolean }> = {}
+		>(args?: {
+			filter?: F
 			is_script: false
 			full: true
-		}): CLIUpgrade[] | ScriptFailure
+		}): (
+			Omit<UpgradeCore, keyof F | `rarity`> & F & {
+				[x: string]: null | boolean | number | string
+				rarity: "`0noob`" | "`1kiddie`" | "`2h4x0r`" | "`3h4rdc0r3`" | "`4|_|b3|2`" | "`531337`"
+			}
+		)[] | ScriptFailure
 	}
 
 	users: {
@@ -1359,3 +1367,43 @@ declare const _TIMEOUT: number
  * Normally `5000` though it has been known to change.
  */
 declare const _TO: typeof _TIMEOUT
+
+/** The source code of this script as a string. */
+declare const _SOURCE: string
+
+/** A unix timestamp of the date this script was built. */
+declare const _BUILD_DATE: number
+
+/**
+ * The user this script has been uploaded to.
+ *
+ * Shorter alternative to `context.this_script.split(".")[0].
+ *
+ * In rare cases where it's not known at build time, it's `"UNKNOWN"`.
+ */
+declare const _SCRIPT_USER: string
+
+/**
+ * The name of this script excluding the user and `.`.
+ *
+ * e.g. in the script `foo.bar`, `_SCRIPT_NAME` is `bar`.
+ *
+ * Shorter alternative to `context.this_script.split(".")[1].
+ *
+ * In rare cases where it's not known at build time, it's `"UNKNOWN"`.
+ */
+declare const _SCRIPT_NAME: string
+
+/**
+ * The full name of this script equivilent to `context.this_script` but should use less characters.
+ *
+ * In rare cases where it's not known at build time, it's `"UNKNOWN"`.
+ */
+declare const _FULL_SCRIPT_NAME: string
+
+/**
+ * The seclevel of this script as a number.
+ *
+ * In rare cases where it's not known at build time, it's `-1`.
+ */
+declare const _SECLEVEL: -1 | 0 | 1 | 2 | 3 | 4
