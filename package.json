@@ -4,7 +4,7 @@
 	"scripts": {
 		"postinstall": "patch-package",
 		"push": "hsm push src",
-		"watch": "hsm watch src --gen-types=../player.d.ts",
+		"watch": "hsm watch src --gen-types=player.d.ts",
 		"sync-macros": "hsm sync-macros",
 		"test": "hsm test src",
 		"gen-types": "hsm gen-types src"
