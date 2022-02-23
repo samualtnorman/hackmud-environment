@@ -4,14 +4,14 @@ type Replace<T, R> =
 		Extract<keyof R, keyof T>
 	> & R
 
-type ScriptSuccess<T = {}> = { ok: true } & T
+type ScriptSuccess<T = object> = { ok: true } & T
 
 type ScriptFailure = {
 	ok: false
 	msg?: string
 }
 
-type ScriptResponse<T = {}> = ScriptSuccess<T> | ScriptFailure
+type ScriptResponse<T = object> = ScriptSuccess<T> | ScriptFailure
 type ErrorScripts = Record<string, () => ScriptFailure>
 
 type Subscripts =
@@ -35,9 +35,13 @@ type Subscripts =
 	}
 
 interface PlayerFullsec {}
+
 interface PlayerHighsec {}
+
 interface PlayerMidsec {}
+
 interface PlayerLowsec {}
+
 interface PlayerNullsec {}
 
 type UpgradeCore = {
@@ -52,7 +56,7 @@ type UpgradeCore = {
 	description: string
 }
 
-type Upgrade = UpgradeCore & { [x: string]: null | boolean | number | string }
+type Upgrade = UpgradeCore & Record<string, null | boolean | number | string>
 
 type CLIUpgrade = Omit<UpgradeCore, `rarity`> & {
 	[x: string]: null | boolean | number | string
@@ -92,19 +96,19 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		 *
 		 * @returns GC balance of script owner
 		 */
-		balance_of_owner(): number
+		balance_of_owner: () => number
 
 		/**
 		 * **FULLSEC**
 		 */
-		xfer_gc_to_caller(args: {
+		xfer_gc_to_caller: (args: {
 			amount: number | string
 			memo?: string | undefined
-		}): ScriptResponse
+		}) => ScriptResponse
 	}
 
 	bbs: {
-		read(): {
+		read: () => {
 			boards: {
 				title: string
 				slug: string
@@ -139,7 +143,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		 * You cannot create a channel that already exists (including any of the default ports from `0000` to `FFFF`).
 		 * If you do not supply a password, anyone can join your channel (but the channel name is not displayed anywhere, so they would have to discover it in some way first).
 		 */
-		create(args: {
+		create: ((args: {
 			/**
 			 * The name of the channel to create
 			 */
@@ -149,9 +153,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 			 * The password to secure the channel with
 			 */
 			password?: string
-		}): ScriptResponse
-
-		create(args: {
+		}) => ScriptResponse) & ((args: {
 			/**
 			 * The name of the channel to create
 			 */
@@ -161,7 +163,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 			 * The password to secure the channel with
 			 */
 			password?: string
-		}): ScriptResponse
+		}) => ScriptResponse)
 
 		/**
 		 * **FULLSEC**
@@ -171,7 +173,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		 * @description This script lets you send a message to the specified channel.
 		 * You must have joined the channel, and you will see your own message (unlike chats.tell).
 		 */
-		send(args: {
+		send: (args: {
 			/**
 			 * The channel to send the message to.
 			 */
@@ -181,7 +183,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 			 * The message to send
 			 */
 			msg: string
-		}): ScriptResponse
+		}) => ScriptResponse
 
 		/**
 		 * **FULLSEC**
@@ -192,7 +194,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		 * You can message any user, you only need their username.
 		 * Note that you will not be able to see your message after it is sent (though many chat scripts based on chats.tell also send the message to you to work around this limitation).
 		 */
-		tell(args: {
+		tell: (args: {
 			/**
 			 * The username to send the message to
 			 */
@@ -202,17 +204,17 @@ type Fullsec = Subscripts & PlayerFullsec & {
 			 * The message to send
 			 */
 			msg: string
-		}): ScriptResponse
+		}) => ScriptResponse
 	}
 
 	escrow: {
 		/**
 		 * **FULLSEC**
 		 */
-		charge(args: {
+		charge: (args: {
 			cost: number | string
 			is_unlim?: boolean
-		}): null | ScriptFailure
+		}) => null | ScriptFailure
 
 		confirm: never
 	}
@@ -229,19 +231,17 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		/**
 		 * **FULLSEC**
 		 */
-		browse(args: {
+		browse: ((args: {
 			seller: string
 			listed_before: number
 			listed_after: number
 			cost: number | string
-		} & CLIUpgrade): {
+		} & CLIUpgrade) => {
 			i: string
 			name: string
 			rarity: Upgrade["rarity"]
 			cost: number
-		}[] | ScriptFailure
-
-		browse<I extends string>(args: { i: I }): {
+		}[] | ScriptFailure) & (<I extends string>(args: { i: I }) => {
 			i: I
 			seller: string
 			cost: number
@@ -249,9 +249,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 			description: string
 			upgrade: Upgrade
 			no_notify: boolean
-		} | ScriptFailure
-
-		browse<I extends string[]>(args: { i: I }): {
+		} | ScriptFailure) & (<I extends string[]>(args: { i: I }) => {
 			i: I
 			seller: string
 			cost: number
@@ -259,20 +257,19 @@ type Fullsec = Subscripts & PlayerFullsec & {
 			description: string
 			upgrade: Upgrade
 			no_notify: boolean
-		}[] | ScriptFailure
+		}[] | ScriptFailure)
 	}
 
 	scripts: {
 		/**
 		 * **FULLSEC**
 		 */
-		fullsec(args?: {}): string[]
-		fullsec(args: { sector: string }): string[] | ScriptFailure
+		fullsec: ((args?: object) => string[]) & ((args: { sector: string }) => string[] | ScriptFailure)
 
 		/**
 		 * **FULLSEC**
 		 */
-		get_access_level(args: { name: string }): {
+		get_access_level: (args: { name: string }) => {
 			public: boolean
 			hidden: boolean
 			trust: boolean
@@ -281,124 +278,120 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		/**
 		 * **FULLSEC**
 		 */
-		get_level(args: { name: string }): 0 | 1 | 2 | 3 | 4 | ScriptFailure
+		get_level: (args: { name: string }) => 0 | 1 | 2 | 3 | 4 | ScriptFailure
 
 		/**
 		 * **FULLSEC**
 		 */
-		highsec(args?: {}): string[]
-		highsec(args: { sector: string }): string[] | ScriptFailure
+		highsec: ((args?: object) => string[]) & ((args: { sector: string }) => string[] | ScriptFailure)
 
 		/**
 		 * **FULLSEC**
 		 */
-		lowsec(args?: {}): string[]
-		lowsec(args: { sector: string }): string[] | ScriptFailure
+		lowsec: ((args?: object) => string[]) & ((args: { sector: string }) => string[] | ScriptFailure)
 
 		/**
 		 * **FULLSEC**
 		 */
-		midsec(args?: {}): string[]
-		midsec(args: { sector: string }): string[] | ScriptFailure
+		midsec: ((args?: object) => string[]) & ((args: { sector: string }) => string[] | ScriptFailure)
 
 		/**
 		 * **FULLSEC**
 		 */
-		nullsec(args?: {}): string[]
-		nullsec(args: { sector: string }): string[] | ScriptFailure
+		nullsec: ((args?: object) => string[]) & ((args: { sector: string }) => string[] | ScriptFailure)
 
 		/**
 		 * **FULLSEC**
 		 */
-		trust(): string[]
+		trust: () => string[]
 
 		/**
 		 * FULLSEC
 		 *
 		 * @returns a code library containing useful helper functions you can use in your scripts.
 		 */
-		lib(): {
-			ok(): ScriptSuccess
+		lib: () => {
+			ok: () => ScriptSuccess
 
-			not_impl(): {
+			not_impl: () => {
 				ok: false
 				msg: "Not Implemented."
 			}
 
-			log(message: any): any
-			get_log(): string[]
-			rand_int(min: number, max: number): number
-			clamp(floor: number, value: number, ceil: number): number
-			lerp(...args: any): any
-			sample(...args: any): any
-			are_ids_eq(id1: any, id2: any): boolean
-			id_to_str(...args: any): any
-			is_bool(value: any): value is boolean
-			is_obj(value: any): value is Record<string, unknown> | null
-			is_str(value: any): value is string
-			is_num(value: any): value is number
-			is_int(value: any): value is number
-			is_neg(value: any): value is number
-			is_arr(value: any): value is unknown[]
-			is_func(value: any): value is (...args: any[]) => unknown
-			is_def(value: any): boolean
-			is_valid_name(value: string): boolean
-			dump(value: { toString(): string }): string
-			clone<T extends object>(object: T): T
-			merge<F extends object, S>(firstValue: F, secondValue: S): F & S
-			get_values(obj: object): any
-			hash_code(string: string): number
-			xmur3(...args: any): any
-			sfc32(...args: any): any
-			mulberry32(...args: any): any
-			xoshiro128ss(...args: any): any
-			JSF(...args: any): any
-			LCG(...args: any): any
-			to_gc_str(num: number): string
-			to_gc_num(str: string): number | ScriptFailure
-			to_game_timestr(date: Date): string
+			log: (message: any) => any
+			get_log: () => string[]
+			rand_int: (min: number, max: number) => number
+			clamp: (floor: number, value: number, ceil: number) => number
+			lerp: (...args: any) => any
+			sample: (...args: any) => any
+			are_ids_eq: (id1: any, id2: any) => boolean
+			id_to_str: (...args: any) => any
+			is_bool: (value: any) => value is boolean
+			is_obj: (value: any) => value is Record<string, unknown> | null
+			is_str: (value: any) => value is string
+			is_num: (value: any) => value is number
+			is_int: (value: any) => value is number
+			is_neg: (value: any) => value is number
+			is_arr: (value: any) => value is unknown[]
+			is_func: (value: any) => value is (...args: any[]) => unknown
+			is_def: (value: any) => boolean
+			is_valid_name: (value: string) => boolean
+			dump: (value: { toString: () => string }) => string
+			clone: <T extends object>(object: T) => T
+			merge: <F extends object, S>(firstValue: F, secondValue: S) => F & S
+			get_values: (object: object) => any
+			hash_code: (string: string) => number
+			xmur3: (...args: any) => any
+			sfc32: (...args: any) => any
+			mulberry32: (...args: any) => any
+			xoshiro128ss: (...args: any) => any
+			JSF: (...args: any) => any
+			LCG: (...args: any) => any
+			to_gc_str: (number: number) => string
+			to_gc_num: (string: string) => number | ScriptFailure
+			to_game_timestr: (date: Date) => string
 			corruption_chars: "¡¢Á¤Ã¦§¨©ª"
 			colors: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 			corruptions: [ 0, 1, 1.5, 2.5, 5 ]
-			corrupt(text: string | string[], amount: 0 | 1 | 2 | 3 | 4): string
-			cap_str_len(string: string, length: number): string
-			each<T>(array: T[], fn: (key: string, value: T) => void): void
-			select<T>(array: T[], fn: (key: string, value: T) => boolean): T[]
-			count<T>(array: T[], fn: (key: string, value: T) => boolean): number
-			select_one<T>(array: T[], fn: (key: string, value: T) => boolean): T
-			map<T>(array: T[], fn: (key: string, value: T) => boolean): T[]
-			pick(...args: any): any
-			shuffle<T>(array: T[]): T[]
-			sort_asc(...args: any): any
-			sort_desc(...args: any): any
-			num_sort_asc(one: number, two: number): 1 | -1 | 0
-			num_sort_desc(one: number, two: number): 1 | -1 | 0
-			max_val_index(array: number[]): number
-			add_time(date: Date, add_ms: number): Date
+			corrupt: (text: string | string[], amount: 0 | 1 | 2 | 3 | 4) => string
+			cap_str_len: (string: string, length: number) => string
+			each: <T>(array: T[], function_: (key: string, value: T) => void) => void
+			select: <T>(array: T[], function_: (key: string, value: T) => boolean) => T[]
+			count: <T>(array: T[], function_: (key: string, value: T) => boolean) => number
+			select_one: <T>(array: T[], function_: (key: string, value: T) => boolean) => T
+			map: <T>(array: T[], function_: (key: string, value: T) => boolean) => T[]
+			pick: (...args: any) => any
+			shuffle: <T>(array: T[]) => T[]
+			sort_asc: (...args: any) => any
+			sort_desc: (...args: any) => any
+			num_sort_asc: (one: number, two: number) => 1 | -1 | 0
+			num_sort_desc: (one: number, two: number) => 1 | -1 | 0
+			max_val_index: (array: number[]) => number
+			add_time: (date: Date, add_ms: number) => Date
 			security_level_names: [ "NULLSEC", "LOWSEC", "MIDSEC", "HIGHSEC", "FULLSEC" ]
-			get_security_level_name(security_level: number): any
-			dbu_result_failed(...args: any): any
-			dbir_result_failed(...args: any): any
-			create_rand_string(len: number): string
-			get_user_from_script(script_name: string): string
-			get_scriptname_from_script(...args: any): any
-			is_script(...args: any): any
-			caller_is_owner(...args: any): any
-			uniq(...args: any): any
-			u_sort_num_arr_desc<T>(array: T[]): T[]
-			ljust(...args: any): any
-			rjust(...args: any): any
-			columnize(str: string[]): string
-			side_by_side(...args: any): any
-			can_continue_execution(time_left: number): boolean
-			can_continue_execution_error(...args: any): any
+			get_security_level_name: (security_level: number) => any
+			dbu_result_failed: (...args: any) => any
+			dbir_result_failed: (...args: any) => any
+			create_rand_string: (length: number) => string
+			get_user_from_script: (script_name: string) => string
+			get_scriptname_from_script: (...args: any) => any
+			is_script: (...args: any) => any
+			caller_is_owner: (...args: any) => any
+			uniq: (...args: any) => any
+			u_sort_num_arr_desc: <T>(array: T[]) => T[]
+			ljust: (...args: any) => any
+			rjust: (...args: any) => any
+			columnize: (string: string[]) => string
+			side_by_side: (...args: any) => any
+			can_continue_execution: (time_left: number) => boolean
+			can_continue_execution_error: (...args: any) => any
 			date: typeof Date
-			get_date(): Date
-			get_date_utcsecs(): number
-			one_day_ms: 86400000
-			is_not_today(...args: any): any
-			utc_day_diff(...args: any): any
-			utc_days_ago_str(...args: any): any
+			get_date: () => Date
+			get_date_utcsecs: () => number
+			one_day_ms: 86_400_000
+			is_not_today: (...args: any) => any
+			utc_day_diff: (...args: any) => any
+			utc_days_ago_str: (...args: any) => any
 			math: typeof Math
 			array: typeof Array
 			parse_int: typeof parseInt
@@ -411,7 +404,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		/**
 		 * **FULLSEC**
 		 */
-		quine(): string
+		quine: () => string
 	}
 
 	sys: {
@@ -420,49 +413,43 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		/**
 		 * **FULLSEC**
 		 */
-		upgrades_of_owner<
-			F extends Partial<Upgrade & { loaded: boolean }> = {}
-		>(args?: { filter?: F, full?: false }): (
+		upgrades_of_owner: (<
+			F extends Partial<Upgrade & { loaded: boolean }> = object
+		>(args?: { filter?: F, full?: false }) => (
 			Omit<
 				Pick<UpgradeCore, "tier" | "rarity" | "name" | "type" | "i" | "loaded">,
 				keyof F
 			> & Pick<F, "tier" | "rarity" | "name" | "type" | "i" | "loaded">
-		)[] | ScriptFailure
-
-		upgrades_of_owner<
-			F extends Partial<Upgrade & { loaded: boolean }> = {}
-		>(args: { filter?: F, full: true }): (
-			Omit<UpgradeCore, keyof F> & F & { [x: string]: null | boolean | number | string }
-		)[] | ScriptFailure
-
-		upgrades_of_owner<I extends number>(args: { i: I }): (
+		)[] | ScriptFailure) & (<
+			F extends Partial<Upgrade & { loaded: boolean }> = object
+		>(args: { filter?: F, full: true }) => (
+			Omit<UpgradeCore, keyof F> & F & Record<string, null | boolean | number | string>
+		)[] | ScriptFailure) & (<I extends number>(args: { i: I }) => (
 			Omit<UpgradeCore, "i"> & { [x: string]: null | boolean | number | string, i: I }
-		) | ScriptFailure
+		) | ScriptFailure)
 
 		/**
 		 * **FULLSEC**
 		 */
-		xfer_upgrade_to_caller(args: {
+		xfer_upgrade_to_caller: ((args: {
 			i: number | number[]
 			memo?: string
-		}): ScriptResponse
-
-		xfer_upgrade_to_caller(args: {
+		}) => ScriptResponse) & ((args: {
 			sn: string | string[]
 			memo?: string
-		}): ScriptResponse
+		}) => ScriptResponse)
 	}
 
 	users: {
 		/**
 		 * **FULLSEC**
 		 */
-		active(): number
+		active: () => number
 
 		/**
 		 * **FULLSEC**
 		 */
-		last_action(args: { name: string | string[] }): ({
+		last_action: (args: { name: string | string[] }) => ({
 			n: string
 			t?: Date
 		} | null)[]
@@ -470,7 +457,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 		/**
 		 * **FULLSEC**
 		 */
-		top(): [
+		top: () => [
 			UsersTopItem<1>,
 			UsersTopItem<2>,
 			UsersTopItem<3>,
@@ -480,7 +467,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 			UsersTopItem<7>,
 			UsersTopItem<8>,
 			UsersTopItem<9>,
-			UsersTopItem<10>,
+			UsersTopItem<10>
 		]
 	}
 }
@@ -493,8 +480,7 @@ type Highsec = Fullsec & PlayerHighsec & {
 		 * @returns GC balance as number if `is_script` is true (default)
 		 * @returns GC balance as string if `is_script` is false
 		 */
-		balance(args?: { is_script?: true }): number
-		balance(args: { is_script: false }): string
+		balance: ((args?: { is_script?: true }) => number) & ((args: { is_script: false }) => string)
 
 		/**
 		 * **HIGHSEC**
@@ -503,28 +489,26 @@ type Highsec = Fullsec & PlayerHighsec & {
 		 * @returns if `is_script` is true (default), time property as Date object
 		 * @returns wraps transactions in object with msg, time property as string (game date format e.g. 201028.2147) if `is_script` is false
 		 */
-		transactions(args?: {
+		transactions: ((args?: {
 			count?: number | "all"
 			to?: string
 			from?: string
 			script?: string
 			is_script?: true
-		}): {
+		}) => {
 			time: Date
 			amount: number
 			sender: string
 			recipient: string
 			script: string | null
 			memo?: string
-		}[]
-
-		transactions(args: {
+		}[]) & ((args: {
 			count?: number | "all"
 			to?: string
 			from?: string
 			script?: string
 			is_script: false
-		}): {
+		}) => {
 			msg: string
 			transactions: {
 				time: string
@@ -534,26 +518,26 @@ type Highsec = Fullsec & PlayerHighsec & {
 				script: string | null
 				memo?: string
 			}[]
-		}
+		})
 	}
 
 	scripts: {
 		/**
 		 * **HIGHSEC**
 		 */
-		sys(): string | string[]
+		sys: () => string | string[]
 	}
 
 	sys: {
 		/**
 		 * **HIGHSEC**
 		 */
-		specs(): string | ScriptFailure
+		specs: () => string | ScriptFailure
 
 		/**
 		 * **HIGHSEC**
 		 */
-		status(): {
+		status: () => {
 			hardline: number
 			tutorial: string
 			breach: boolean
@@ -562,98 +546,84 @@ type Highsec = Fullsec & PlayerHighsec & {
 		/**
 		 * **HIGHSEC**
 		 */
-		upgrade_log(args?: {
+		upgrade_log: ((args?: {
 			is_script?: true
 			user?: string
 			run_id?: string
 			count?: number
 			start?: number
-		}): {
+		}) => {
 			t: Date
 			u: string
 			r: string
 			msg: string
-		}[] | ScriptFailure
-
-		upgrade_log(args: {
+		}[] | ScriptFailure) & ((args: {
 			is_script: false
 			user?: string
 			run_id?: string
 			count?: number
 			start?: number
-		}): string[] | ScriptFailure
+		}) => string[] | ScriptFailure)
 
 		/**
 		 * **HIGHSEC**
 		 */
-		upgrades<I extends number>(args: { i: I }): (
+		upgrades: (<I extends number>(args: { i: I }) => (
 			Omit<UpgradeCore, "i"> & { [x: string]: null | boolean | number | string, i: I }
-		) | ScriptFailure
-
-		upgrades<
-			F extends Partial<Upgrade & { loaded: boolean }> = {}
+		) | ScriptFailure) & (<
+			F extends Partial<Upgrade & { loaded: boolean }> = object
 		>(args?: {
 			filter?: F
 			is_script?: true
 			full?: false
-		}): (
+		}) => (
 			Omit<
 				Pick<UpgradeCore, "tier" | "rarity" | "name" | "type" | "i" | "loaded">,
 				keyof F
-			> & F & { [x: string]: null | boolean | number | string }
-		)[] | ScriptFailure
-
-		upgrades<
-			F extends Partial<Upgrade & { loaded: boolean }> = {}
+			> & F & Record<string, null | boolean | number | string>
+		)[] | ScriptFailure) & (<
+			F extends Partial<Upgrade & { loaded: boolean }> = object
 		>(args?: {
 			filter?: F
 			is_script?: true
 			full: true
-		}): (
-			Omit<UpgradeCore, keyof F> & F & { [x: string]: null | boolean | number | string }
-		)[] | ScriptFailure
-
-		upgrades(args?: {
+		}) => (
+			Omit<UpgradeCore, keyof F> & F & Record<string, null | boolean | number | string>
+		)[] | ScriptFailure) & ((args?: {
 			filter?: Partial<Upgrade & { loaded: boolean }>
 			is_script: false
 			full?: false
-		}): {
+		}) => {
 			msg: string
 			upgrades: string[]
-		} | ScriptFailure
-
-		upgrades<
-			F extends Partial<Upgrade & { loaded: boolean }> = {}
+		} | ScriptFailure) & (<
+			F extends Partial<Upgrade & { loaded: boolean }> = object
 		>(args?: {
 			filter?: F
 			is_script: false
 			full: true
-		}): (
+		}) => (
 			Omit<UpgradeCore, keyof F | `rarity`> & F & {
 				[x: string]: null | boolean | number | string
 				rarity: "`0noob`" | "`1kiddie`" | "`2h4x0r`" | "`3h4rdc0r3`" | "`4|_|b3|2`" | "`531337`"
 			}
-		)[] | ScriptFailure
+		)[] | ScriptFailure)
 	}
 
 	users: {
 		/**
 		 * **HIGHSEC**
 		 */
-		inspect(args: {
+		inspect: ((args: {
 			name: "trust"
 			is_script?: boolean
-		}): number
-
-		inspect(args: {
+		}) => number) & ((args: {
 			name: "risk"
 			is_script?: boolean
-		}): string
-
-		inspect(args: {
+		}) => string) & ((args: {
 			name: string
 			is_script?: true
-		}): {
+		}) => {
 			username: string
 			avatar: string
 			pronouns: string
@@ -663,12 +633,10 @@ type Highsec = Fullsec & PlayerHighsec & {
 			is_main: boolean
 			alt_of?: string
 			badges?: string[]
-		} | ScriptFailure
-
-		inspect(args: {
+		} | ScriptFailure) & ((args: {
 			name: string
 			is_script: false
-		}): string | ScriptFailure
+		}) => string | ScriptFailure)
 	}
 }
 
@@ -677,50 +645,50 @@ type Midsec = Highsec & PlayerMidsec & {
 		/**
 		 * **MIDSEC**
 		 */
-		xfer_gc_to(args: {
+		xfer_gc_to: (args: {
 			to: string
 			amount: number | string
 			memo?: string
-		}): ScriptResponse
+		}) => ScriptResponse
 	}
 
 	autos: {
 		/**
 		 * **MIDSEC**
 		 */
-		reset(): ScriptSuccess
+		reset: () => ScriptSuccess
 	}
 
 	chats: {
 		/**
 		 * **MIDSEC**
 		 */
-		channels(): string[]
+		channels: () => string[]
 
 		/**
 		 * **MIDSEC**
 		 */
-		join(args: {
+		join: (args: {
 			channel: string
 			password?: string
-		}): ScriptResponse
+		}) => ScriptResponse
 
 		/**
 		 * **MIDSEC**
 		 */
-		leave(args: { channel: string }): ScriptResponse
+		leave: (args: { channel: string }) => ScriptResponse
 
 		/**
 		 * **MIDSEC**
 		 */
-		users(args: { channel: string }): string[] | ScriptFailure
+		users: (args: { channel: string }) => string[] | ScriptFailure
 	}
 
 	escrow: {
 		/**
 		 * **MIDSEC**
 		 */
-		stats(): {
+		stats: () => {
 			scripts: string[]
 			total: string
 			outstanding: string
@@ -732,16 +700,16 @@ type Midsec = Highsec & PlayerMidsec & {
 		/**
 		 * **MIDSEC**
 		 */
-		buy(args: {
+		buy: (args: {
 			i: string
 			count: number
 			confirm: true
-		}): ScriptResponse
+		}) => ScriptResponse
 
 		/**
 		 * **MIDSEC**
 		 */
-		stats(): ScriptFailure | {
+		stats: () => ScriptFailure | {
 			total: string
 			outstanding: string
 			listed: number
@@ -753,25 +721,23 @@ type Midsec = Highsec & PlayerMidsec & {
 		/**
 		 * **MIDSEC**
 		 */
-		user(): string[]
+		user: () => string[]
 	}
 
 	sys: {
 		/**
 		 * **MIDSEC**
 		 */
-		manage(args: {
+		manage: ((args: {
 			unload?: number | number[]
 			load?: number | number[]
-		}): ScriptResponse
-
-		manage(args: { reorder?: ([ number, number ] | {
+		}) => ScriptResponse) & ((args: { reorder?: ([ number, number ] | {
 			from: number
 			to: number
 		})[] | {
 			from: number
 			to: number
-		} }): string[] | ScriptFailure
+		} }) => string[] | ScriptFailure)
 	}
 }
 
@@ -780,72 +746,68 @@ type Lowsec = Midsec & PlayerLowsec & {
 		/**
 		 * **LOWSEC**
 		 */
-		hardline(): ScriptResponse
+		hardline: () => ScriptResponse
 	}
 
 	market: {
 		/**
 		 * **LOWSEC**
 		 */
-		sell(args: {
+		sell: (args: {
 			i: number
 			cost: number | string
 			description?: string
 			count?: number
 			no_notify?: boolean
 			confirm: true
-		}): ScriptResponse<{ token: string }>
+		}) => ScriptResponse<{ token: string }>
 	}
 
 	sys: {
 		/**
 		 * **LOWSEC**
 		 */
-		access_log(args?: {
+		access_log: ((args?: {
 			user?: string
 			run_id?: string
 			is_script?: true
 			count?: number
 			start?: number
-		}): {
+		}) => {
 			t: Date
 			u: string | undefined
 			r: string | undefined
 			msg: string
-		}[] | ScriptFailure
-
-		access_log(args: {
+		}[] | ScriptFailure) & ((args: {
 			user?: string
 			run_id?: string
 			is_script: false
 			count?: number
 			start?: number
-		}): string[]
+		}) => string[])
 
 		/**
 		 * **LOWSEC**
 		 */
-		cull(args: { i: number | number[], confirm: true }): ScriptResponse
+		cull: (args: { i: number | number[], confirm: true }) => ScriptResponse
 
 		/**
 		 * **LOWSEC**
 		 */
-		loc(): string | ScriptFailure
+		loc: () => string | ScriptFailure
 
 		/**
 		 * **LOWSEC**
 		 */
-		xfer_upgrade_to(args: {
+		xfer_upgrade_to: ((args: {
 			i: number | number[]
 			to: string
 			memo?: string
-		}): ScriptResponse
-
-		xfer_upgrade_to(args: {
+		}) => ScriptResponse) & ((args: {
 			sn: string | string[]
 			to: string
 			memo?: string
-		}): ScriptResponse
+		}) => ScriptResponse)
 	}
 }
 
@@ -854,55 +816,51 @@ type Nullsec = Lowsec & PlayerNullsec & {
 		/**
 		 * **NULLSEC**
 		 */
-		create(args: {
+		create: (args: {
 			name: string
 			confirm: true
-		}): ScriptResponse
+		}) => ScriptResponse
 
 		/**
 		 * **NULLSEC**
 		 */
-		hire(args: { name: string }): ScriptResponse
+		hire: (args: { name: string }) => ScriptResponse
 
 		/**
 		 * **NULLSEC**
 		 */
-		manage(args: { command: "list" }): {
+		manage: ((args: { command: "list" }) => {
 			name: string
 			is_admin: boolean
-		}[] | ScriptFailure
-
-		manage(args: {
+		}[] | ScriptFailure) & ((args: {
 			command: "demote" | "promote"
 			name: string
 		} | {
 			command: "fire"
 			name: string
 			confirm: true
-		}): ScriptResponse
+		}) => ScriptResponse)
 
 		/**
 		 * **NULLSEC**
 		 */
-		offers(): {
+		offers: (() => {
 			offers: string[]
 			msg: string
 		} | ScriptSuccess<{
 			msg: string
 			current_corp: string | null
-		}>
-
-		offers(args: { accept: string }): ScriptResponse
+		}>) & ((args: { accept: string }) => ScriptResponse)
 
 		/**
 		 * **NULLSEC**
 		 */
-		quit(args: { confirm: true }): ScriptResponse
+		quit: (args: { confirm: true }) => ScriptResponse
 
 		/**
 		 * **NULLSEC**
 		 */
-		top(): CorpsTop | {
+		top: () => CorpsTop | {
 			top: CorpsTop
 			active: {
 				name: string
@@ -915,21 +873,21 @@ type Nullsec = Lowsec & PlayerNullsec & {
 		/**
 		 * **NULLSEC**
 		 */
-		breach(args: { confirm: true }): ScriptResponse
+		breach: (args: { confirm: true }) => ScriptResponse
 	}
 
 	trust: {
 		/**
 		 * **NULLSEC**
 		 */
-		me(): string
+		me: () => string
 	}
 
 	users: {
 		/**
 		 * **NULLSEC**
 		 */
-		config(args: {
+		config: ((args: {
 			list: false
 			is_script?: true | null
 			avatar?: string | null
@@ -941,9 +899,7 @@ type Nullsec = Lowsec & PlayerNullsec & {
 			corp?: boolean | null
 			alt_of?: string | null
 			badges?: string[] | null
-		}): ScriptResponse
-
-		config(args: {
+		}) => ScriptResponse) & ((args: {
 			list: true
 			is_script?: true
 			avatar?: string | null
@@ -955,7 +911,7 @@ type Nullsec = Lowsec & PlayerNullsec & {
 			corp?: boolean | null
 			alt_of?: string | null
 			badges?: string[] | null
-		}): {
+		}) => {
 			avatar: string | null
 			user_age?: boolean
 			account_age?: boolean
@@ -965,9 +921,7 @@ type Nullsec = Lowsec & PlayerNullsec & {
 			corp?: boolean
 			alt_of: string | null
 			badges: string[]
-		}
-
-		config(args: {
+		}) & ((args: {
 			list: true
 			is_script: false
 			avatar?: string | null
@@ -979,7 +933,7 @@ type Nullsec = Lowsec & PlayerNullsec & {
 			corp?: boolean | null
 			alt_of?: string | null
 			badges?: string[] | null
-		}): string
+		}) => string)
 	}
 }
 
@@ -998,9 +952,7 @@ type Query = {
 	$in?: MongoValue[]
 }
 
-type Projection = {
-	[key: string]: boolean | 0 | 1
-}
+type Projection = Record<string, boolean | 0 | 1>
 
 type MongoCommand = MongoCommandValue & Partial<{
 	$set: Record<string, MongoCommandValue>
@@ -1008,13 +960,11 @@ type MongoCommand = MongoCommandValue & Partial<{
 	$unset: Record<string, "">
 }>
 
-type Id = string | number | boolean | Date | {
-	[key: string]: MongoValue
-}
+type Id = string | number | boolean | Date | Record<string, MongoValue>
 
 type MongoDocument = {
-	_id: Id
 	[key: string]: MongoValue
+	_id: Id
 }
 
 type SortOrder = {
@@ -1025,44 +975,42 @@ type Cursor = {
 	/**
 	 * Returns the first document that satisfies the query.
 	 */
-	first(): MongoDocument | null
+	first: () => MongoDocument | null
 
 	/**
 	 * Returns an array of documents that satisfy the query.
 	 */
-	array(): MongoDocument[]
+	array: () => MongoDocument[]
 
 	/**
 	 * Returns the number of documents that match the query.
 	 */
-	count(): number
+	count: () => number
 
 	/**
 	 * Returns the first document that satisfies the query.
 	 * Also makes cursor unusable.
 	 */
-	first_and_close(): MongoDocument
-
+	first_and_close: () => MongoDocument
 
 	/**
 	 * Returns an array of documents that satisfy the query.
 	 * Also makes cursor unusable.
 	 */
-	array_and_close(): MongoDocument[]
-
+	array_and_close: () => MongoDocument[]
 
 	/**
 	 * Returns the number of documents that match the query.
 	 * Also makes cursor unusable.
 	 */
-	count_and_close(): number
+	count_and_close: () => number
 
 	/**
 	 * Run callback on each document that satisfied the query.
 	 *
 	 * @param funct callback function
 	 */
-	each(funct: (document: MongoDocument) => void): null
+	each: (funct: (document: MongoDocument) => void) => null
 
 	/**
 	 * Returns a new cursor with documents sorted as specified.
@@ -1070,35 +1018,34 @@ type Cursor = {
 	 *
 	 * @param order the way the documents are to be sorted
 	 */
-	sort(order?: SortOrder): Cursor
+	sort: (order?: SortOrder) => Cursor
 
 	/**
 	 * Returns a new cursor without the first number of documents.
 	 *
 	 * @param count number of documents to skip
 	 */
-	skip(count: number): Cursor
+	skip: (count: number) => Cursor
 
 	/**
 	 * Returns a new cursor limited to a number of documents as specified
 	 *
 	 * @param count number of documents
 	 */
-	limit(count: number): Cursor
+	limit: (count: number) => Cursor
 
 	/**
 	 * @param key they key of the documents
 	 */
-	distinct(key: string): MongoValue[]
-	distinct(key: "_id"): Id[]
+	distinct: ((key: string) => MongoValue[]) & ((key: "_id") => Id[])
 
 	/**
 	 * Makes cursor unusable.
 	 */
-	close(): null
+	close: () => null
 
-	NumberLong(number: number): number
-	ObjectId(): any
+	NumberLong: (number: number) => number
+	ObjectId: () => any
 }
 
 type CLIContext = {
@@ -1229,13 +1176,13 @@ declare const $db: {
 	 * Inserts a document or documents into a collection.
 	 * @param documents A document or array of documents to insert into the collection.
 	 */
-	i(documents: object | object[]): {
-		ok: 1,
-		n: number,
+	i: (documents: object | object[]) => {
+		ok: 1
+		n: number
 		opTime: {
-			ts: "Undefined Conversion",
+			ts: "Undefined Conversion"
 			t: number
-		},
+		}
 		electionId: "Undefined Conversion"
 	}
 
@@ -1245,7 +1192,7 @@ declare const $db: {
 	 * Removes documents from a collection.
 	 * @param query Specifies deletion criteria using query operators.
 	 */
-	r(query: Query): void
+	r: (query: Query) => void
 
 	/**
 	 * Find
@@ -1254,7 +1201,7 @@ declare const $db: {
 	 * @param query Specifies deletion criteria using query operators.
 	 * @param projection Specifies the fields to return in the documents that match the query filter.
 	 */
-	f(query?: Query, projection?: Projection): Cursor
+	f: (query?: Query, projection?: Projection) => Cursor
 
 	/**
 	 * Update
@@ -1263,7 +1210,7 @@ declare const $db: {
 	 * @param query Specifies deletion criteria using query operators.
 	 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
 	 */
-	u(query: Query | Query[], command: MongoCommand): {
+	u: (query: Query | Query[], command: MongoCommand) => {
 		ok: 0 | 1
 		nModified: number
 		n: number
@@ -1281,7 +1228,7 @@ declare const $db: {
 	 * @param query Specifies deletion criteria using query operators.
 	 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
 	 */
-	u1(query: Query | Query[], command: MongoCommand): void
+	u1: (query: Query | Query[], command: MongoCommand) => void
 
 	/**
 	 * Upsert
@@ -1291,7 +1238,7 @@ declare const $db: {
 	 * @param query Specifies deletion criteria using query operators.
 	 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
 	 */
-	us(query: Query | Query[], command: MongoCommand): void
+	us: (query: Query | Query[], command: MongoCommand) => void
 }
 
 /**
