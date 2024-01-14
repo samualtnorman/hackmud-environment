@@ -1,0 +1,882 @@
+diff --git a/lib/lib.es2015.collection.d.ts b/lib/lib.es2015.collection.d.ts
+index abeb66b929ae2b0ec908012f4db4141d74895a85..3367322770e5450a16014e6873cf6bd5ba3113ec 100644
+--- a/lib/lib.es2015.collection.d.ts
++++ b/lib/lib.es2015.collection.d.ts
+@@ -50,7 +50,7 @@ interface MapConstructor {
+     new <K, V>(entries?: readonly (readonly [K, V])[] | null): Map<K, V>;
+     readonly prototype: Map<any, any>;
+ }
+-declare var Map: MapConstructor;
++declare const Map: MapConstructor;
+ 
+ interface ReadonlyMap<K, V> {
+     forEach(callbackfn: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: any): void;
+@@ -84,7 +84,7 @@ interface WeakMapConstructor {
+     new <K extends WeakKey = WeakKey, V = any>(entries?: readonly (readonly [K, V])[] | null): WeakMap<K, V>;
+     readonly prototype: WeakMap<WeakKey, any>;
+ }
+-declare var WeakMap: WeakMapConstructor;
++declare const WeakMap: WeakMapConstructor;
+ 
+ interface Set<T> {
+     /**
+@@ -116,7 +116,7 @@ interface SetConstructor {
+     new <T = any>(values?: readonly T[] | null): Set<T>;
+     readonly prototype: Set<any>;
+ }
+-declare var Set: SetConstructor;
++declare const Set: SetConstructor;
+ 
+ interface ReadonlySet<T> {
+     forEach(callbackfn: (value: T, value2: T, set: ReadonlySet<T>) => void, thisArg?: any): void;
+@@ -144,4 +144,4 @@ interface WeakSetConstructor {
+     new <T extends WeakKey = WeakKey>(values?: readonly T[] | null): WeakSet<T>;
+     readonly prototype: WeakSet<WeakKey>;
+ }
+-declare var WeakSet: WeakSetConstructor;
++declare const WeakSet: WeakSetConstructor;
+diff --git a/lib/lib.es2015.promise.d.ts b/lib/lib.es2015.promise.d.ts
+index 43b1bd24a869e23f00bdaaf25a13ab90eb24c6ff..7cec1a5a359c92552c03e50eee9a297ac679d76c 100644
+--- a/lib/lib.es2015.promise.d.ts
++++ b/lib/lib.es2015.promise.d.ts
+@@ -77,5 +77,3 @@ interface PromiseConstructor {
+      */
+     resolve<T>(value: T | PromiseLike<T>): Promise<Awaited<T>>;
+ }
+-
+-declare var Promise: PromiseConstructor;
+diff --git a/lib/lib.es2015.proxy.d.ts b/lib/lib.es2015.proxy.d.ts
+index 22a0c174600b0376d9a7a2b010ce5652192e2114..73df6bbfb12df0187df64378638eacce9e8166f3 100644
+--- a/lib/lib.es2015.proxy.d.ts
++++ b/lib/lib.es2015.proxy.d.ts
+@@ -125,4 +125,3 @@ interface ProxyConstructor {
+      */
+     new <T extends object>(target: T, handler: ProxyHandler<T>): T;
+ }
+-declare var Proxy: ProxyConstructor;
+diff --git a/lib/lib.es2015.reflect.d.ts b/lib/lib.es2015.reflect.d.ts
+index 3ee27b5250b6ad73b6bf62adead9fd8e4ea3186d..c2e214ede209ef69317528eb5c3b2c3e27cff252 100644
+--- a/lib/lib.es2015.reflect.d.ts
++++ b/lib/lib.es2015.reflect.d.ts
+@@ -15,130 +15,3 @@ and limitations under the License.
+ 
+ 
+ /// <reference no-default-lib="true"/>
+-
+-declare namespace Reflect {
+-    /**
+-     * Calls the function with the specified object as the this value
+-     * and the elements of specified array as the arguments.
+-     * @param target The function to call.
+-     * @param thisArgument The object to be used as the this object.
+-     * @param argumentsList An array of argument values to be passed to the function.
+-     */
+-    function apply<T, A extends readonly any[], R>(
+-        target: (this: T, ...args: A) => R,
+-        thisArgument: T,
+-        argumentsList: Readonly<A>,
+-    ): R;
+-    function apply(target: Function, thisArgument: any, argumentsList: ArrayLike<any>): any;
+-
+-    /**
+-     * Constructs the target with the elements of specified array as the arguments
+-     * and the specified constructor as the `new.target` value.
+-     * @param target The constructor to invoke.
+-     * @param argumentsList An array of argument values to be passed to the constructor.
+-     * @param newTarget The constructor to be used as the `new.target` object.
+-     */
+-    function construct<A extends readonly any[], R>(
+-        target: new (...args: A) => R,
+-        argumentsList: Readonly<A>,
+-        newTarget?: new (...args: any) => any,
+-    ): R;
+-    function construct(target: Function, argumentsList: ArrayLike<any>, newTarget?: Function): any;
+-
+-    /**
+-     * Adds a property to an object, or modifies attributes of an existing property.
+-     * @param target Object on which to add or modify the property. This can be a native JavaScript object
+-     *        (that is, a user-defined object or a built in object) or a DOM object.
+-     * @param propertyKey The property name.
+-     * @param attributes Descriptor for the property. It can be for a data property or an accessor property.
+-     */
+-    function defineProperty(target: object, propertyKey: PropertyKey, attributes: PropertyDescriptor & ThisType<any>): boolean;
+-
+-    /**
+-     * Removes a property from an object, equivalent to `delete target[propertyKey]`,
+-     * except it won't throw if `target[propertyKey]` is non-configurable.
+-     * @param target Object from which to remove the own property.
+-     * @param propertyKey The property name.
+-     */
+-    function deleteProperty(target: object, propertyKey: PropertyKey): boolean;
+-
+-    /**
+-     * Gets the property of target, equivalent to `target[propertyKey]` when `receiver === target`.
+-     * @param target Object that contains the property on itself or in its prototype chain.
+-     * @param propertyKey The property name.
+-     * @param receiver The reference to use as the `this` value in the getter function,
+-     *        if `target[propertyKey]` is an accessor property.
+-     */
+-    function get<T extends object, P extends PropertyKey>(
+-        target: T,
+-        propertyKey: P,
+-        receiver?: unknown,
+-    ): P extends keyof T ? T[P] : any;
+-
+-    /**
+-     * Gets the own property descriptor of the specified object.
+-     * An own property descriptor is one that is defined directly on the object and is not inherited from the object's prototype.
+-     * @param target Object that contains the property.
+-     * @param propertyKey The property name.
+-     */
+-    function getOwnPropertyDescriptor<T extends object, P extends PropertyKey>(
+-        target: T,
+-        propertyKey: P,
+-    ): TypedPropertyDescriptor<P extends keyof T ? T[P] : any> | undefined;
+-
+-    /**
+-     * Returns the prototype of an object.
+-     * @param target The object that references the prototype.
+-     */
+-    function getPrototypeOf(target: object): object | null;
+-
+-    /**
+-     * Equivalent to `propertyKey in target`.
+-     * @param target Object that contains the property on itself or in its prototype chain.
+-     * @param propertyKey Name of the property.
+-     */
+-    function has(target: object, propertyKey: PropertyKey): boolean;
+-
+-    /**
+-     * Returns a value that indicates whether new properties can be added to an object.
+-     * @param target Object to test.
+-     */
+-    function isExtensible(target: object): boolean;
+-
+-    /**
+-     * Returns the string and symbol keys of the own properties of an object. The own properties of an object
+-     * are those that are defined directly on that object, and are not inherited from the object's prototype.
+-     * @param target Object that contains the own properties.
+-     */
+-    function ownKeys(target: object): (string | symbol)[];
+-
+-    /**
+-     * Prevents the addition of new properties to an object.
+-     * @param target Object to make non-extensible.
+-     * @return Whether the object has been made non-extensible.
+-     */
+-    function preventExtensions(target: object): boolean;
+-
+-    /**
+-     * Sets the property of target, equivalent to `target[propertyKey] = value` when `receiver === target`.
+-     * @param target Object that contains the property on itself or in its prototype chain.
+-     * @param propertyKey Name of the property.
+-     * @param receiver The reference to use as the `this` value in the setter function,
+-     *        if `target[propertyKey]` is an accessor property.
+-     */
+-    function set<T extends object, P extends PropertyKey>(
+-        target: T,
+-        propertyKey: P,
+-        value: P extends keyof T ? T[P] : any,
+-        receiver?: any,
+-    ): boolean;
+-    function set(target: object, propertyKey: PropertyKey, value: any, receiver?: any): boolean;
+-
+-    /**
+-     * Sets the prototype of a specified object o to object proto or null.
+-     * @param target The object to change its prototype.
+-     * @param proto The value of the new prototype or null.
+-     * @return Whether setting the prototype was successful.
+-     */
+-    function setPrototypeOf(target: object, proto: object | null): boolean;
+-}
+diff --git a/lib/lib.es2017.sharedmemory.d.ts b/lib/lib.es2017.sharedmemory.d.ts
+index a46c5ccb13d7df8603ab6025a66cd3e98fd852cd..f437bc82b7344e9c33d2dbab45ef07c2ec461009 100644
+--- a/lib/lib.es2017.sharedmemory.d.ts
++++ b/lib/lib.es2017.sharedmemory.d.ts
+@@ -37,7 +37,6 @@ interface SharedArrayBufferConstructor {
+     readonly prototype: SharedArrayBuffer;
+     new (byteLength: number): SharedArrayBuffer;
+ }
+-declare var SharedArrayBuffer: SharedArrayBufferConstructor;
+ 
+ interface ArrayBufferTypes {
+     SharedArrayBuffer: SharedArrayBuffer;
+@@ -131,5 +130,3 @@ interface Atomics {
+ 
+     readonly [Symbol.toStringTag]: "Atomics";
+ }
+-
+-declare var Atomics: Atomics;
+diff --git a/lib/lib.es2018.intl.d.ts b/lib/lib.es2018.intl.d.ts
+index da34dae5861c3b7743b202b99c5174c43c9e25b9..81df21a8a170c96cad8913b51774da907716720e 100644
+--- a/lib/lib.es2018.intl.d.ts
++++ b/lib/lib.es2018.intl.d.ts
+@@ -47,13 +47,6 @@ declare namespace Intl {
+         select(n: number): LDMLPluralRule;
+     }
+ 
+-    const PluralRules: {
+-        new (locales?: string | string[], options?: PluralRulesOptions): PluralRules;
+-        (locales?: string | string[], options?: PluralRulesOptions): PluralRules;
+-
+-        supportedLocalesOf(locales: string | string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
+-    };
+-
+     // We can only have one definition for 'type' in TypeScript, and so you can learn where the keys come from here:
+     type ES2018NumberFormatPartType = "literal" | "nan" | "infinity" | "percent" | "integer" | "group" | "decimal" | "fraction" | "plusSign" | "minusSign" | "percentSign" | "currency" | "code" | "symbol" | "name";
+     type ES2020NumberFormatPartType = "compact" | "exponentInteger" | "exponentMinusSign" | "exponentSeparator" | "unit" | "unknown";
+diff --git a/lib/lib.es2020.bigint.d.ts b/lib/lib.es2020.bigint.d.ts
+index d6b04d7a95cb28c1393b17cf1b852c322645def9..ae34f49ca06d09c46b0f91fd99937a29f84170c4 100644
+--- a/lib/lib.es2020.bigint.d.ts
++++ b/lib/lib.es2020.bigint.d.ts
+@@ -412,8 +412,6 @@ interface BigInt64ArrayConstructor {
+     from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigInt64Array;
+ }
+ 
+-declare var BigInt64Array: BigInt64ArrayConstructor;
+-
+ /**
+  * A typed array of 64-bit unsigned integer values. The contents are initialized to 0. If the
+  * requested number of bytes could not be allocated, an exception is raised.
+@@ -684,8 +682,6 @@ interface BigUint64ArrayConstructor {
+     from<U>(arrayLike: ArrayLike<U>, mapfn: (v: U, k: number) => bigint, thisArg?: any): BigUint64Array;
+ }
+ 
+-declare var BigUint64Array: BigUint64ArrayConstructor;
+-
+ interface DataView {
+     /**
+      * Gets the BigInt64 value at the specified byte offset from the start of the view. There is
+diff --git a/lib/lib.es2020.intl.d.ts b/lib/lib.es2020.intl.d.ts
+index 8f356b48996107c30cb97f9533fffadcfc79a171..c9c7a85b89539768a2074e049dba449f4826ebdc 100644
+--- a/lib/lib.es2020.intl.d.ts
++++ b/lib/lib.es2020.intl.d.ts
+@@ -196,56 +196,6 @@ declare namespace Intl {
+         resolvedOptions(): ResolvedRelativeTimeFormatOptions;
+     }
+ 
+-    /**
+-     * The [`Intl.RelativeTimeFormat`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat)
+-     * object is a constructor for objects that enable language-sensitive relative time formatting.
+-     *
+-     * [Compatibility](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat#Browser_compatibility).
+-     */
+-    const RelativeTimeFormat: {
+-        /**
+-         * Creates [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) objects
+-         *
+-         * @param locales - A string with a [BCP 47 language tag](http://tools.ietf.org/html/rfc5646), or an array of such strings.
+-         *  For the general form and interpretation of the locales argument,
+-         *  see the [`Intl` page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
+-         *
+-         * @param options - An [object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/RelativeTimeFormat#Parameters)
+-         *  with some or all of options of `RelativeTimeFormatOptions`.
+-         *
+-         * @returns [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) object.
+-         *
+-         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/RelativeTimeFormat).
+-         */
+-        new (
+-            locales?: UnicodeBCP47LocaleIdentifier | UnicodeBCP47LocaleIdentifier[],
+-            options?: RelativeTimeFormatOptions,
+-        ): RelativeTimeFormat;
+-
+-        /**
+-         * Returns an array containing those of the provided locales
+-         * that are supported in date and time formatting
+-         * without having to fall back to the runtime's default locale.
+-         *
+-         * @param locales - A string with a [BCP 47 language tag](http://tools.ietf.org/html/rfc5646), or an array of such strings.
+-         *  For the general form and interpretation of the locales argument,
+-         *  see the [`Intl` page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
+-         *
+-         * @param options - An [object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/RelativeTimeFormat#Parameters)
+-         *  with some or all of options of the formatting.
+-         *
+-         * @returns An array containing those of the provided locales
+-         *  that are supported in date and time formatting
+-         *  without having to fall back to the runtime's default locale.
+-         *
+-         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/supportedLocalesOf).
+-         */
+-        supportedLocalesOf(
+-            locales?: UnicodeBCP47LocaleIdentifier | UnicodeBCP47LocaleIdentifier[],
+-            options?: RelativeTimeFormatOptions,
+-        ): UnicodeBCP47LocaleIdentifier[];
+-    };
+-
+     interface NumberFormatOptions {
+         compactDisplay?: "short" | "long" | undefined;
+         notation?: "standard" | "scientific" | "engineering" | "compact" | undefined;
+@@ -315,24 +265,6 @@ declare namespace Intl {
+         toString(): BCP47LanguageTag;
+     }
+ 
+-    /**
+-     * Constructor creates [Intl.Locale](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale)
+-     * objects
+-     *
+-     * @param tag - A string with a [BCP 47 language tag](http://tools.ietf.org/html/rfc5646).
+-     *  For the general form and interpretation of the locales argument,
+-     *  see the [`Intl` page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
+-     *
+-     * @param options - An [object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/Locale#Parameters) with some or all of options of the locale.
+-     *
+-     * @returns [Intl.Locale](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) object.
+-     *
+-     * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale).
+-     */
+-    const Locale: {
+-        new (tag: BCP47LanguageTag | Locale, options?: LocaleOptions): Locale;
+-    };
+-
+     type DisplayNamesFallback =
+         | "code"
+         | "none";
+@@ -390,40 +322,4 @@ declare namespace Intl {
+          */
+         resolvedOptions(): ResolvedDisplayNamesOptions;
+     }
+-
+-    /**
+-     * The [`Intl.DisplayNames()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames)
+-     * object enables the consistent translation of language, region and script display names.
+-     *
+-     * [Compatibility](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames#browser_compatibility).
+-     */
+-    const DisplayNames: {
+-        prototype: DisplayNames;
+-
+-        /**
+-         * @param locales A string with a BCP 47 language tag, or an array of such strings.
+-         *   For the general form and interpretation of the `locales` argument, see the [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locale_identification_and_negotiation)
+-         *   page.
+-         *
+-         * @param options An object for setting up a display name.
+-         *
+-         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames/DisplayNames).
+-         */
+-        new (locales: LocalesArgument, options: DisplayNamesOptions): DisplayNames;
+-
+-        /**
+-         * Returns an array containing those of the provided locales that are supported in display names without having to fall back to the runtime's default locale.
+-         *
+-         * @param locales A string with a BCP 47 language tag, or an array of such strings.
+-         *   For the general form and interpretation of the `locales` argument, see the [Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locale_identification_and_negotiation)
+-         *   page.
+-         *
+-         * @param options An object with a locale matcher.
+-         *
+-         * @returns An array of strings representing a subset of the given locale tags that are supported in display names without having to fall back to the runtime's default locale.
+-         *
+-         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames/supportedLocalesOf).
+-         */
+-        supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): BCP47LanguageTag[];
+-    };
+ }
+diff --git a/lib/lib.es2021.intl.d.ts b/lib/lib.es2021.intl.d.ts
+index b464d55d66e32349649f38eabfba4ee118fbf8d0..833172644f8f007c6aa8239e18cc70cf535be453 100644
+--- a/lib/lib.es2021.intl.d.ts
++++ b/lib/lib.es2021.intl.d.ts
+@@ -124,43 +124,4 @@ declare namespace Intl {
+          */
+         resolvedOptions(): ResolvedListFormatOptions;
+     }
+-
+-    const ListFormat: {
+-        prototype: ListFormat;
+-
+-        /**
+-         * Creates [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) objects that
+-         * enable language-sensitive list formatting.
+-         *
+-         * @param locales - A string with a [BCP 47 language tag](http://tools.ietf.org/html/rfc5646), or an array of such strings.
+-         *  For the general form and interpretation of the `locales` argument,
+-         *  see the [`Intl` page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
+-         *
+-         * @param options - An [object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat/ListFormat#parameters)
+-         *  with some or all options of `ListFormatOptions`.
+-         *
+-         * @returns [Intl.ListFormatOptions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) object.
+-         *
+-         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat).
+-         */
+-        new (locales?: BCP47LanguageTag | BCP47LanguageTag[], options?: ListFormatOptions): ListFormat;
+-
+-        /**
+-         * Returns an array containing those of the provided locales that are
+-         * supported in list formatting without having to fall back to the runtime's default locale.
+-         *
+-         * @param locales - A string with a [BCP 47 language tag](http://tools.ietf.org/html/rfc5646), or an array of such strings.
+-         *  For the general form and interpretation of the `locales` argument,
+-         *  see the [`Intl` page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
+-         *
+-         * @param options - An [object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat/supportedLocalesOf#parameters).
+-         *  with some or all possible options.
+-         *
+-         * @returns An array of strings representing a subset of the given locale tags that are supported in list
+-         *  formatting without having to fall back to the runtime's default locale.
+-         *
+-         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat/supportedLocalesOf).
+-         */
+-        supportedLocalesOf(locales: BCP47LanguageTag | BCP47LanguageTag[], options?: Pick<ListFormatOptions, "localeMatcher">): BCP47LanguageTag[];
+-    };
+ }
+diff --git a/lib/lib.es2021.promise.d.ts b/lib/lib.es2021.promise.d.ts
+index fb9bdf26141f651bb115c2d40c148b7ad2dc09da..ff3393f052b13bdee6fbffe764d9e0f8a77955c8 100644
+--- a/lib/lib.es2021.promise.d.ts
++++ b/lib/lib.es2021.promise.d.ts
+@@ -26,8 +26,6 @@ interface AggregateErrorConstructor {
+     readonly prototype: AggregateError;
+ }
+ 
+-declare var AggregateError: AggregateErrorConstructor;
+-
+ /**
+  * Represents the completion of an asynchronous operation
+  */
+diff --git a/lib/lib.es2021.weakref.d.ts b/lib/lib.es2021.weakref.d.ts
+index 986af60d49ebfd273ee9195e398dce7caf868c0e..711fc823f1fea2810a276998ae4760511a580dde 100644
+--- a/lib/lib.es2021.weakref.d.ts
++++ b/lib/lib.es2021.weakref.d.ts
+@@ -72,5 +72,3 @@ interface FinalizationRegistryConstructor {
+      */
+     new <T>(cleanupCallback: (heldValue: T) => void): FinalizationRegistry<T>;
+ }
+-
+-declare var FinalizationRegistry: FinalizationRegistryConstructor;
+diff --git a/lib/lib.es2022.intl.d.ts b/lib/lib.es2022.intl.d.ts
+index c41f999f11d683303ea4675655ff626e7c8c1ffb..879c3f260f1012cdecedcfd005927197e6fef981 100644
+--- a/lib/lib.es2022.intl.d.ts
++++ b/lib/lib.es2022.intl.d.ts
+@@ -72,40 +72,6 @@ declare namespace Intl {
+         isWordLike?: boolean;
+     }
+ 
+-    const Segmenter: {
+-        prototype: Segmenter;
+-
+-        /**
+-         * Creates a new `Intl.Segmenter` object.
+-         *
+-         * @param locales - A string with a [BCP 47 language tag](http://tools.ietf.org/html/rfc5646), or an array of such strings.
+-         *  For the general form and interpretation of the `locales` argument,
+-         *  see the [`Intl` page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
+-         *
+-         * @param options - An [object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter/Segmenter#parameters)
+-         *  with some or all options of `SegmenterOptions`.
+-         *
+-         * @returns [Intl.Segmenter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segments) object.
+-         *
+-         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter).
+-         */
+-        new (locales?: BCP47LanguageTag | BCP47LanguageTag[], options?: SegmenterOptions): Segmenter;
+-
+-        /**
+-         * Returns an array containing those of the provided locales that are supported without having to fall back to the runtime's default locale.
+-         *
+-         * @param locales - A string with a [BCP 47 language tag](http://tools.ietf.org/html/rfc5646), or an array of such strings.
+-         *  For the general form and interpretation of the `locales` argument,
+-         *  see the [`Intl` page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation).
+-         *
+-         * @param options An [object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter/supportedLocalesOf#parameters).
+-         *  with some or all possible options.
+-         *
+-         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter/supportedLocalesOf)
+-         */
+-        supportedLocalesOf(locales: BCP47LanguageTag | BCP47LanguageTag[], options?: Pick<SegmenterOptions, "localeMatcher">): BCP47LanguageTag[];
+-    };
+-
+     /**
+      * Returns a sorted array of the supported collation, calendar, currency, numbering system, timezones, and units by the implementation.
+      * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/supportedValuesOf)
+diff --git a/lib/lib.es5.d.ts b/lib/lib.es5.d.ts
+index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a0a32606b 100644
+--- a/lib/lib.es5.d.ts
++++ b/lib/lib.es5.d.ts
+@@ -23,8 +23,8 @@ and limitations under the License.
+ /// ECMAScript APIs
+ /////////////////////////////
+ 
+-declare var NaN: number;
+-declare var Infinity: number;
++declare const NaN: number;
++declare const Infinity: number;
+ 
+ /**
+  * Evaluates JavaScript code and executes it.
+@@ -122,7 +122,7 @@ interface PropertyDescriptorMap {
+ 
+ interface Object {
+     /** The initial value of Object.prototype.constructor is the standard built-in Object constructor. */
+-    constructor: Function;
++    constructor: string;
+ 
+     /** Returns a string representation of an object. */
+     toString(): string;
+@@ -150,6 +150,8 @@ interface Object {
+      * @param v A property name.
+      */
+     propertyIsEnumerable(v: PropertyKey): boolean;
++
++    __proto__: any;
+ }
+ 
+ interface ObjectConstructor {
+@@ -267,7 +269,7 @@ interface ObjectConstructor {
+ /**
+  * Provides functionality common to all JavaScript objects.
+  */
+-declare var Object: ObjectConstructor;
++declare const Object: ObjectConstructor;
+ 
+ /**
+  * Creates a new function.
+@@ -300,10 +302,6 @@ interface Function {
+ 
+     prototype: any;
+     readonly length: number;
+-
+-    // Non-standard extensions
+-    arguments: any;
+-    caller: Function;
+ }
+ 
+ interface FunctionConstructor {
+@@ -316,7 +314,7 @@ interface FunctionConstructor {
+     readonly prototype: Function;
+ }
+ 
+-declare var Function: FunctionConstructor;
++declare const Function: FunctionConstructor;
+ 
+ /**
+  * Extracts the type of the 'this' parameter of a function type, or 'unknown' if the function type has no 'this' parameter.
+@@ -404,7 +402,6 @@ interface NewableFunction extends Function {
+ interface IArguments {
+     [index: number]: any;
+     length: number;
+-    callee: Function;
+ }
+ 
+ interface String {
+@@ -541,7 +538,7 @@ interface StringConstructor {
+ /**
+  * Allows manipulation and formatting of text strings and determination and location of substrings within strings.
+  */
+-declare var String: StringConstructor;
++declare const String: StringConstructor;
+ 
+ interface Boolean {
+     /** Returns the primitive value of the specified object. */
+@@ -554,7 +551,7 @@ interface BooleanConstructor {
+     readonly prototype: Boolean;
+ }
+ 
+-declare var Boolean: BooleanConstructor;
++declare const Boolean: BooleanConstructor;
+ 
+ interface Number {
+     /**
+@@ -616,7 +613,7 @@ interface NumberConstructor {
+ }
+ 
+ /** An object that represents a number of any kind. All JavaScript numbers are 64-bit floating-point numbers. */
+-declare var Number: NumberConstructor;
++declare const Number: NumberConstructor;
+ 
+ interface TemplateStringsArray extends ReadonlyArray<string> {
+     readonly raw: readonly string[];
+@@ -765,7 +762,7 @@ interface Math {
+     tan(x: number): number;
+ }
+ /** An intrinsic object that provides basic mathematics functionality and constants. */
+-declare var Math: Math;
++declare const Math: Math;
+ 
+ /** Enables basic storage and retrieval of dates and times. */
+ interface Date {
+@@ -957,7 +954,7 @@ interface DateConstructor {
+     now(): number;
+ }
+ 
+-declare var Date: DateConstructor;
++declare const Date: DateConstructor;
+ 
+ interface RegExpMatchArray extends Array<string> {
+     /**
+@@ -1069,7 +1066,7 @@ interface RegExpConstructor {
+     "$'": string;
+ }
+ 
+-declare var RegExp: RegExpConstructor;
++declare const RegExp: RegExpConstructor;
+ 
+ interface Error {
+     name: string;
+@@ -1083,7 +1080,7 @@ interface ErrorConstructor {
+     readonly prototype: Error;
+ }
+ 
+-declare var Error: ErrorConstructor;
++declare const Error: ErrorConstructor;
+ 
+ interface EvalError extends Error {
+ }
+@@ -1094,7 +1091,7 @@ interface EvalErrorConstructor extends ErrorConstructor {
+     readonly prototype: EvalError;
+ }
+ 
+-declare var EvalError: EvalErrorConstructor;
++declare const EvalError: EvalErrorConstructor;
+ 
+ interface RangeError extends Error {
+ }
+@@ -1105,7 +1102,7 @@ interface RangeErrorConstructor extends ErrorConstructor {
+     readonly prototype: RangeError;
+ }
+ 
+-declare var RangeError: RangeErrorConstructor;
++declare const RangeError: RangeErrorConstructor;
+ 
+ interface ReferenceError extends Error {
+ }
+@@ -1116,7 +1113,7 @@ interface ReferenceErrorConstructor extends ErrorConstructor {
+     readonly prototype: ReferenceError;
+ }
+ 
+-declare var ReferenceError: ReferenceErrorConstructor;
++declare const ReferenceError: ReferenceErrorConstructor;
+ 
+ interface SyntaxError extends Error {
+ }
+@@ -1127,7 +1124,7 @@ interface SyntaxErrorConstructor extends ErrorConstructor {
+     readonly prototype: SyntaxError;
+ }
+ 
+-declare var SyntaxError: SyntaxErrorConstructor;
++declare const SyntaxError: SyntaxErrorConstructor;
+ 
+ interface TypeError extends Error {
+ }
+@@ -1138,7 +1135,7 @@ interface TypeErrorConstructor extends ErrorConstructor {
+     readonly prototype: TypeError;
+ }
+ 
+-declare var TypeError: TypeErrorConstructor;
++declare const TypeError: TypeErrorConstructor;
+ 
+ interface URIError extends Error {
+ }
+@@ -1149,7 +1146,7 @@ interface URIErrorConstructor extends ErrorConstructor {
+     readonly prototype: URIError;
+ }
+ 
+-declare var URIError: URIErrorConstructor;
++declare const URIError: URIErrorConstructor;
+ 
+ interface JSON {
+     /**
+@@ -1158,27 +1155,52 @@ interface JSON {
+      * @param reviver A function that transforms the results. This function is called for each member of the object.
+      * If a member contains nested objects, the nested objects are transformed before the parent object is.
+      */
+-    parse(text: string, reviver?: (this: any, key: string, value: any) => any): any;
++    oparse(text: string, reviver?: (this: any, key: string, value: any) => any): any;
++    /**
++     * Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
++     * @param value A JavaScript value, usually an object or array, to be converted.
++     * @param replacer A function that transforms the results.
++     * @param space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
++     */
++    ostringify(value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string;
++    /**
++     * Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
++     * @param value A JavaScript value, usually an object or array, to be converted.
++     * @param replacer An array of strings and numbers that acts as an approved list for selecting the object properties that will be stringified.
++     * @param space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
++     */
++    ostringify(value: any, replacer?: (number | string)[] | null, space?: string | number): string;
++
++    /**
++     * Converts a JavaScript Object Notation (JSON) string into an object.
++     * @param text A valid JSON string.
++     * @param error An empty object, which will be given an error message in the event of error.
++     * @param reviver A function that transforms the results. This function is called for each member of the object.
++     * If a member contains nested objects, the nested objects are transformed before the parent object is.
++     */
++    parse(text: string, error: any, reviver?: (this: any, key: string, value: any) => any): any;
+     /**
+      * Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
+      * @param value A JavaScript value, usually an object or array, to be converted.
++     * @param error An empty object, which will be given an error message in the event of error.
+      * @param replacer A function that transforms the results.
+      * @param space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
+      */
+-    stringify(value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string;
++    stringify(value: any, error: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string;
+     /**
+      * Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
+      * @param value A JavaScript value, usually an object or array, to be converted.
++     * @param error An empty object, which will be given an error message in the event of error.
+      * @param replacer An array of strings and numbers that acts as an approved list for selecting the object properties that will be stringified.
+      * @param space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
+      */
+-    stringify(value: any, replacer?: (number | string)[] | null, space?: string | number): string;
++    stringify(value: any, error: any, replacer?: (number | string)[] | null, space?: string | number): string;
+ }
+ 
+ /**
+  * An intrinsic object that provides functions to convert JavaScript values to and from the JavaScript Object Notation (JSON) format.
+  */
+-declare var JSON: JSON;
++declare const JSON: JSON;
+ 
+ /////////////////////////////
+ /// ECMAScript Array API (specially handled by compiler)
+@@ -1513,7 +1535,7 @@ interface ArrayConstructor {
+     readonly prototype: any[];
+ }
+ 
+-declare var Array: ArrayConstructor;
++declare const Array: ArrayConstructor;
+ 
+ interface TypedPropertyDescriptor<T> {
+     enumerable?: boolean;
+@@ -1711,7 +1733,7 @@ interface ArrayBufferConstructor {
+     new (byteLength: number): ArrayBuffer;
+     isView(arg: any): arg is ArrayBufferView;
+ }
+-declare var ArrayBuffer: ArrayBufferConstructor;
++declare const ArrayBuffer: ArrayBufferConstructor;
+ 
+ interface ArrayBufferView {
+     /**
+@@ -1862,7 +1884,7 @@ interface DataViewConstructor {
+     readonly prototype: DataView;
+     new (buffer: ArrayBufferLike & { BYTES_PER_ELEMENT?: never; }, byteOffset?: number, byteLength?: number): DataView;
+ }
+-declare var DataView: DataViewConstructor;
++declare const DataView: DataViewConstructor;
+ 
+ /**
+  * A typed array of 8-bit integer values. The contents are initialized to 0. If the requested
+@@ -2142,7 +2164,7 @@ interface Int8ArrayConstructor {
+      */
+     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array;
+ }
+-declare var Int8Array: Int8ArrayConstructor;
++declare const Int8Array: Int8ArrayConstructor;
+ 
+ /**
+  * A typed array of 8-bit unsigned integer values. The contents are initialized to 0. If the
+@@ -2423,7 +2445,7 @@ interface Uint8ArrayConstructor {
+      */
+     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array;
+ }
+-declare var Uint8Array: Uint8ArrayConstructor;
++declare const Uint8Array: Uint8ArrayConstructor;
+ 
+ /**
+  * A typed array of 8-bit unsigned integer (clamped) values. The contents are initialized to 0.
+@@ -2704,7 +2726,7 @@ interface Uint8ClampedArrayConstructor {
+      */
+     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray;
+ }
+-declare var Uint8ClampedArray: Uint8ClampedArrayConstructor;
++declare const Uint8ClampedArray: Uint8ClampedArrayConstructor;
+ 
+ /**
+  * A typed array of 16-bit signed integer values. The contents are initialized to 0. If the
+@@ -2984,7 +3006,7 @@ interface Int16ArrayConstructor {
+      */
+     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array;
+ }
+-declare var Int16Array: Int16ArrayConstructor;
++declare const Int16Array: Int16ArrayConstructor;
+ 
+ /**
+  * A typed array of 16-bit unsigned integer values. The contents are initialized to 0. If the
+@@ -3265,7 +3287,7 @@ interface Uint16ArrayConstructor {
+      */
+     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array;
+ }
+-declare var Uint16Array: Uint16ArrayConstructor;
++declare const Uint16Array: Uint16ArrayConstructor;
+ /**
+  * A typed array of 32-bit signed integer values. The contents are initialized to 0. If the
+  * requested number of bytes could not be allocated an exception is raised.
+@@ -3545,7 +3567,7 @@ interface Int32ArrayConstructor {
+      */
+     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array;
+ }
+-declare var Int32Array: Int32ArrayConstructor;
++declare const Int32Array: Int32ArrayConstructor;
+ 
+ /**
+  * A typed array of 32-bit unsigned integer values. The contents are initialized to 0. If the
+@@ -3825,7 +3847,7 @@ interface Uint32ArrayConstructor {
+      */
+     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array;
+ }
+-declare var Uint32Array: Uint32ArrayConstructor;
++declare const Uint32Array: Uint32ArrayConstructor;
+ 
+ /**
+  * A typed array of 32-bit float values. The contents are initialized to 0. If the requested number
+@@ -4106,7 +4128,7 @@ interface Float32ArrayConstructor {
+      */
+     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array;
+ }
+-declare var Float32Array: Float32ArrayConstructor;
++declare const Float32Array: Float32ArrayConstructor;
+ 
+ /**
+  * A typed array of 64-bit float values. The contents are initialized to 0. If the requested
+@@ -4387,7 +4409,7 @@ interface Float64ArrayConstructor {
+      */
+     from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array;
+ }
+-declare var Float64Array: Float64ArrayConstructor;
++declare const Float64Array: Float64ArrayConstructor;
+ 
+ /////////////////////////////
+ /// ECMAScript Internationalization API
+@@ -4418,11 +4440,6 @@ declare namespace Intl {
+         compare(x: string, y: string): number;
+         resolvedOptions(): ResolvedCollatorOptions;
+     }
+-    var Collator: {
+-        new (locales?: string | string[], options?: CollatorOptions): Collator;
+-        (locales?: string | string[], options?: CollatorOptions): Collator;
+-        supportedLocalesOf(locales: string | string[], options?: CollatorOptions): string[];
+-    };
+ 
+     interface NumberFormatOptions {
+         localeMatcher?: string | undefined;
+@@ -4454,12 +4471,6 @@ declare namespace Intl {
+         format(value: number): string;
+         resolvedOptions(): ResolvedNumberFormatOptions;
+     }
+-    var NumberFormat: {
+-        new (locales?: string | string[], options?: NumberFormatOptions): NumberFormat;
+-        (locales?: string | string[], options?: NumberFormatOptions): NumberFormat;
+-        supportedLocalesOf(locales: string | string[], options?: NumberFormatOptions): string[];
+-        readonly prototype: NumberFormat;
+-    };
+ 
+     interface DateTimeFormatOptions {
+         localeMatcher?: "best fit" | "lookup" | undefined;
+@@ -4498,12 +4509,6 @@ declare namespace Intl {
+         format(date?: Date | number): string;
+         resolvedOptions(): ResolvedDateTimeFormatOptions;
+     }
+-    var DateTimeFormat: {
+-        new (locales?: string | string[], options?: DateTimeFormatOptions): DateTimeFormat;
+-        (locales?: string | string[], options?: DateTimeFormatOptions): DateTimeFormat;
+-        supportedLocalesOf(locales: string | string[], options?: DateTimeFormatOptions): string[];
+-        readonly prototype: DateTimeFormat;
+-    };
+ }
+ 
+ interface String {

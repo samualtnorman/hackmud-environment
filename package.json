@@ -2,16 +2,19 @@
 	"name": "hackmud-environment",
 	"license": "MIT",
 	"scripts": {
-		"postinstall": "patch-package",
 		"push": "hsm push src",
-		"watch": "hsm watch src --gen-types=player.d.ts",
+		"dev": "hsm dev src --gen-types=player.d.ts",
 		"sync-macros": "hsm sync-macros",
 		"test": "hsm test src",
 		"gen-types": "hsm gen-types src"
 	},
 	"devDependencies": {
-		"hackmud-script-manager": "^0.18.0",
-		"patch-package": "^6.5.0",
-		"typescript": "^4.9.3"
+		"hackmud-script-manager": "^0.19.0",
+		"typescript": "^5.3.3"
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"typescript@5.3.3": "patches/typescript@5.3.3.patch"
+		}
 	}
 }

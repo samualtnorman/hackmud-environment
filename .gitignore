@@ -1,4 +1,2 @@
 node_modules
-src/test.ts
 player.d.ts
-package-lock.json
