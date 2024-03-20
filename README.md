@@ -16,7 +16,7 @@ a subscript's args or use an unsupported type in a DB query.
 
 ## First Time Setup
 1. Install [NodeJS](https://nodejs.org/) and [PNPM](https://pnpm.io/installation).
-2. Run `pnpm dlx degit samualtnorman/hackmud-environment`.
+2. Run `pnpm dlx tiged samualtnorman/hackmud-environment`.
 3. Run `pnpm install`.
 3. Tell the script manager where the hackmud directory is with `pnpm hsm config set hackmudPath <hackmud directory>`
    - Replace `<hackmud directory>` with the path to the hackmud directory.
