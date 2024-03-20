@@ -208,19 +208,14 @@ index a46c5ccb13d7df8603ab6025a66cd3e98fd852cd..f437bc82b7344e9c33d2dbab45ef07c2
 -
 -declare var Atomics: Atomics;
 diff --git a/lib/lib.es2018.intl.d.ts b/lib/lib.es2018.intl.d.ts
-index da34dae5861c3b7743b202b99c5174c43c9e25b9..81df21a8a170c96cad8913b51774da907716720e 100644
+index 8517ba9385612d16d658285727c0267a003fe4b6..f1f40ea0569e489a3b5427e9ff1cdcd61b38e096 100644
 --- a/lib/lib.es2018.intl.d.ts
 +++ b/lib/lib.es2018.intl.d.ts
-@@ -47,13 +47,6 @@ declare namespace Intl {
-         select(n: number): LDMLPluralRule;
+@@ -53,8 +53,6 @@ declare namespace Intl {
+         supportedLocalesOf(locales: string | readonly string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
      }
  
--    const PluralRules: {
--        new (locales?: string | string[], options?: PluralRulesOptions): PluralRules;
--        (locales?: string | string[], options?: PluralRulesOptions): PluralRules;
--
--        supportedLocalesOf(locales: string | string[], options?: { localeMatcher?: "lookup" | "best fit"; }): string[];
--    };
+-    const PluralRules: PluralRulesConstructor;
 -
      // We can only have one definition for 'type' in TypeScript, and so you can learn where the keys come from here:
      type ES2018NumberFormatPartType = "literal" | "nan" | "infinity" | "percent" | "integer" | "group" | "decimal" | "fraction" | "plusSign" | "minusSign" | "percentSign" | "currency" | "code" | "symbol" | "name";
@@ -248,10 +243,10 @@ index d6b04d7a95cb28c1393b17cf1b852c322645def9..ae34f49ca06d09c46b0f91fd99937a29
      /**
       * Gets the BigInt64 value at the specified byte offset from the start of the view. There is
 diff --git a/lib/lib.es2020.intl.d.ts b/lib/lib.es2020.intl.d.ts
-index 8f356b48996107c30cb97f9533fffadcfc79a171..c9c7a85b89539768a2074e049dba449f4826ebdc 100644
+index 58f250a6f70e319a1c4cf79a8d7cda9f29bfefa8..d1e73134c4e9b0d711bd845a3ff42d866b294e9f 100644
 --- a/lib/lib.es2020.intl.d.ts
 +++ b/lib/lib.es2020.intl.d.ts
-@@ -196,56 +196,6 @@ declare namespace Intl {
+@@ -191,56 +191,6 @@ declare namespace Intl {
          resolvedOptions(): ResolvedRelativeTimeFormatOptions;
      }
  
@@ -277,7 +272,7 @@ index 8f356b48996107c30cb97f9533fffadcfc79a171..c9c7a85b89539768a2074e049dba449f
 -         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/RelativeTimeFormat).
 -         */
 -        new (
--            locales?: UnicodeBCP47LocaleIdentifier | UnicodeBCP47LocaleIdentifier[],
+-            locales?: LocalesArgument,
 -            options?: RelativeTimeFormatOptions,
 -        ): RelativeTimeFormat;
 -
@@ -300,7 +295,7 @@ index 8f356b48996107c30cb97f9533fffadcfc79a171..c9c7a85b89539768a2074e049dba449f
 -         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/supportedLocalesOf).
 -         */
 -        supportedLocalesOf(
--            locales?: UnicodeBCP47LocaleIdentifier | UnicodeBCP47LocaleIdentifier[],
+-            locales?: LocalesArgument,
 -            options?: RelativeTimeFormatOptions,
 -        ): UnicodeBCP47LocaleIdentifier[];
 -    };
@@ -308,8 +303,8 @@ index 8f356b48996107c30cb97f9533fffadcfc79a171..c9c7a85b89539768a2074e049dba449f
      interface NumberFormatOptions {
          compactDisplay?: "short" | "long" | undefined;
          notation?: "standard" | "scientific" | "engineering" | "compact" | undefined;
-@@ -315,24 +265,6 @@ declare namespace Intl {
-         toString(): BCP47LanguageTag;
+@@ -310,24 +260,6 @@ declare namespace Intl {
+         toString(): UnicodeBCP47LocaleIdentifier;
      }
  
 -    /**
@@ -327,13 +322,13 @@ index 8f356b48996107c30cb97f9533fffadcfc79a171..c9c7a85b89539768a2074e049dba449f
 -     * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale).
 -     */
 -    const Locale: {
--        new (tag: BCP47LanguageTag | Locale, options?: LocaleOptions): Locale;
+-        new (tag: UnicodeBCP47LocaleIdentifier | Locale, options?: LocaleOptions): Locale;
 -    };
 -
      type DisplayNamesFallback =
          | "code"
          | "none";
-@@ -390,40 +322,4 @@ declare namespace Intl {
+@@ -385,43 +317,7 @@ declare namespace Intl {
           */
          resolvedOptions(): ResolvedDisplayNamesOptions;
      }
@@ -371,11 +366,15 @@ index 8f356b48996107c30cb97f9533fffadcfc79a171..c9c7a85b89539768a2074e049dba449f
 -         *
 -         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames/supportedLocalesOf).
 -         */
--        supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): BCP47LanguageTag[];
+-        supportedLocalesOf(locales?: LocalesArgument, options?: { localeMatcher?: RelativeTimeFormatLocaleMatcher; }): UnicodeBCP47LocaleIdentifier[];
 -    };
- }
+-
++        
+     interface CollatorConstructor {
+         new (locales?: LocalesArgument, options?: CollatorOptions): Collator;
+         (locales?: LocalesArgument, options?: CollatorOptions): Collator;
 diff --git a/lib/lib.es2021.intl.d.ts b/lib/lib.es2021.intl.d.ts
-index b464d55d66e32349649f38eabfba4ee118fbf8d0..833172644f8f007c6aa8239e18cc70cf535be453 100644
+index ec90ad1b2cf76205e2a2dceaf27f1f96ab7bc082..833172644f8f007c6aa8239e18cc70cf535be453 100644
 --- a/lib/lib.es2021.intl.d.ts
 +++ b/lib/lib.es2021.intl.d.ts
 @@ -124,43 +124,4 @@ declare namespace Intl {
@@ -401,7 +400,7 @@ index b464d55d66e32349649f38eabfba4ee118fbf8d0..833172644f8f007c6aa8239e18cc70cf
 -         *
 -         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat).
 -         */
--        new (locales?: BCP47LanguageTag | BCP47LanguageTag[], options?: ListFormatOptions): ListFormat;
+-        new (locales?: LocalesArgument, options?: ListFormatOptions): ListFormat;
 -
 -        /**
 -         * Returns an array containing those of the provided locales that are
@@ -419,7 +418,7 @@ index b464d55d66e32349649f38eabfba4ee118fbf8d0..833172644f8f007c6aa8239e18cc70cf
 -         *
 -         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat/supportedLocalesOf).
 -         */
--        supportedLocalesOf(locales: BCP47LanguageTag | BCP47LanguageTag[], options?: Pick<ListFormatOptions, "localeMatcher">): BCP47LanguageTag[];
+-        supportedLocalesOf(locales: LocalesArgument, options?: Pick<ListFormatOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 -    };
  }
 diff --git a/lib/lib.es2021.promise.d.ts b/lib/lib.es2021.promise.d.ts
@@ -446,7 +445,7 @@ index 986af60d49ebfd273ee9195e398dce7caf868c0e..711fc823f1fea2810a276998ae476051
 -
 -declare var FinalizationRegistry: FinalizationRegistryConstructor;
 diff --git a/lib/lib.es2022.intl.d.ts b/lib/lib.es2022.intl.d.ts
-index c41f999f11d683303ea4675655ff626e7c8c1ffb..879c3f260f1012cdecedcfd005927197e6fef981 100644
+index 6a2ba07870da20bb19c78aca1fc595261e1af0a6..879c3f260f1012cdecedcfd005927197e6fef981 100644
 --- a/lib/lib.es2022.intl.d.ts
 +++ b/lib/lib.es2022.intl.d.ts
 @@ -72,40 +72,6 @@ declare namespace Intl {
@@ -470,7 +469,7 @@ index c41f999f11d683303ea4675655ff626e7c8c1ffb..879c3f260f1012cdecedcfd005927197
 -         *
 -         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter).
 -         */
--        new (locales?: BCP47LanguageTag | BCP47LanguageTag[], options?: SegmenterOptions): Segmenter;
+-        new (locales?: LocalesArgument, options?: SegmenterOptions): Segmenter;
 -
 -        /**
 -         * Returns an array containing those of the provided locales that are supported without having to fall back to the runtime's default locale.
@@ -484,14 +483,14 @@ index c41f999f11d683303ea4675655ff626e7c8c1ffb..879c3f260f1012cdecedcfd005927197
 -         *
 -         * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter/supportedLocalesOf)
 -         */
--        supportedLocalesOf(locales: BCP47LanguageTag | BCP47LanguageTag[], options?: Pick<SegmenterOptions, "localeMatcher">): BCP47LanguageTag[];
+-        supportedLocalesOf(locales: LocalesArgument, options?: Pick<SegmenterOptions, "localeMatcher">): UnicodeBCP47LocaleIdentifier[];
 -    };
 -
      /**
       * Returns a sorted array of the supported collation, calendar, currency, numbering system, timezones, and units by the implementation.
       * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/supportedValuesOf)
 diff --git a/lib/lib.es5.d.ts b/lib/lib.es5.d.ts
-index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a0a32606b 100644
+index 432946c1e2753dd5e86942ea4a54e042ff96a4bd..e0d21ceb37109bb18b80e0581c5108b4e456f4f9 100644
 --- a/lib/lib.es5.d.ts
 +++ b/lib/lib.es5.d.ts
 @@ -23,8 +23,8 @@ and limitations under the License.
@@ -587,7 +586,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  interface TemplateStringsArray extends ReadonlyArray<string> {
      readonly raw: readonly string[];
-@@ -765,7 +762,7 @@ interface Math {
+@@ -766,7 +763,7 @@ interface Math {
      tan(x: number): number;
  }
  /** An intrinsic object that provides basic mathematics functionality and constants. */
@@ -596,7 +595,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  /** Enables basic storage and retrieval of dates and times. */
  interface Date {
-@@ -957,7 +954,7 @@ interface DateConstructor {
+@@ -958,7 +955,7 @@ interface DateConstructor {
      now(): number;
  }
  
@@ -605,7 +604,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  interface RegExpMatchArray extends Array<string> {
      /**
-@@ -1069,7 +1066,7 @@ interface RegExpConstructor {
+@@ -1070,7 +1067,7 @@ interface RegExpConstructor {
      "$'": string;
  }
  
@@ -614,7 +613,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  interface Error {
      name: string;
-@@ -1083,7 +1080,7 @@ interface ErrorConstructor {
+@@ -1084,7 +1081,7 @@ interface ErrorConstructor {
      readonly prototype: Error;
  }
  
@@ -623,7 +622,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  interface EvalError extends Error {
  }
-@@ -1094,7 +1091,7 @@ interface EvalErrorConstructor extends ErrorConstructor {
+@@ -1095,7 +1092,7 @@ interface EvalErrorConstructor extends ErrorConstructor {
      readonly prototype: EvalError;
  }
  
@@ -632,7 +631,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  interface RangeError extends Error {
  }
-@@ -1105,7 +1102,7 @@ interface RangeErrorConstructor extends ErrorConstructor {
+@@ -1106,7 +1103,7 @@ interface RangeErrorConstructor extends ErrorConstructor {
      readonly prototype: RangeError;
  }
  
@@ -641,7 +640,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  interface ReferenceError extends Error {
  }
-@@ -1116,7 +1113,7 @@ interface ReferenceErrorConstructor extends ErrorConstructor {
+@@ -1117,7 +1114,7 @@ interface ReferenceErrorConstructor extends ErrorConstructor {
      readonly prototype: ReferenceError;
  }
  
@@ -650,7 +649,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  interface SyntaxError extends Error {
  }
-@@ -1127,7 +1124,7 @@ interface SyntaxErrorConstructor extends ErrorConstructor {
+@@ -1128,7 +1125,7 @@ interface SyntaxErrorConstructor extends ErrorConstructor {
      readonly prototype: SyntaxError;
  }
  
@@ -659,7 +658,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  interface TypeError extends Error {
  }
-@@ -1138,7 +1135,7 @@ interface TypeErrorConstructor extends ErrorConstructor {
+@@ -1139,7 +1136,7 @@ interface TypeErrorConstructor extends ErrorConstructor {
      readonly prototype: TypeError;
  }
  
@@ -668,7 +667,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  interface URIError extends Error {
  }
-@@ -1149,7 +1146,7 @@ interface URIErrorConstructor extends ErrorConstructor {
+@@ -1150,7 +1147,7 @@ interface URIErrorConstructor extends ErrorConstructor {
      readonly prototype: URIError;
  }
  
@@ -677,7 +676,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  interface JSON {
      /**
-@@ -1158,27 +1155,52 @@ interface JSON {
+@@ -1159,27 +1156,52 @@ interface JSON {
       * @param reviver A function that transforms the results. This function is called for each member of the object.
       * If a member contains nested objects, the nested objects are transformed before the parent object is.
       */
@@ -734,7 +733,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  /////////////////////////////
  /// ECMAScript Array API (specially handled by compiler)
-@@ -1513,7 +1535,7 @@ interface ArrayConstructor {
+@@ -1514,7 +1536,7 @@ interface ArrayConstructor {
      readonly prototype: any[];
  }
  
@@ -743,7 +742,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  interface TypedPropertyDescriptor<T> {
      enumerable?: boolean;
-@@ -1711,7 +1733,7 @@ interface ArrayBufferConstructor {
+@@ -1717,7 +1739,7 @@ interface ArrayBufferConstructor {
      new (byteLength: number): ArrayBuffer;
      isView(arg: any): arg is ArrayBufferView;
  }
@@ -752,7 +751,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  interface ArrayBufferView {
      /**
-@@ -1862,7 +1884,7 @@ interface DataViewConstructor {
+@@ -1868,7 +1890,7 @@ interface DataViewConstructor {
      readonly prototype: DataView;
      new (buffer: ArrayBufferLike & { BYTES_PER_ELEMENT?: never; }, byteOffset?: number, byteLength?: number): DataView;
  }
@@ -761,7 +760,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  /**
   * A typed array of 8-bit integer values. The contents are initialized to 0. If the requested
-@@ -2142,7 +2164,7 @@ interface Int8ArrayConstructor {
+@@ -2148,7 +2170,7 @@ interface Int8ArrayConstructor {
       */
      from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int8Array;
  }
@@ -770,7 +769,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  /**
   * A typed array of 8-bit unsigned integer values. The contents are initialized to 0. If the
-@@ -2423,7 +2445,7 @@ interface Uint8ArrayConstructor {
+@@ -2429,7 +2451,7 @@ interface Uint8ArrayConstructor {
       */
      from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8Array;
  }
@@ -779,7 +778,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  /**
   * A typed array of 8-bit unsigned integer (clamped) values. The contents are initialized to 0.
-@@ -2704,7 +2726,7 @@ interface Uint8ClampedArrayConstructor {
+@@ -2710,7 +2732,7 @@ interface Uint8ClampedArrayConstructor {
       */
      from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint8ClampedArray;
  }
@@ -788,7 +787,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  /**
   * A typed array of 16-bit signed integer values. The contents are initialized to 0. If the
-@@ -2984,7 +3006,7 @@ interface Int16ArrayConstructor {
+@@ -2990,7 +3012,7 @@ interface Int16ArrayConstructor {
       */
      from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int16Array;
  }
@@ -797,7 +796,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  /**
   * A typed array of 16-bit unsigned integer values. The contents are initialized to 0. If the
-@@ -3265,7 +3287,7 @@ interface Uint16ArrayConstructor {
+@@ -3271,7 +3293,7 @@ interface Uint16ArrayConstructor {
       */
      from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint16Array;
  }
@@ -806,7 +805,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  /**
   * A typed array of 32-bit signed integer values. The contents are initialized to 0. If the
   * requested number of bytes could not be allocated an exception is raised.
-@@ -3545,7 +3567,7 @@ interface Int32ArrayConstructor {
+@@ -3551,7 +3573,7 @@ interface Int32ArrayConstructor {
       */
      from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Int32Array;
  }
@@ -815,7 +814,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  /**
   * A typed array of 32-bit unsigned integer values. The contents are initialized to 0. If the
-@@ -3825,7 +3847,7 @@ interface Uint32ArrayConstructor {
+@@ -3831,7 +3853,7 @@ interface Uint32ArrayConstructor {
       */
      from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Uint32Array;
  }
@@ -824,7 +823,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  /**
   * A typed array of 32-bit float values. The contents are initialized to 0. If the requested number
-@@ -4106,7 +4128,7 @@ interface Float32ArrayConstructor {
+@@ -4112,7 +4134,7 @@ interface Float32ArrayConstructor {
       */
      from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float32Array;
  }
@@ -833,7 +832,7 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  /**
   * A typed array of 64-bit float values. The contents are initialized to 0. If the requested
-@@ -4387,7 +4409,7 @@ interface Float64ArrayConstructor {
+@@ -4393,7 +4415,7 @@ interface Float64ArrayConstructor {
       */
      from<T>(arrayLike: ArrayLike<T>, mapfn: (v: T, k: number) => number, thisArg?: any): Float64Array;
  }
@@ -842,41 +841,55 @@ index 55ce47cade53c5cb1a8384edf037922ec07e6cc0..c0cf7b95f133d1119d118c380459936a
  
  /////////////////////////////
  /// ECMAScript Internationalization API
-@@ -4418,11 +4440,6 @@ declare namespace Intl {
+@@ -4424,15 +4446,13 @@ declare namespace Intl {
          compare(x: string, y: string): number;
          resolvedOptions(): ResolvedCollatorOptions;
      }
--    var Collator: {
--        new (locales?: string | string[], options?: CollatorOptions): Collator;
--        (locales?: string | string[], options?: CollatorOptions): Collator;
--        supportedLocalesOf(locales: string | string[], options?: CollatorOptions): string[];
--    };
+-
++ 
+     interface CollatorConstructor {
+         new (locales?: string | string[], options?: CollatorOptions): Collator;
+         (locales?: string | string[], options?: CollatorOptions): Collator;
+         supportedLocalesOf(locales: string | string[], options?: CollatorOptions): string[];
+     }
  
+-    var Collator: CollatorConstructor;
+-
      interface NumberFormatOptions {
          localeMatcher?: string | undefined;
-@@ -4454,12 +4471,6 @@ declare namespace Intl {
+         style?: string | undefined;
+@@ -4463,7 +4483,7 @@ declare namespace Intl {
          format(value: number): string;
          resolvedOptions(): ResolvedNumberFormatOptions;
      }
--    var NumberFormat: {
--        new (locales?: string | string[], options?: NumberFormatOptions): NumberFormat;
--        (locales?: string | string[], options?: NumberFormatOptions): NumberFormat;
--        supportedLocalesOf(locales: string | string[], options?: NumberFormatOptions): string[];
--        readonly prototype: NumberFormat;
--    };
+-
++ 
+     interface NumberFormatConstructor {
+         new (locales?: string | string[], options?: NumberFormatOptions): NumberFormat;
+         (locales?: string | string[], options?: NumberFormatOptions): NumberFormat;
+@@ -4471,8 +4491,6 @@ declare namespace Intl {
+         readonly prototype: NumberFormat;
+     }
  
+-    var NumberFormat: NumberFormatConstructor;
+-
      interface DateTimeFormatOptions {
          localeMatcher?: "best fit" | "lookup" | undefined;
-@@ -4498,12 +4509,6 @@ declare namespace Intl {
+         weekday?: "long" | "short" | "narrow" | undefined;
+@@ -4510,15 +4528,13 @@ declare namespace Intl {
          format(date?: Date | number): string;
          resolvedOptions(): ResolvedDateTimeFormatOptions;
      }
--    var DateTimeFormat: {
--        new (locales?: string | string[], options?: DateTimeFormatOptions): DateTimeFormat;
--        (locales?: string | string[], options?: DateTimeFormatOptions): DateTimeFormat;
--        supportedLocalesOf(locales: string | string[], options?: DateTimeFormatOptions): string[];
--        readonly prototype: DateTimeFormat;
--    };
+-
++    
+     interface DateTimeFormatConstructor {
+         new (locales?: string | string[], options?: DateTimeFormatOptions): DateTimeFormat;
+         (locales?: string | string[], options?: DateTimeFormatOptions): DateTimeFormat;
+         supportedLocalesOf(locales: string | string[], options?: DateTimeFormatOptions): string[];
+         readonly prototype: DateTimeFormat;
+     }
+-
+-    var DateTimeFormat: DateTimeFormatConstructor;
  }
  
  interface String {
