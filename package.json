@@ -10,7 +10,7 @@
 	},
 	"devDependencies": {
 		"hackmud-script-manager": "^0.19.0",
-		"typescript": "^5.4.3"
+		"typescript": "5.4.3"
 	},
 	"pnpm": {
 		"patchedDependencies": {
