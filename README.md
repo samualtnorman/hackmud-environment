@@ -3,7 +3,7 @@
 ### Minification
 This is the main feature of this project and works with JavaScript or [TypeScript](https://www.typescriptlang.org/). All
 scripts are automatically minified before being written into the hackmud folder. This means you can focus less on
-getting your character count down, and more on writing understandable scripts.
+getting your character count down, and more on writing readable scripts.
 
 ### Autocompletes/Intellisense
 In modern editors like [Visual Studio Code](https://code.visualstudio.com/), as you're typing the names of subscripts or
