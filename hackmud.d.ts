@@ -511,7 +511,7 @@ type Fullsec = Subscripts & PlayerFullsec & {
 			/**
 			 * @returns the value and the index of the largest number in `array` as `[maxVal, maxIdx]`
 			 */
-			max_val_index: (array: number[]) => number[];
+			max_val_index: (array: number[]) => number[]
 			/**
 			 * @returns a new `Date` equivalent to `date.getTime() + add_ms`
 			 */
