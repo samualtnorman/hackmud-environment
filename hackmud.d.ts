@@ -447,7 +447,14 @@ type Fullsec = Subscripts & PlayerFullsec & {
 			 */
 			to_game_timestr: (date: Date) => string
 			corruption_chars: "¡¢Á¤Ã¦§¨©ª"
+			/**
+			 * A list of unique color codes to be used with hackmud's color formatting syntax.
+			 * Does not include numeric codes, which are duplicates of some alphabetic codes.
+			 */
 			colors: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+			/**
+			 * Used by `scripts.lib().corrupt` to determine the frequency of corruption.
+			 */
 			corruptions: [ 0, 1, 1.5, 2.5, 5 ]
 			/**
 			 * Adds colored corruption characters to `text`, with frequency determined by `amount`.
@@ -509,6 +516,9 @@ type Fullsec = Subscripts & PlayerFullsec & {
 			 * @returns a new `Date` equivalent to `date.getTime() + add_ms`
 			 */
 			add_time: (date: Date, add_ms: number) => Date
+			/**
+			 * String representations of the in-game seclevels.
+			 */
 			security_level_names: [ "NULLSEC", "LOWSEC", "MIDSEC", "HIGHSEC", "FULLSEC" ]
 			/**
 			 * @returns the string name of a numeric security level
@@ -604,6 +614,9 @@ type Fullsec = Subscripts & PlayerFullsec & {
 			 * @returns time since the epoch, equivalent to `Date.now()`
 			 */
 			get_date_utcsecs: () => number
+			/**
+			 * The amount of milliseconds in a single day.
+			 */
 			one_day_ms: 86_400_000
 			is_not_today: (date: Date) => boolean
 			/**
