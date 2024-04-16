@@ -317,81 +317,303 @@ type Fullsec = Subscripts & PlayerFullsec & {
 				ok: false
 				msg: "Not Implemented."
 			}
-
-			log: (message: any) => any
+			/**
+			 * Append `message` to the current script run's log.
+			 */
+			log: (message: any) => void
+			/**
+			 * @returns all messages added using `scripts.lib().log` during this script run
+			 */
 			get_log: () => string[]
-			rand_int: (min: number, max: number) => number
-			clamp: (floor: number, value: number, ceil: number) => number
-			lerp: (...args: any) => any
-			sample: (...args: any) => any
+			/**
+			 * @returns a random integer in the range [min, max) generated using `rng` (defaults to `Math.random`)
+			 */
+			rand_int: (min: number, max: number, rng?:()=>number) => number
+			/**
+			 * @returns the value of `value`, bounded by the range [`floor`, `ceil`]
+			 */
+			clamp: (value: number, floor: number, ceil: number) => number
+			/**
+			 * Linear interpolation function.
+			 * @returns a number <`amount*100`>% of the way from `start` to `stop`
+			 */
+			lerp: (amount: number, start: number, stop: number) => number
+			/**
+			 * @returns a random element from `array`, selected with a random number generated using `rng` (defaults to `Math.random`)
+			 */
+			sample: (array: any[], rng?: ()=>number) => any
+			/**
+			 * @returns whether two MongoDB ObjectIds are equivalent
+			 */
 			are_ids_eq: (id1: any, id2: any) => boolean
-			id_to_str: (...args: any) => any
+			/**
+			 * Convert a MongoDB ObjectId to a string
+			 */
+			id_to_str: (id: string | {$oid: string}) => any
+			/**
+			 * @returns whether `value` is a boolean primitive
+			 */
 			is_bool: (value: any) => value is boolean
+			/**
+			 * @returns whether `value` is an object or `null`
+			 */
 			is_obj: (value: any) => value is Record<string, unknown> | null
+			/**
+			 * @returns whether `value` is a string
+			 */
 			is_str: (value: any) => value is string
+			/**
+			 * @returns whether `value` is a number
+			 */
 			is_num: (value: any) => value is number
+			/**
+			 * @returns whether `value` is an integer
+			 */
 			is_int: (value: any) => value is number
+			/**
+			 * @returns whether `value` is a negative number
+			 */
 			is_neg: (value: any) => value is number
+			/**
+			 * @returns whether `value` is an array
+			 */
 			is_arr: (value: any) => value is unknown[]
+			/**
+			 * @returns whether `value` is a function
+			 */
 			is_func: (value: any) => value is (...args: any[]) => unknown
+			/**
+			 * @returns whether `value` is not `undefined`
+			 */
 			is_def: (value: any) => boolean
-			is_valid_name: (value: string) => boolean
+			/**
+			 * @returns whether `name` is a valid in-game username
+			 */
+			is_valid_name: (name: string) => boolean
+			/**
+			 * @returns the string representation of `value`
+			 */
 			dump: (value: { toString: () => string }) => string
+			/**
+			 * @returns a deep clone of `object`
+			 */
 			clone: <T extends object>(object: T) => T
-			merge: <F extends object, S>(firstValue: F, secondValue: S) => F & S
-			get_values: (object: object) => any
+			/**
+			 * Applies all key-value pairs from `obj2` to `obj1`, overwriting if necessary.
+			 */
+			merge: <F extends object, S extends object>(obj1: F, obj2: S) => F & S
+			/**
+			 * @returns an array of `object`'s values
+			 */
+			get_values: (object: object) => any[]
+			/**
+			 * @returns a numeric hash of `string`
+			 */
 			hash_code: (string: string) => number
-			xmur3: (...args: any) => any
-			sfc32: (...args: any) => any
-			mulberry32: (...args: any) => any
-			xoshiro128ss: (...args: any) => any
-			JSF: (...args: any) => any
-			LCG: (...args: any) => any
+			/**
+			 * @returns a numeric hash of `string`
+			 */
+			xmur3: (string: string) => number
+			/**
+			 * @returns function that generates random floats in the range [0,1] based on the numerical seeds
+			 */
+			sfc32: (seed1: number, seed2: number, seed3: number, seed4: number) => () => number
+			/**
+			 * @returns function that generates random floats in the range [0,1] based on the numerical seed
+			 */
+			mulberry32: (seed: number) => () => number
+			/**
+			 * @returns function that generates random floats in the range [0,1] based on the numerical seeds
+			 */
+			xoshiro128ss: (seed1: number, seed2: number, seed3: number, seed4: number) => () => number
+			/**
+			 * @returns function that generates random floats in the range [0,1] based on the numerical seed
+			 */
+			JSF: (seed: number) => () => number
+			/**
+			 * @returns function that generates random floats in the range [0,1] based on the numerical seed
+			 */
+			LCG: (seed: number) => () => number
+			/**
+			 * Converts a number to a GC string of the form `"1M5K20GC"`.
+			 */
 			to_gc_str: (number: number) => string
+			/**
+			 * Converts a string similar to `"1M5K20GC"` to an equivalent numerical representation.
+			 */
 			to_gc_num: (string: string) => number | ScriptFailure
+			/**
+			 * @returns a string of the form YYMMDD.HHMM derived from `date`
+			 */
 			to_game_timestr: (date: Date) => string
 			corruption_chars: "¡¢Á¤Ã¦§¨©ª"
 			colors: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 			corruptions: [ 0, 1, 1.5, 2.5, 5 ]
+			/**
+			 * Adds colored corruption characters to `text`, with frequency determined by `amount`.
+			 */
 			corrupt: (text: string | string[], amount: 0 | 1 | 2 | 3 | 4) => string
+			/**
+			 * @returns the first <`length`> characters of `string`, or the original string if it is shorter than `length`
+			 */
 			cap_str_len: (string: string, length: number) => string
-			each: <T>(array: T[], function_: (key: string, value: T) => void) => void
-			select: <T>(array: T[], function_: (key: string, value: T) => boolean) => T[]
-			count: <T>(array: T[], function_: (key: string, value: T) => boolean) => number
-			select_one: <T>(array: T[], function_: (key: string, value: T) => boolean) => T
-			map: <T>(array: T[], function_: (key: string, value: T) => boolean) => T[]
-			pick: (...args: any) => any
+			/**
+			 * Applies `func` to each element in `array` and returns the original array.
+			 */
+			each: <T>(array: T[], func: (index: number, value: T) => void) => T[]
+			/**
+			 * @returns a new array containing the elments of `array` for which `func` returns `true`
+			 */
+			select: <T>(array: T[], func: (index: number, value: T) => boolean) => T[]
+			/**
+			 * @returns the number of elements in `array` for which `func` returns `true`
+			 */
+			count: <T>(array: T[], func: (index: number, value: T) => boolean) => number
+			/**
+			 * @returns the first element in `array` for which `func` returns `true`
+			 */
+			select_one: <T>(array: T[], func: (index: number, value: T) => boolean) => T
+			/**
+			 * @returns a new array composed of the result of applying `func` to each element of the original array in order
+			 */
+			map: <T, U>(array: T[], func: (index: number, value: T) => U) => U[]
+			/**
+			 * @returns a new object derived from `obj` with only the keys specified in `keys`
+			 */
+			pick: (obj: object, keys: string[]) => any
+			/**
+			 * @returns an array with the elements from `array` in a random order
+			 */
 			shuffle: <T>(array: T[]) => T[]
-			sort_asc: (...args: any) => any
-			sort_desc: (...args: any) => any
+			/**
+			 * Comparison function for sorting arbitrary values in ascending order using builtin comparison operators.
+			 */
+			sort_asc: (one: any, two: any) => 1 | -1 | 0
+			/**
+			 * Comparison function for sorting arbitrary values in descending order using builtin comparison operators.
+			 */
+			sort_desc: (one: any, two: any) => 1 | -1 | 0
+			/**
+			 * Comparison function for sorting numbers in ascending order.
+			 */
 			num_sort_asc: (one: number, two: number) => 1 | -1 | 0
+			/**
+			 * Comparison function for sorting numbers in descending order.
+			 */
 			num_sort_desc: (one: number, two: number) => 1 | -1 | 0
-			max_val_index: (array: number[]) => number
+			/**
+			 * @returns the value and the index of the largest number in `array` as `[maxVal, maxIdx]`
+			 */
+			max_val_index: (array: number[]) => number[];
+			/**
+			 * @returns a new `Date` equivalent to `date.getTime() + add_ms`
+			 */
 			add_time: (date: Date, add_ms: number) => Date
 			security_level_names: [ "NULLSEC", "LOWSEC", "MIDSEC", "HIGHSEC", "FULLSEC" ]
+			/**
+			 * @returns the string name of a numeric security level
+			 */
 			get_security_level_name: (security_level: number) => any
-			dbu_result_failed: (...args: any) => any
-			dbir_result_failed: (...args: any) => any
+			/**
+			 * @param result the return value of a call to `#db.i` or `#db.r`
+			 * @param nModified the expected value of `result.nModified`
+			 * @returns whether the database operation failed
+			 */
+			dbu_result_failed: (result: ReturnType<typeof $db.u | typeof $db.u1 | typeof $db.us>, nModified?: number) => boolean
+			/**
+			 * @param result the return value of a call to `#db.i` or `#db.r`
+			 * @param n the expected value of `result.n`
+			 * @returns whether the database operation failed
+			 */
+			dbir_result_failed: (result: ReturnType<typeof $db.i | typeof $db.r>, n?: number) => boolean
+			/**
+			 * @returns a random string of length `length` on the alphabet [a-z0-9]
+			 */
 			create_rand_string: (length: number) => string
+			/**
+			 * @returns the user half `x` of a fully-qualified script name `x.y`
+			 */
 			get_user_from_script: (script_name: string) => string
-			get_scriptname_from_script: (...args: any) => any
-			is_script: (...args: any) => any
-			caller_is_owner: (...args: any) => any
-			uniq: (...args: any) => any
+			/**
+			 * @returns the script half `y` of a fully-qualified script name `x.y`
+			 */
+			get_scriptname_from_script: (name: string) => string
+			/**
+			 * Determines whether to treat this run as a subscript, based either on the presence of `calling_script` in `context`,
+			 * or the explicit passing of `is_script:true` in `args`.
+			 */
+			is_script: (context: Context, args: any) => boolean
+			/**
+			 * @returns whether the script is being called by its owner
+			 */
+			caller_is_owner: (context: Context) => boolean
+			/**
+			 * Removes consecutive duplicate elements from an array.
+			 * @example
+			 * ```js
+			 * const arr = [1, 2, 2, 3, 2]
+			 * return #fs.scripts.lib().uniq(arr)
+			 * // [1, 2, 3, 2]
+			 * ```
+			 */
+			uniq: (array: T[]) => T[]
+			/**
+			 * Sorts an array of numbers or number-coercible strings in descending order.
+			 */
 			u_sort_num_arr_desc: <T>(array: T[]) => T[]
-			ljust: (...args: any) => any
-			rjust: (...args: any) => any
-			columnize: (string: string[]) => string
-			side_by_side: (...args: any) => any
+			/**
+			 * BUGGED: Creates a new string of length `length` by repeating `pad_char`.
+			 */
+			ljust: (input: string, length: number, pad_char?: string) => string
+			/**
+			 * Add characters from `pad_char` to the left of `input` until it reaches length `length`.
+			 */
+			rjust: (input: string, length: number, pad_char?: string) => string
+			/**
+			 * @returns a string with the entries from `strings` split into evenly spaced columns,
+			 * organized donward and then rightward, to fit the current user's terminal
+			 */
+			columnize: (strings: string[]) => string
+			/**
+			 * Takes two newline-separated strings and formats a new string where they appear in columns, separated by `space`.
+			 * @example
+			 * ```js
+			 * const str1 = "one\ntwo\nthree"
+			 * const str2 = "four\nfive\nsix"
+			 * return $fs.scripts.lib().side_by_side(str1, str2, "|")
+			 * // one|four\n
+			 * // two|five\n
+			 * // three|six
+			 * ```
+			 */
+			side_by_side: (str1: string, str2: string, space?:string) => string
+			/**
+			 * @returns whether enough time remains in the script execution window to satisfy `time_left`
+			 */
 			can_continue_execution: (time_left: number) => boolean
-			can_continue_execution_error: (...args: any) => any
+			/**
+			 * @returns a human-readable error object when not enough time remains in the script execution window to satisfy `time_left`
+			 */
+			can_continue_execution_error: (time_left: number, name?:string) => {ok:false, msg: string}
 			date: typeof Date
+			/**
+			 * @returns current date, equivalent to `new Date()`
+			 */
 			get_date: () => Date
+			/**
+			 * @returns time since the epoch, equivalent to `Date.now()`
+			 */
 			get_date_utcsecs: () => number
 			one_day_ms: 86_400_000
-			is_not_today: (...args: any) => any
-			utc_day_diff: (...args: any) => any
-			utc_days_ago_str: (...args: any) => any
+			is_not_today: (date: Date) => boolean
+			/**
+			 * @returns the number of days that have passed between `d2` and `d1`
+			 */
+			utc_day_diff: (d1: Date, d2: Date) => number
+			/**
+			 * @returns the number of days elapsed since `date` as a string, e.g. "<n> days"
+			 */
+			utc_days_ago_str: (date: Date) => string
 			math: typeof Math
 			array: typeof Array
 			parse_int: typeof parseInt
