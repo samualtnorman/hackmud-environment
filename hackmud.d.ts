@@ -1184,6 +1184,14 @@ declare const $db: {
 			t: number
 		}
 		electionId: "Undefined Conversion"
+		operationTime: "Undefined Conversion"
+		$clusterTime: {
+			clusterTime: "Undefined Conversion"
+			signature: {
+				hash: "Undefined Conversion"
+				keyId: "Undefined Conversion"
+			}
+		}
 	}
 
 	/**
@@ -1192,7 +1200,23 @@ declare const $db: {
 	 * Removes documents from a collection.
 	 * @param query Specifies deletion criteria using query operators.
 	 */
-	r: (query: Query) => void
+	r: (query: Query) => {
+		ok: 0 | 1
+		n: number
+		opTime: {
+			ts: "Undefined Conversion"
+			t: number
+		}
+		electionId: "Undefined Conversion"
+		operationTime: "Undefined Conversion"
+		$clusterTime: {
+			clusterTime: "Undefined Conversion"
+			signature: {
+				hash: "Undefined Conversion"
+				keyId: "Undefined Conversion"
+			}
+		}
+	}
 
 	/**
 	 * Find
@@ -1219,6 +1243,14 @@ declare const $db: {
 			t: number
 		}
 		electionId: "Undefined Conversion"
+		operationTime: "Undefined Conversion"
+		$clusterTime: {
+			clusterTime: "Undefined Conversion"
+			signature: {
+				hash: "Undefined Conversion"
+				keyId: "Undefined Conversion"
+			}
+		}
 	}
 
 	/**
@@ -1228,7 +1260,24 @@ declare const $db: {
 	 * @param query Specifies deletion criteria using query operators.
 	 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
 	 */
-	u1: (query: Query | Query[], command: MongoCommand) => void
+	u1: (query: Query | Query[], command: MongoCommand) => {
+		ok: 0 | 1
+		nModified: number
+		n: number
+		opTime: {
+			ts: "Undefined Conversion"
+			t: number
+		}
+		electionId: "Undefined Conversion"
+		operationTime: "Undefined Conversion"
+		$clusterTime: {
+			clusterTime: "Undefined Conversion"
+			signature: {
+				hash: "Undefined Conversion"
+				keyId: "Undefined Conversion"
+			}
+		}
+	}
 
 	/**
 	 * Upsert
@@ -1238,7 +1287,24 @@ declare const $db: {
 	 * @param query Specifies deletion criteria using query operators.
 	 * @param command The modifications to apply. {@link https://docs.mongodb.com/manual/reference/method/db.collection.update/#parameters}
 	 */
-	us: (query: Query | Query[], command: MongoCommand) => void
+	us: (query: Query | Query[], command: MongoCommand) => {
+		ok: 0 | 1
+		nModified: number
+		n: number
+		opTime: {
+			ts: "Undefined Conversion"
+			t: number
+		}
+		electionId: "Undefined Conversion"
+		operationTime: "Undefined Conversion"
+		$clusterTime: {
+			clusterTime: "Undefined Conversion"
+			signature: {
+				hash: "Undefined Conversion"
+				keyId: "Undefined Conversion"
+			}
+		}
+	}
 }
 
 /**
