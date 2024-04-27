@@ -14,8 +14,8 @@ importers:
   .:
     devDependencies:
       hackmud-script-manager:
-        specifier: 0.20.0
-        version: 0.20.0(@babel/core@7.24.4)(typescript@5.4.5(patch_hash=qqgy3qhi7btkmmmcjfajbu77qi))
+        specifier: 0.20.1
+        version: 0.20.1(@babel/core@7.24.4)(typescript@5.4.5(patch_hash=qqgy3qhi7btkmmmcjfajbu77qi))
       typescript:
         specifier: 5.4.5
         version: 5.4.5(patch_hash=qqgy3qhi7btkmmmcjfajbu77qi)
@@ -715,8 +715,8 @@ packages:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
     engines: {node: '>=4'}
 
-  hackmud-script-manager@0.20.0:
-    resolution: {integrity: sha512-9rAcTZlat9p5sAqRJsaNZogmLOAKnV90Du2p9sQCAs9eKcvxNtqfAW4NGHRIMMU75MOM0VFP8CuLXNTfv3F1gQ==}
+  hackmud-script-manager@0.20.1:
+    resolution: {integrity: sha512-P05sgssFvi8mxum7qFnC9+uR6pLf4B7KXMCNG60Ttr/MYYpDkbnEpZ96uryxWfGOHZfRl+BEoUQmCcCDnfcVIg==}
     engines: {node: ^18 || >=20}
     hasBin: true
     peerDependencies:
@@ -1603,7 +1603,7 @@ snapshots:
 
   globals@11.12.0: {}
 
-  hackmud-script-manager@0.20.0(@babel/core@7.24.4)(typescript@5.4.5(patch_hash=qqgy3qhi7btkmmmcjfajbu77qi)):
+  hackmud-script-manager@0.20.1(@babel/core@7.24.4)(typescript@5.4.5(patch_hash=qqgy3qhi7btkmmmcjfajbu77qi)):
     dependencies:
       '@babel/generator': 7.24.4
       '@babel/parser': 7.24.4
