@@ -1,4 +1,6 @@
 # Hackmud Scripting Environment
+This is the whole kitchen sink built around HSM, setting this up takes more effort but will give you autocompletes in your IDE, automatic script push when you save a script, as well as minification. If you only need minification, I instead recommend heading over to [Hackmud Script Manager](https://www.npmjs.com/package/hackmud-script-manager).
+
 ## Features
 ### Minification
 This is the main feature of this project and works with JavaScript or [TypeScript](https://www.typescriptlang.org/). All
@@ -15,9 +17,11 @@ Using TypeScript in this environment is completely optional, but using it means 
 a subscript's args or use an unsupported type in a DB query.
 
 ## First Time Setup
-1. Install [NodeJS](https://nodejs.org/) and [PNPM](https://pnpm.io/installation).
-2. Run `pnpm dlx tiged samualtnorman/hackmud-environment`.
-3. Run `pnpm install`.
+1. Install [NodeJS](https://nodejs.org/) and [PNPM](https://pnpm.io/installation)
+2. If you have [Git installed](https://git-scm.com/downloads):
+   - Make a new folder, `cd` to it, and run `pnpm dlx tiged samualtnorman/hackmud-environment`
+   - Otherwise, [click here to download the ZIP](https://github.com/samualtnorman/hackmud-environment/archive/refs/heads/main.zip) and extract it somewhere, then `cd` to it
+4. Run `pnpm install`
 
 ## Guide
 ### Writing scripts
