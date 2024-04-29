@@ -36,6 +36,8 @@ Scripts directly in the `src` folder are pushed to all your users.
 To have a script be pushed to only a specific user, create a folder in the `src` folder and create your scripts in that
 new folder.
 
+Once a script has been pushed to a user, you can run `#up <script>` in game to upload it.
+
 ## Useful links
 - [Scripting Reference](https://hackmud.com/forums/general_discussion/scripting_reference)
 - [The Trust Scripts](https://hackmud.com/forums/new_players/the_trust_scripts___documentation_for__scripts_trust__scripts)
