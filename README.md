@@ -17,7 +17,7 @@ Using TypeScript in this environment is completely optional, but using it means 
 a subscript's args or use an unsupported type in a DB query.
 
 ## First Time Setup
-1. Install [NodeJS](https://nodejs.org/) and [PNPM](https://pnpm.io/installation)
+1. Install [Node.JS](https://nodejs.org/en/download) and [PNPM](https://pnpm.io/installation)
 2. If you have [Git installed](https://git-scm.com/downloads):
    - Make a new folder, `cd` to it, and run `pnpm dlx tiged samualtnorman/hackmud-environment`
    - Otherwise, [click here to download the ZIP](https://github.com/samualtnorman/hackmud-environment/archive/refs/heads/main.zip) and extract it somewhere, then `cd` to it
