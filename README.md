@@ -23,6 +23,13 @@ a subscript's args or use an unsupported type in a DB query.
    - Otherwise, [click here to download the ZIP](https://github.com/samualtnorman/hackmud-environment/archive/refs/heads/main.zip) and extract it somewhere, then `cd` to it
 4. Run `pnpm install`
 
+> [!NOTE]
+> If you get an error message that looks like this:
+> ```
+> [...]\AppData\Local\pnpm\hsm.ps1 cannot be loaded because running scripts is disabled on this system. [...]
+> ```
+> You will need to run `Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser` in PowerShell as an administrator. For more information, see [Microsoft's page about Execution Policies](https://learn.microsoft.com/en-gb/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.4).
+
 ## Guide
 ### Writing scripts
 You can create scripts in the `src` directory directly, and you can create a folder with the name of one of your users,
@@ -55,7 +62,7 @@ To take advantage of the type definitions written for subscripts and preprocesso
 To gain type checking for the other scripts you've written in the environment, instead of starting your scripts with
 `function (...`, start them with `export default function(...`.
 
-> [!NOTE]  
+> [!NOTE]
 > When using this format, to get autocompletes working in hackmud, you have to have a `// @autocomplete foo: "bar"` comment.
 
 ## Contributing
