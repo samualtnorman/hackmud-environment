@@ -55,6 +55,9 @@ To take advantage of the type definitions written for subscripts and preprocesso
 To gain type checking for the other scripts you've written in the environment, instead of starting your scripts with
 `function (...`, start them with `export default function(...`.
 
+> [!NOTE]  
+> When using this format, to get autocompletes working in hackmud, you have to have a `// @autocomplete foo: "bar"` comment.
+
 ## Contributing
 Contributing is appreciated, especially if you have an API to add to the [type definitions](hackmud.d.ts).
 
