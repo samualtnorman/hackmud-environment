@@ -66,7 +66,7 @@ To gain type checking for the other scripts you've written in the environment, i
 > When using this format, to get autocompletes working in hackmud, you have to have a `// @autocomplete foo: "bar"` comment.
 
 ## Contributing
-Contributing is appreciated, especially if you have an API to add to the [type definitions](hackmud.d.ts).
+Contributing is appreciated, especially if you have an API to add to the [type definitions](https://github.com/samualtnorman/hackmud-script-manager/blob/main/env.d.ts).
 
 ## Credit
 This project was originally a fork of [Snazzah](https://github.com/Snazzah)'s
