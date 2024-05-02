@@ -3,6 +3,8 @@ This is the whole kitchen sink built around HSM, setting this up takes more effo
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R6R0XN5CX)
 
+You can read about how HSM works [in my blog post](https://samual.uk/blog/js-code-transformation-niche-environment/).
+
 ## Features
 ### Minification
 This is the main feature of this project and works with JavaScript or [TypeScript](https://www.typescriptlang.org/). All
