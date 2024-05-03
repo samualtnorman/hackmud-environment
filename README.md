@@ -1,5 +1,5 @@
 # Hackmud Scripting Environment
-This is the whole kitchen sink built around HSM, setting this up takes more effort but will give you autocompletes in your IDE, automatic script pushing when you save a script, as well as minification. If you only need minification, I instead recommend heading over to [Hackmud Script Manager](https://www.npmjs.com/package/hackmud-script-manager).
+This is the whole kitchen sink built around HSM, setting this up takes more effort but will give you autocompletes in your IDE, automatic script pushing when you save a script, as well as minification. If you only need minification, I instead recommend heading over to [Hackmud Script Manager](https://github.com/samualtnorman/hackmud-script-manager#readme).
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R6R0XN5CX)
 
