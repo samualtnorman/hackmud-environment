@@ -27,6 +27,9 @@ a subscript's args or use an unsupported type in a DB query.
    - Otherwise, [click here to download the ZIP](https://github.com/samualtnorman/hackmud-environment/archive/refs/heads/main.zip) and extract it somewhere, then `cd` to it
 4. Run `pnpm install`
 
+> [!IMPORTANT]
+> Do not put this template in your hackmud folder. This will not work.
+
 > [!NOTE]
 > If you get an error message that looks like this:
 > ```
