@@ -3,7 +3,7 @@
 		"moduleResolution": "Node",
 		"resolveJsonModule": true,
 		"noEmit": true,
-		"checkJs": true,
+		"checkJs": false,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"target": "ESNext",
