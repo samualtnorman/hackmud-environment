@@ -28,7 +28,7 @@ a subscript's args or use an unsupported type in a DB query.
 4. Run `pnpm install`
 
 > [!IMPORTANT]
-> Do not put this template in your hackmud folder. This will not work.
+> Do not put this template in your hackmud folder. This will not work.<br>Instead put this template somewhere you have easy access to like your desktop or home folder.
 
 > [!NOTE]
 > If you get an error message that looks like this:
