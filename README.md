@@ -70,7 +70,7 @@ To gain type checking for the other scripts you've written in the environment, i
 `function (...`, start them with `export default function(...`.
 
 > [!NOTE]
-> When using this format, to get autocompletes working in hackmud, you have to have a `// @autocomplete foo: "bar"` comment.
+> When using this format, to get autocompletes working in hackmud, you must have a `// @autocomplete foo: "bar"` comment at the top above all other code.
 
 ## Contributing
 Contributing is appreciated, especially if you have an API to add to the [type definitions](https://github.com/samualtnorman/hackmud-script-manager/blob/main/env.d.ts).
