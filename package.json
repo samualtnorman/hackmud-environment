@@ -2,19 +2,24 @@
 	"name": "hackmud-environment",
 	"license": "MIT",
 	"scripts": {
-		"push": "hsm push src",
-		"dev": "hsm dev src --gen-types=player.d.ts",
+		"push": "hsm push src/scripts",
+		"dev": "hsm dev src/scripts --gen-types=player.d.ts",
 		"sync-macros": "hsm sync-macros",
-		"test": "hsm test src",
-		"gen-types": "hsm gen-types src"
+		"test": "hsm test src/scripts",
+		"gen-types": "hsm gen-types src/scripts",
+		"type-check": "tsc"
 	},
 	"devDependencies": {
-		"hackmud-script-manager": "0.20.4",
+		"hackmud-script-manager": "0.20.4-d9a4cf1",
 		"typescript": "5.4.5"
 	},
 	"pnpm": {
 		"patchedDependencies": {
 			"typescript@5.4.5": "patches/typescript@5.4.5.patch"
 		}
+	},
+	"dependencies": {
+		"@samual/lib": "^0.11.0",
+		"valibot": "^0.30.0"
 	}
 }
