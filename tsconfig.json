@@ -9,6 +9,7 @@
 		"target": "ESNext",
 		"skipLibCheck": true,
 		"lib": [ "ES2022" ],
-		"types": [ "hackmud-script-manager/env" ]
+		"types": [ "hackmud-script-manager/env" ],
+		"strict": true
 	}
 }
