@@ -14,15 +14,15 @@ importers:
   .:
     dependencies:
       '@samual/lib':
-        specifier: ^0.11.0
-        version: 0.11.0
+        specifier: 0.11.1-35d21b1
+        version: 0.11.1-35d21b1
       valibot:
         specifier: ^0.30.0
         version: 0.30.0
     devDependencies:
       hackmud-script-manager:
-        specifier: 0.20.4-d9a4cf1
-        version: 0.20.4-d9a4cf1(@babel/core@7.24.5)(typescript@5.4.5(patch_hash=7ch2catkrls3a5so2cbyuykcei))
+        specifier: 0.20.4-9d6d467
+        version: 0.20.4-9d6d467(@babel/core@7.24.5)(typescript@5.4.5(patch_hash=7ch2catkrls3a5so2cbyuykcei))
       typescript:
         specifier: 5.4.5
         version: 5.4.5(patch_hash=7ch2catkrls3a5so2cbyuykcei)
@@ -589,6 +589,10 @@ packages:
     resolution: {integrity: sha512-O1rQWS3EHbMKUAfaD3qY/SxsYDarlDtNIeJjPvUZiLmO3eeNuVvEtcnKbvWdywIq0ttW6oS5Nmcsm3JkpDeGsQ==}
     engines: {node: ^18 || >=20}
 
+  '@samual/lib@0.11.1-35d21b1':
+    resolution: {integrity: sha512-KrARXtFgjfOVtkdAjD0uj4Fp+4rc7sEKpokTygK/exqYlsaYRcNdjkuzPOGaWrNe3qWOddxXnKHRPed1Yo0Fhg==}
+    engines: {node: ^18 || >=20}
+
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
@@ -723,8 +727,8 @@ packages:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
     engines: {node: '>=4'}
 
-  hackmud-script-manager@0.20.4-d9a4cf1:
-    resolution: {integrity: sha512-eiB5UILNZVAay5U0oWRWmE5fGJqbpAbXgwvAWd/30PhY3h7HgoMRi428gMHggvLmz7vN0TcjF7erJFLY01nuNg==}
+  hackmud-script-manager@0.20.4-9d6d467:
+    resolution: {integrity: sha512-CoQz5WMnzMvPJNEw0+mQ7ZYoh9ij3Qhe7pUg92OPpv2swT0V5EcWhArQkqLls3rNrt3kuVN1mB3XJSjBDWpIqA==}
     engines: {node: ^18 || >=20}
     hasBin: true
     peerDependencies:
@@ -1501,6 +1505,8 @@ snapshots:
 
   '@samual/lib@0.11.0': {}
 
+  '@samual/lib@0.11.1-35d21b1': {}
+
   '@types/estree@1.0.5': {}
 
   '@types/resolve@1.20.2': {}
@@ -1614,7 +1620,7 @@ snapshots:
 
   globals@11.12.0: {}
 
-  hackmud-script-manager@0.20.4-d9a4cf1(@babel/core@7.24.5)(typescript@5.4.5(patch_hash=7ch2catkrls3a5so2cbyuykcei)):
+  hackmud-script-manager@0.20.4-9d6d467(@babel/core@7.24.5)(typescript@5.4.5(patch_hash=7ch2catkrls3a5so2cbyuykcei)):
     dependencies:
       '@babel/generator': 7.24.5
       '@babel/parser': 7.24.5

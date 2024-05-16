@@ -10,7 +10,7 @@
 		"type-check": "tsc"
 	},
 	"devDependencies": {
-		"hackmud-script-manager": "0.20.4-d9a4cf1",
+		"hackmud-script-manager": "0.20.4-9d6d467",
 		"typescript": "5.4.5"
 	},
 	"pnpm": {
@@ -19,7 +19,7 @@
 		}
 	},
 	"dependencies": {
-		"@samual/lib": "^0.11.0",
+		"@samual/lib": "0.11.1-35d21b1",
 		"valibot": "^0.30.0"
 	}
 }
