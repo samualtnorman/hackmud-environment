@@ -10,6 +10,7 @@
 		"type-check": "tsc"
 	},
 	"devDependencies": {
+		"@total-typescript/ts-reset": "^0.5.1",
 		"hackmud-script-manager": "0.20.4-9d6d467",
 		"typescript": "5.4.5"
 	},

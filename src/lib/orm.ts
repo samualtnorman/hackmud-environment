@@ -1,5 +1,8 @@
 import type { JsonValue, LaxPartial } from "@samual/lib"
+import { assert, ensure } from "@samual/lib/assert"
 import { tryCatch } from "@samual/lib/tryCatch"
+
+// this library will account for when the schema has been changed but will not account for corrupted documents
 
 type Schema = Record<string, (`undefined` | `null` | `boolean` | `number` | `string`)[]>
 type Table<T extends Schema> = { namespace: string, schema: T, primaryKey: keyof T }
@@ -28,11 +31,10 @@ const getIndexesDocumentId = (namespace: string, key: string, value: FieldType):
 	`${namespace}.indexes.${key}.${JSON.ostringify(value)}`
 
 function parseDataDocument(document: MongoDocument): JsonValue | undefined {
-	if (typeof document._id == `string` && typeof document.data == `string`) {
-		const { data } = document
+	if (typeof document._id == `string` && typeof document.data == `string`)
+		return JSON.oparse(document.data)
 
-		return tryCatch(() => JSON.oparse(data) as JsonValue)
-	}
+	throw Error(`Corrupted document`)
 }
 
 function parseIndexesDocument(document: MongoDocument): string[] | undefined {
@@ -64,10 +66,7 @@ export function create<T extends Schema>(table: Table<T>, object: SchemaType<T>)
 	}
 }
 
-export function find<T extends Schema>(
-	table: Table<T>,
-	query: LaxPartial<SchemaType<T>>
-): SchemaType<T>[] | undefined {
+export function find<T extends Schema>(table: Table<T>, query: Partial<SchemaType<T>>): SchemaType<T>[] {
 	const { [table.primaryKey]: primaryKeyQuery, ...omittedPrimaryQuery } = query
 
 	if (primaryKeyQuery === undefined) {
@@ -82,19 +81,30 @@ export function find<T extends Schema>(
 			const [ ids, ...idsArray ] = indexesDocuments as string[][]
 			const filteredIds = ids.filter(_id => idsArray.every(ids => ids.includes(_id)))
 
-			return $db.f({ _id: { $in: filteredIds } }).array().map(parseDataDocument).filter(Boolean) as any
+			return $db.f({ _id: { $in: filteredIds } }).array().map(document => {
+				assert(typeof document.data == `string`)
+
+				return JSON.oparse(document.data) as Record<string, JsonValue>
+			}).filter((data): data is SchemaType<T> => Object.entries(table.schema).every(([ key, validTypes ]) =>
+				omittedPrimaryQuery[key] !== undefined ||
+					(data[key] === null ? validTypes.includes("null") : validTypes.includes(typeof data[key]))
+			))
 		}
 	} else {
 		const _id = getDataDocumentId(table.namespace, primaryKeyQuery)
 		const document = $db.f({ _id }).first()
 
 		if (document) {
-			const data = parseDataDocument(document) as any
+			assert(typeof document.data == `string`)
+
+			const data = JSON.oparse(document.data) as Record<string, JsonValue>
 
 			if (Object.entries(omittedPrimaryQuery).every(([ queryKey, queryValue ]) => data[queryKey] == queryValue))
-				return data
+				return [ data as SchemaType<T> ]
 		}
 	}
+
+	return []
 }
 
 const User = Table(
@@ -105,5 +115,4 @@ const User = Table(
 
 create(User, { username: "", email: "", firstName: "", lastName: "" })
 
-const users = find(User, { lastName: null })
-
+const users = find(User, { lastName: undefined })
