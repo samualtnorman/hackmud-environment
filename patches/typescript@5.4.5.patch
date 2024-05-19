@@ -490,7 +490,7 @@ index 6a2ba07870da20bb19c78aca1fc595261e1af0a6..879c3f260f1012cdecedcfd005927197
       * Returns a sorted array of the supported collation, calendar, currency, numbering system, timezones, and units by the implementation.
       * [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/supportedValuesOf)
 diff --git a/lib/lib.es5.d.ts b/lib/lib.es5.d.ts
-index 432946c1e2753dd5e86942ea4a54e042ff96a4bd..e0d21ceb37109bb18b80e0581c5108b4e456f4f9 100644
+index 432946c1e2753dd5e86942ea4a54e042ff96a4bd..4e0b8d862de699d0dcd524209166de38134c592a 100644
 --- a/lib/lib.es5.d.ts
 +++ b/lib/lib.es5.d.ts
 @@ -23,8 +23,8 @@ and limitations under the License.
@@ -704,7 +704,7 @@ index 432946c1e2753dd5e86942ea4a54e042ff96a4bd..e0d21ceb37109bb18b80e0581c5108b4
 +     * @param reviver A function that transforms the results. This function is called for each member of the object.
 +     * If a member contains nested objects, the nested objects are transformed before the parent object is.
 +     */
-+    parse(text: string, error: any, reviver?: (this: any, key: string, value: any) => any): any;
++    parse(text: string, error?: any, reviver?: (this: any, key: string, value: any) => any): any;
      /**
       * Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
       * @param value A JavaScript value, usually an object or array, to be converted.
@@ -713,7 +713,7 @@ index 432946c1e2753dd5e86942ea4a54e042ff96a4bd..e0d21ceb37109bb18b80e0581c5108b4
       * @param space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
       */
 -    stringify(value: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string;
-+    stringify(value: any, error: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string;
++    stringify(value: any, error?: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string;
      /**
       * Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
       * @param value A JavaScript value, usually an object or array, to be converted.
@@ -722,7 +722,7 @@ index 432946c1e2753dd5e86942ea4a54e042ff96a4bd..e0d21ceb37109bb18b80e0581c5108b4
       * @param space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
       */
 -    stringify(value: any, replacer?: (number | string)[] | null, space?: string | number): string;
-+    stringify(value: any, error: any, replacer?: (number | string)[] | null, space?: string | number): string;
++    stringify(value: any, error?: any, replacer?: (number | string)[] | null, space?: string | number): string;
  }
  
  /**

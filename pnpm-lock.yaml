@@ -6,8 +6,8 @@ settings:
 
 patchedDependencies:
   typescript@5.4.5:
-    hash: qqgy3qhi7btkmmmcjfajbu77qi
-    path: patches/typescript@5.4.2.patch
+    hash: 7ch2catkrls3a5so2cbyuykcei
+    path: patches/typescript@5.4.5.patch
 
 importers:
 
@@ -15,10 +15,10 @@ importers:
     devDependencies:
       hackmud-script-manager:
         specifier: 0.20.4
-        version: 0.20.4(@babel/core@7.24.5)(typescript@5.4.5(patch_hash=qqgy3qhi7btkmmmcjfajbu77qi))
+        version: 0.20.4(@babel/core@7.24.5)(typescript@5.4.5(patch_hash=7ch2catkrls3a5so2cbyuykcei))
       typescript:
         specifier: 5.4.5
-        version: 5.4.5(patch_hash=qqgy3qhi7btkmmmcjfajbu77qi)
+        version: 5.4.5(patch_hash=7ch2catkrls3a5so2cbyuykcei)
 
 packages:
 
@@ -1602,7 +1602,7 @@ snapshots:
 
   globals@11.12.0: {}
 
-  hackmud-script-manager@0.20.4(@babel/core@7.24.5)(typescript@5.4.5(patch_hash=qqgy3qhi7btkmmmcjfajbu77qi)):
+  hackmud-script-manager@0.20.4(@babel/core@7.24.5)(typescript@5.4.5(patch_hash=7ch2catkrls3a5so2cbyuykcei)):
     dependencies:
       '@babel/generator': 7.24.5
       '@babel/parser': 7.24.5
@@ -1645,7 +1645,7 @@ snapshots:
       proxy-polyfill: 0.3.2
       rollup: 4.17.2
       terser: 5.31.0
-      typescript: 5.4.5(patch_hash=qqgy3qhi7btkmmmcjfajbu77qi)
+      typescript: 5.4.5(patch_hash=7ch2catkrls3a5so2cbyuykcei)
     transitivePeerDependencies:
       - '@babel/core'
       - '@types/babel__core'
@@ -1811,7 +1811,7 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
-  typescript@5.4.5(patch_hash=qqgy3qhi7btkmmmcjfajbu77qi): {}
+  typescript@5.4.5(patch_hash=7ch2catkrls3a5so2cbyuykcei): {}
 
   unicode-canonical-property-names-ecmascript@2.0.0: {}
 
