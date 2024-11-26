@@ -39,15 +39,15 @@ a subscript's args or use an unsupported type in a DB query.
 
 ## Guide
 ### Writing scripts
-You can create scripts in the `src` directory directly, and you can create a folder with the name of one of your users,
+You can create scripts in the `src/scripts` directory directly, and you can create a folder with the name of one of your users,
 and create scripts in that folder too.
 
 ### Pushing Your Scripts
 Use `pnpm push` to push all your scripts to all your users.
 To automatically push scripts as you edit them, leave `pnpm dev` running.
 
-Scripts directly in the `src` folder are pushed to all your users.
-To have a script be pushed to only a specific user, create a folder in the `src` folder and create your scripts in that
+Scripts directly in the `src/scripts` folder are pushed to all your users.
+To have a script be pushed to only a specific user, create a folder in the `src/scripts` folder and create your scripts in that
 new folder.
 
 Once a script has been pushed to a user, you can run `#up <script>` in game to upload it.
