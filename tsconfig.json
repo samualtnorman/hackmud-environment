@@ -10,6 +10,7 @@
 		"skipLibCheck": true,
 		"lib": [ "ES2022" ],
 		"types": [ "hackmud-script-manager/env" ],
-		"strict": true
+		"strict": true,
+		"paths": { "/*": [ "./src/*" ] }
 	}
 }
