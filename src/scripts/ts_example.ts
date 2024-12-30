@@ -23,8 +23,7 @@ export default (context: Context, args?: unknown) => {
 		if (isScriptor(args.s))
 			return `You gave a scriptor and it returned ${args.s.call()}`
 
-		if (isScriptor(args.s))
-			return "That is not a scriptor"
+		return "That is not a scriptor"
 	}
 
 	// Otherwise we print our default message declared above
