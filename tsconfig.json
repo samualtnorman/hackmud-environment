@@ -11,6 +11,7 @@
 		"lib": [ "ES2022" ],
 		"types": [ "hackmud-script-manager/env" ],
 		"strict": true,
-		"paths": { "/*": [ "./src/*" ] }
+		"paths": { "/*": [ "./src/*" ] },
+		"allowJs": true
 	}
 }
