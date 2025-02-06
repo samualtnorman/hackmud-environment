@@ -9,8 +9,8 @@
 		"type-check": "tsc"
 	},
 	"devDependencies": {
-		"hackmud-script-manager": "^0.21.1",
-		"typescript": "5.7.2"
+		"hackmud-script-manager": "^0.21.2",
+		"typescript": "5.7.3"
 	},
 	"pnpm": {
 		"patchedDependencies": {
