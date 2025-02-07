@@ -7,8 +7,6 @@ Join [our Discord server](https://discord.gg/RSa4Sc6pNA)!
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R6R0XN5CX)
 
-You can read about how HSM works [in my blog post](https://samual.uk/blog/js-code-transformation-niche-environment/).
-
 ## Features
 ### Minification
 This is the main feature of this project and works with JavaScript or [TypeScript](https://www.typescriptlang.org/). All
@@ -26,10 +24,12 @@ a subscript's args or use an unsupported type in a DB query.
 
 ## First Time Setup
 1. Install [Node.JS](https://nodejs.org/en/download) and [PNPM](https://pnpm.io/installation)
-2. If you have [Git installed](https://git-scm.com/downloads):
-   - Make a new folder, `cd` to it, and run `pnpm dlx tiged samualtnorman/hackmud-environment`
+2. Download this template:
+   - If you have [Git installed](https://git-scm.com/downloads), make a new folder, `cd` to it, and run `pnpm dlx tiged samualtnorman/hackmud-environment`
    - Otherwise, [click here to download the ZIP](https://github.com/samualtnorman/hackmud-environment/archive/refs/heads/main.zip) and extract it somewhere, then `cd` to it
 4. Run `pnpm install`
+
+Once you have everything setup, you just need to open the folder in your editor of choice.
 
 > [!IMPORTANT]
 > Do not put this template in your hackmud folder. This will not work.<br>Instead put this template somewhere you have easy access to like your desktop or home folder.
@@ -46,6 +46,17 @@ a subscript's args or use an unsupported type in a DB query.
 You can create scripts in the `src/scripts` directory directly, and you can create a folder with the name of one of your users,
 and create scripts in that folder too.
 
+### Alternative Preprocessor Format
+To get autocompletes, you'll need to replace the `#` characters with `$` characters. For example instead of writing `#fs.scripts.trust()`, you'll need to write
+`$fs.scripts.trust()`.
+
+### Inter-script Type Checking
+To get autocompletes for the other scripts you've written in the environment, instead of starting your scripts with
+`function (...`, start them with `export default function(...`.
+
+> [!NOTE]
+> When using this format, to get autocompletes working in hackmud, you must have a `// @autocomplete foo: "bar"` comment at the top above all other code.
+
 ### Pushing Your Scripts
 Use `pnpm push` to push all your scripts to all your users.
 To automatically push scripts as you edit them, leave `pnpm dev` running.
@@ -58,35 +69,21 @@ Once a script has been pushed to a user, you can run `#up <script>` in game to u
 
 ## Useful links
 - [Scripting Reference](https://hackmud.com/forums/general_discussion/scripting_reference)
-- [The Trust Scripts](https://hackmud.com/forums/new_players/the_trust_scripts___documentation_for__scripts_trust__scripts)
-- [Color Reference](https://hackmud.com/forums/general_discussion/color_reference)
-
-## Optional Features
-This is only for if you're using TypeScript.
-
-### Alternative Preprocessor Format
-To take advantage of the type definitions written for subscripts and preprocessor functions, you'll need to replace the
-`#` characters with `$` characters. For example instead of writing `#fs.scripts.trust()`, you'll need to write
-`$fs.scripts.trust()`. A big change, I know.
-
-### Inter-script Type Checking
-To gain type checking for the other scripts you've written in the environment, instead of starting your scripts with
-`function (...`, start them with `export default function(...`.
-
-> [!NOTE]
-> When using this format, to get autocompletes working in hackmud, you must have a `// @autocomplete foo: "bar"` comment at the top above all other code.
+- [The Trust Scripts](https://wiki.hackmud.com/scripting/trust_scripts)
+- [Color Reference](https://wiki.hackmud.com/scripting/syntax/colors)
 
 ## Contributing
 Contributing is appreciated, especially if you have an API to add to the [type definitions](https://github.com/samualtnorman/hackmud-script-manager/blob/main/env.d.ts).
 
 ## Credit
 This project was originally a fork of [Snazzah](https://github.com/Snazzah)'s
-[hackmud_env](https://github.com/Snazzah/hackmud_env).
+[hackmud_env](https://github.com/Snazzah/hackmud_env). Please also check out the [list of people who contributed to HSM](https://github.com/samualtnorman/hackmud-script-manager/graphs/contributors).
 
 ## Related Projects
 ### Hackmud Color
 If you want to see your strings coloured to how they'd appear in the game, check out
 [Hackmud Color](https://marketplace.visualstudio.com/items?itemName=Samual.hackmud-color), my VS Code extension.
+
 ### Hackmud Script Manager
 This is the script manager that this environment relies on. Visit the
 [NPM page](https://www.npmjs.com/package/hackmud-script-manager), or the
