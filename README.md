@@ -46,11 +46,11 @@ Once you have everything setup, you just need to open the folder in your editor 
 You can create scripts in the `src/scripts` directory directly, and you can create a folder with the name of one of your users,
 and create scripts in that folder too.
 
-### Alternative Preprocessor Format
+#### Alternative Preprocessor Format
 To get autocompletes, you'll need to replace the `#` characters with `$` characters. For example instead of writing `#fs.scripts.trust()`, you'll need to write
 `$fs.scripts.trust()`.
 
-### Inter-script Type Checking
+#### Inter-script Type Checking
 To get autocompletes for the other scripts you've written in the environment, instead of starting your scripts with
 `function (...`, start them with `export default function(...`.
 
