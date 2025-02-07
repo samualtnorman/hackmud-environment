@@ -50,7 +50,7 @@ and create scripts in that folder too.
 To get autocompletes, you'll need to replace the `#` characters with `$` characters. For example instead of writing `#fs.scripts.trust()`, you'll need to write
 `$fs.scripts.trust()`.
 
-#### Inter-script Type Checking
+#### Autocompletes for Your Own Scripts
 To get autocompletes for the other scripts you've written in the environment, instead of starting your scripts with
 `function (...`, start them with `export default function(...`.
 
