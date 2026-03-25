@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   typescript:
-    hash: t33fuoy5d7gnk76nfb77yfuzs4
+    hash: 4687663a48d802485eff81e81b90e95738eb92cd35c81e6f0f849ae99ce8670f
     path: patches/typescript.patch
 
 importers:
@@ -15,10 +15,10 @@ importers:
     devDependencies:
       hackmud-script-manager:
         specifier: ^0.21.2
-        version: 0.21.2(@babel/core@7.26.0)(typescript@5.7.3(patch_hash=t33fuoy5d7gnk76nfb77yfuzs4))
+        version: 0.21.2(@babel/core@7.26.0)(typescript@5.7.3(patch_hash=4687663a48d802485eff81e81b90e95738eb92cd35c81e6f0f849ae99ce8670f))
       typescript:
         specifier: 5.7.3
-        version: 5.7.3(patch_hash=t33fuoy5d7gnk76nfb77yfuzs4)
+        version: 5.7.3(patch_hash=4687663a48d802485eff81e81b90e95738eb92cd35c81e6f0f849ae99ce8670f)
 
 packages:
 
@@ -140,6 +140,7 @@ packages:
   '@babel/plugin-proposal-explicit-resource-management@7.25.9':
     resolution: {integrity: sha512-EbtfSvb6s4lZwef1nH52nw4DTUAvHY6bl1mbLgEHUkR6L8j4WY70mM/InB8Ozgdlok/7etbiSW+Wc88ZebZAKQ==}
     engines: {node: '>=6.9.0'}
+    deprecated: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-explicit-resource-management instead.
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
@@ -1261,7 +1262,7 @@ snapshots:
 
   globals@11.12.0: {}
 
-  hackmud-script-manager@0.21.2(@babel/core@7.26.0)(typescript@5.7.3(patch_hash=t33fuoy5d7gnk76nfb77yfuzs4)):
+  hackmud-script-manager@0.21.2(@babel/core@7.26.0)(typescript@5.7.3(patch_hash=4687663a48d802485eff81e81b90e95738eb92cd35c81e6f0f849ae99ce8670f)):
     dependencies:
       '@babel/generator': 7.26.5
       '@babel/parser': 7.26.7
@@ -1305,7 +1306,7 @@ snapshots:
       proxy-polyfill: 0.3.2
       rollup: 4.34.4
       terser: 5.38.1
-      typescript: 5.7.3(patch_hash=t33fuoy5d7gnk76nfb77yfuzs4)
+      typescript: 5.7.3(patch_hash=4687663a48d802485eff81e81b90e95738eb92cd35c81e6f0f849ae99ce8670f)
     transitivePeerDependencies:
       - '@babel/core'
       - '@types/babel__core'
@@ -1429,7 +1430,7 @@ snapshots:
       commander: 2.20.3
       source-map-support: 0.5.21
 
-  typescript@5.7.3(patch_hash=t33fuoy5d7gnk76nfb77yfuzs4): {}
+  typescript@5.7.3(patch_hash=4687663a48d802485eff81e81b90e95738eb92cd35c81e6f0f849ae99ce8670f): {}
 
   unicode-canonical-property-names-ecmascript@2.0.1: {}
 
